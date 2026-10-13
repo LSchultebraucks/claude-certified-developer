@@ -13,7 +13,7 @@ A complete, offline-capable prep track for Anthropic's **Claude Certified Develo
 | **Practice** | Diagnostic (24 q / 45 min), full mock exam (53 q / 120 min) and quick mock (27 q / 60 min) — questions drawn in proportion to the 25 skill weights, shuffled options, multiple-response items, flagging, timer, scaled score, per-domain report and full review |
 | **Look Up** | Quick-reference cheat sheets, glossary (177 terms), exam guide summary, full-text search |
 
-Question bank: ~280 original items, sized by skill weight, with explanations for every answer and option lengths balanced so the correct answer can't be guessed from length.
+Question bank: 365 items (original questions plus the three official sample questions), sized by skill weight, with explanations for every answer and option lengths balanced so the correct answer can't be guessed from length.
 
 ## Build exercises
 
