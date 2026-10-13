@@ -164,8 +164,9 @@ Gotchas: errors can arrive **after** a 200 response has started, so handle error
 
 - Formats: JPEG, PNG, GIF, WebP. Sources: base64, URL, or Files API `file_id`.
 - Put images **before** the text that refers to them; label multiple images ("Image 1:", "Image 2:").
-- Images cost input tokens roughly proportional to pixel area (classic rule of thumb: tokens ≈ width × height / 750); oversized images are downscaled — resize yourself to save latency and tokens.
-- Limits exist on image count and size per request; very small or blurry images degrade accuracy. Claude cannot identify people by face.
+- Image cost scales with pixel area: Claude views images in 28×28-px patches, so an image costs about ⌈width/28⌉ × ⌈height/28⌉ visual tokens (e.g., 1000×1000 px ≈ 1,296 tokens). Images above the model's maximum resolution (long edge 1568 px on standard-tier models, 2576 px on Claude 4.7+ high-resolution models) are **downscaled** — resize yourself to save latency and tokens. (Older material cites the approximation width × height / 750.)
+- Limits: up to 600 images per API request (100 on 200K-context models), max 8000×8000 px and 10 MB per image on the Claude API, 32 MB per request; requests with more than 20 images get a stricter per-image size limit. Use the Files API to avoid resending base64 images every turn.
+- Very small (< 200 px), blurry or rotated images degrade accuracy. Claude does not identify people by their faces; Claude also cannot generate images.
 
 ## PDFs and documents
 

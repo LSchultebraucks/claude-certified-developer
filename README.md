@@ -15,6 +15,10 @@ A complete, offline-capable prep track for Anthropic's **Claude Certified Develo
 
 Question bank: ~280 original items, sized by skill weight, with explanations for every answer and option lengths balanced so the correct answer can't be guessed from length.
 
+## Build exercises
+
+`exercises/` holds tested reference solutions for the core build exercises (agent loop, retry strategy, cost model, guardrail hook, MCP server). Run `python exercises/test_solutions.py` — offline, no API key.
+
 ## Use it
 
 No build step is needed to *use* the guide — `assets/data.js` is committed.

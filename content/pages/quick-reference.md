@@ -63,7 +63,7 @@ body:    model*, max_tokens*, messages* (user first, alternate), system, tools, 
 - **Fast mode** (Opus, research preview): faster output, premium price, `speed: "fast"` + beta.
 
 ### Vision / PDF / files / citations
-Image blocks (base64 / URL / file_id) — place before the question; tokens ∝ pixels (≈ w×h/750 rule of thumb). PDFs = text + page images. **Files API** upload once → `file_id`. **Citations** on documents → `cited_text` + location; incompatible with structured outputs.
+Image blocks (base64 / URL / file_id) — place before the question; ≈ ⌈w/28⌉×⌈h/28⌉ visual tokens; oversized images downscaled; ≤ 600 images/request. PDFs = text + page images. **Files API** upload once → `file_id`. **Citations** on documents → `cited_text` + location; incompatible with structured outputs.
 
 ### Platforms
 Claude API (features first) · **Bedrock** (IAM, `anthropic.` model prefix) · **Vertex AI** (GCP ADC, project+region) · **Foundry** (Azure). Same Messages shape; feature availability differs.

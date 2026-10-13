@@ -20,7 +20,7 @@ Anthropic publishes official SDKs (Python, TypeScript/JavaScript, Java/Kotlin, G
 | **Typed requests/responses** | Classes/types for messages, content blocks, tools (`MessageParam`, `ToolUseBlock`, …) — use them instead of redefining your own |
 | **Automatic retries** | Retries connection errors, 408, 409, 429 and 5xx with exponential backoff (default **2 retries**); configurable `max_retries` |
 | **Timeouts** | Default request timeout (10 minutes); configurable globally or per request. **Units differ**: Python seconds, TypeScript milliseconds |
-| **Typed errors** | `BadRequestError`, `AuthenticationError`, `PermissionDeniedError`, `NotFoundError`, `RateLimitError`, `InternalServerError`, `APIConnectionError` … |
+| **Typed errors** | `BadRequestError`, `AuthenticationError`, `PermissionDeniedError`, `NotFoundError`, `RateLimitError`, `InternalServerError`, `OverloadedError` (529), `APIConnectionError` / `APITimeoutError` … |
 | **Streaming helpers** | `client.messages.stream(...)`, `text_stream`, `get_final_message()` / `finalMessage()` accumulate SSE events for you |
 | **Tool helpers** | Tool Runner, schema generation from functions/Zod/Pydantic, `messages.parse()` for structured outputs |
 | **Pagination** | Iterating list endpoints auto-paginates |

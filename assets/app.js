@@ -907,6 +907,7 @@
       <div class="eyebrow">Practice</div>
       <h1>Build Exercises</h1>
       <p class="lead">The Exam Guide recommends building and operating at least one Claude application that exercises the API, integrates tools, applies prompt and context engineering, and includes simple security and evaluation practices. Every lesson ends with a hands-on exercise; together they form that application.</p>
+      <div class="callout callout-tip"><div class="callout-label">Reference solutions</div><div class="callout-body"><p>The repository folder <code>exercises/</code> contains tested reference implementations for the core exercises — agent loop (1.2/8.1), retry strategy (4.1), cost model (5.4), guardrail hook (7.3) and MCP server (8.2). Run <code>python exercises/test_solutions.py</code> (offline, no API key) to verify them.</p></div></div>
       <div class="grid grid-2" style="margin-top:20px">
         ${ORDERED.map((l) => {
           const tmp = document.createElement("div");

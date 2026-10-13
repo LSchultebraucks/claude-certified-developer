@@ -22,6 +22,7 @@ When a Claude application misbehaves, the exam expects a disciplined process: **
 | 404 | `not_found_error` | Wrong endpoint, typo in model ID, model unavailable to your org | No | Fix ID / check `GET /v1/models` |
 | 413 | `request_too_large` | Request body too big | No | Shrink input, use Files API |
 | 429 | `rate_limit_error` | RPM / input-TPM / output-TPM exceeded | **Yes** | Back off, honor `retry-after`, smooth traffic, caching, batches |
+| 429 (spend cap) | `rate_limit_error` with `error.details.error_code: enforced_spend_limit_reached` | Monthly spend cap reached | **No** (no `retry-after`; retries fail until the cap resets) | Raise the tier/limit; alert finance/ops |
 | 500 | `api_error` | Internal error | **Yes** | Retry with backoff |
 | 529 | `overloaded_error` | API temporarily overloaded | **Yes** | Retry with backoff; consider fallback model |
 
@@ -29,7 +30,7 @@ Also:
 - **Network/connection errors and timeouts** (no HTTP response) → retry with backoff; check timeouts for long outputs (use streaming).
 - **Errors during streaming** arrive as an `error` event *after* the HTTP 200 — handle them inside the stream loop.
 - The SDKs **retry 408/409/429/5xx and connection errors automatically** (default `max_retries=2`, exponential backoff); tune with `max_retries` / `timeout`.
-- Catch **typed exceptions** most-specific-first (`NotFoundError`, `RateLimitError`, `APIStatusError`, `APIConnectionError`), not one broad catch-all, and never string-match error messages.
+- Catch **typed exceptions** most-specific-first (`NotFoundError`, `RateLimitError`, `InternalServerError`, `OverloadedError` for 529, then `APIStatusError`, `APIConnectionError`), not one broad catch-all, and never string-match error messages. In the Python SDK, `OverloadedError` (529) is *not* a subclass of `InternalServerError` — catch it explicitly or catch `APIStatusError` and branch on `status_code`.
 - Log the **request ID** (`request-id` response header / `request_id`) for every failure.
 
 ### "Successful" responses that are still failures
@@ -69,7 +70,8 @@ def call_with_retry(**params):
             return client.messages.create(**params)
         except anthropic.RateLimitError as e:          # 429
             wait = float(e.response.headers.get("retry-after", 2 ** attempt))
-        except anthropic.InternalServerError:          # 500 / 529
+        except (anthropic.InternalServerError,         # 500
+                anthropic.OverloadedError):            # 529 (a separate class, not a subclass of 500!)
             wait = 2 ** attempt
         except anthropic.APIConnectionError:           # network
             wait = 2 ** attempt
