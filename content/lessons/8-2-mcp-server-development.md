@@ -61,11 +61,12 @@ Client-side primitives (offered by hosts to servers): **elicitation** (server as
 
 ## Authoring a server
 
-```python inventory_server.py (Python, FastMCP from the official SDK)
-from mcp.server.fastmcp import FastMCP
-import sys
+```python inventory_server.py (Python, official MCP SDK)
+from mcp.server import MCPServer      # current SDK; older releases: from mcp.server.fastmcp import FastMCP
+import logging
 
-mcp = FastMCP("inventory")
+logging.basicConfig(level=logging.INFO)   # logging writes to stderr — never print() in a stdio server
+mcp = MCPServer("inventory")
 
 @mcp.tool()
 def get_stock(sku: str) -> str:
@@ -86,21 +87,28 @@ def restock_report(region: str) -> str:
     return f"Create a restock report for region {region} using get_stock for low items."
 
 if __name__ == "__main__":
-    print("starting inventory server", file=sys.stderr)   # stderr, never stdout
-    mcp.run(transport="stdio")                            # or "streamable-http" for remote
+    mcp.run(transport="stdio")                            # or an HTTP transport for remote use
 ```
 
-```ts server.ts (TypeScript SDK)
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+```ts server.ts (TypeScript, official MCP SDK)
+import { McpServer } from "@modelcontextprotocol/server";
+import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import { z } from "zod";
 
-const server = new McpServer({ name: "inventory", version: "1.0.0" });
-server.registerTool("get_stock",
-  { description: "Return current stock level for a SKU.", inputSchema: { sku: z.string() } },
-  async ({ sku }) => ({ content: [{ type: "text", text: `${sku}: ${await lookup(sku)} units` }] }));
-await server.connect(new StdioServerTransport());
+function createServer() {                 // serveStdio may create several instances
+  const server = new McpServer({ name: "inventory", version: "1.0.0" });
+  server.registerTool("get_stock",
+    { description: "Return current stock level for a SKU.", inputSchema: z.object({ sku: z.string() }) },
+    async ({ sku }) => ({ content: [{ type: "text", text: `${sku}: ${await lookup(sku)} units` }] }));
+  return server;
+}
+serveStdio(createServer);
+console.error("inventory server running on stdio");   // stderr, never console.log
 ```
+
+:::current SDK naming changes
+Older tutorials use `from mcp.server.fastmcp import FastMCP` (Python) and `@modelcontextprotocol/sdk` with `server.connect(new StdioServerTransport())` (TypeScript). The concepts are identical — decorated/registered tools with typed schemas, stdio or HTTP transport — so recognize both forms.
+:::
 
 Authoring best practices:
 - Same tool-design rules as lesson 8.1: clear names/descriptions, typed schemas, actionable errors (`isError: true` results), concise outputs, pagination.
@@ -181,7 +189,7 @@ Reusable, independently maintained integrations belong in an MCP server many hos
 ## Build exercise
 
 :::exercise Build, test and ship an MCP server
-1. Build the inventory server above with FastMCP: two tools (`get_stock`, `reserve_stock`), one resource (`inventory://warehouses`) and one prompt (`restock_report`).
+1. Build the inventory server above with the official Python SDK (`MCPServer`): two tools (`get_stock`, `reserve_stock`), one resource (`inventory://warehouses`) and one prompt (`restock_report`).
 2. Test it in MCP Inspector: list tools, call them with valid and invalid input, read the resource, render the prompt.
 3. Add it to Claude Code with `claude mcp add --transport stdio inventory -- uv run inventory_server.py`; check `/mcp`; ask a question that needs `get_stock`; run the prompt as a slash command.
 4. Add a PreToolUse hook or `ask` rule so `mcp__inventory__reserve_stock` requires confirmation.

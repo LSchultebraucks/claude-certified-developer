@@ -151,7 +151,7 @@ Lifecycle (classic): `initialize` → capabilities → `notifications/initialize
 | Resources | application | read-only context (URIs, templates) |
 | Prompts | user | templates / slash commands |
 
-Client features: elicitation, roots, (sampling — deprecated in newest spec). Test with **MCP Inspector**. Claude Code: `claude mcp add --transport stdio|http`, scopes local/project(`.mcp.json`)/user, tools `mcp__server__tool`. API: **MCP connector** (`mcp_servers` + `mcp_toolset`, remote only).
+Client features: elicitation, roots, (sampling — deprecated in newest spec). Author with the official SDKs (Python `MCPServer`/legacy `FastMCP` + `@mcp.tool()`; TypeScript `McpServer.registerTool`). Test with **MCP Inspector**. Claude Code: `claude mcp add --transport stdio|http`, scopes local/project(`.mcp.json`)/user, tools `mcp__server__tool`. API: **MCP connector** (`mcp_servers` + `mcp_toolset`, remote only).
 
 ## Customization decision
 

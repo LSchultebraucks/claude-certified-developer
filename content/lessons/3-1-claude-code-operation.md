@@ -97,7 +97,7 @@ You run tests and summarize failures concisely. Never edit files.
 
 ## Built-in slash commands to know
 
-`/init` (create CLAUDE.md) · `/memory` (edit memory files) · `/clear` · `/compact` · `/context` · `/rewind` · `/resume` · `/model` (switch model) · `/effort` · `/config` & `/status` · `/permissions` (view/edit rules) · `/hooks` (browse hooks) · `/agents` (subagents) · `/mcp` (MCP servers & auth) · `/plugin` (marketplaces & plugins) · `/review` and `/security-review` (review changes) · `/add-dir` · `/cost` / usage · `/doctor` (diagnose installation and config) · `/help`.
+`/init` (create CLAUDE.md) · `/memory` (edit memory files) · `/clear` · `/compact` · `/context` · `/rewind` · `/resume` · `/model` (switch model) · `/effort` · `/config` & `/status` · `/permissions` (view/edit rules) · `/hooks` (browse hooks) · `/agents` (subagents) · `/mcp` (MCP servers & auth) · `/plugin` (marketplaces & plugins) · `/code-review` (alias `/review`) and `/security-review` (review changes) · `/add-dir` · `/usage` (alias `/cost`) · `/doctor` (diagnose installation and config) · `/help`.
 
 **Custom commands**: a Markdown file in `.claude/commands/name.md` or a skill in `.claude/skills/name/SKILL.md` both create `/name`; `$ARGUMENTS` (or `$0`, `$1`, …) inserts arguments; `` !`cmd` `` injects command output before Claude sees the prompt; frontmatter can restrict tools and set the model.
 

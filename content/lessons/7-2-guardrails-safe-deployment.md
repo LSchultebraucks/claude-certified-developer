@@ -45,10 +45,12 @@ Key ideas:
 
 ## Secure-by-design principles
 
+**Secure by design** means security properties are built into the architecture from the start (privacy, identity and access management, least privilege), not added after launch.
+
 | Principle | Application to Claude systems |
 |---|---|
 | **Least privilege** | Agents get the minimum tools, scopes, file paths, network access and credentials; read-only by default; per-user scoped tokens; Claude Code `deny` rules and sandboxing |
-| **Identity & access management** | Strong user authentication; RBAC for features and data; separate service identities per environment; workload identity / IAM roles instead of long-lived keys; access reviews |
+| **Identity and access management (IAM)** | Strong user authentication; RBAC for features and data; separate service identities per environment; workload identity / IAM roles instead of long-lived keys; access reviews |
 | **Privacy by design** | Data minimization, PII redaction, retention limits, residency, consent, transparent data use |
 | **Defense in depth** | Multiple independent layers (above) |
 | **Secure defaults** | New tools disabled until approved; destructive operations require confirmation; sandbox on |

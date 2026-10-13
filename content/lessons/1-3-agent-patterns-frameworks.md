@@ -53,6 +53,8 @@ Rather than loading every potentially relevant document up front, give the agent
 
 ## Pattern 4: context-window management
 
+Context-window management keeps the agent's working context within limits and high in signal over long runs.
+
 Long-running agents accumulate tool results until context quality degrades ("context rot") or the window overflows. Techniques, from least to most invasive:
 
 | Technique | What it does | When |

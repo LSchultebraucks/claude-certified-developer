@@ -290,6 +290,13 @@
       <div class="card" style="margin:22px 0">${blueprintBars()}</div>
       ${domainCards()}
       <div class="section card">
+        <h3>Blueprint coverage</h3>
+        <p class="muted" style="font-size:14px">Every skill in the official Exam Guide v1.0 maps to one lesson. Question counts are sized by skill weight.</p>
+        <div class="table-wrap" style="border:0"><table class="skill-table"><thead><tr><th>Skill</th><th>Lesson sections</th><th>Weight</th><th>Questions</th><th>Flashcards</th></tr></thead><tbody>
+          ${SKILL_IDS.map((id) => { const l = LESSON[id]; return `<tr><td><a href="${lessonHref(id)}">${id} ${h(SKILLS[id].name)}</a></td><td style="font-size:13px;color:var(--ink-2)">${l.headings.map((x) => h(x.text)).filter((t) => !/^(What you need to know|Exam traps|Practice questions|Build exercise)$/.test(t)).join(" · ")}</td><td>${SKILLS[id].weight}%</td><td>${(QBY[id] || []).length}</td><td>${D.flashcards.filter((c) => c.skill === id).length}</td></tr>`; }).join("")}
+        </tbody></table></div>
+      </div>
+      <div class="section card">
         <h3>Recommended order</h3>
         <p class="muted" style="margin-bottom:0">Follow the numbering (1.1 → 8.3). Domain 2 builds on the API concepts you meet in Domain 1, and Domains 5–8 assume you can read a Messages API request. If you are short on time, prioritize by weight: 2.5, 2.4, 2.3, 5.2, 1.2, 5.1, 1.3, 6.2, 1.1, 8.1.</p>
       </div>`;

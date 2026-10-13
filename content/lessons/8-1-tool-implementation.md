@@ -80,6 +80,24 @@ Claude can request several independent calls in one turn. Execute them concurren
 - Keep results **token-efficient and high-signal**: relevant fields only, human-readable identifiers alongside opaque IDs, pagination/truncation with guidance ("showing 20 of 340; refine with `since`").
 - **Validate inputs** before executing (types, ranges, authorization) — even with `strict`, business rules need checks.
 
+## Configuration for external system interaction
+
+**Tool use is function calling**: Claude never calls an external system directly — your tool implementation does. That implementation needs the same production configuration as any integration:
+
+| Concern | Practice |
+|---|---|
+| **Endpoints & environments** | Base URLs and resource IDs from configuration per environment (dev/stage/prod), never hard-coded or chosen by the model |
+| **Credentials** | Loaded from a secret store/env at runtime; scoped to the **acting user** (delegated OAuth) or a least-privilege service identity; never placed in the prompt or tool description |
+| **Timeouts** | Every outbound call has a timeout shorter than your agent's turn budget; return a timeout as an `is_error` result |
+| **Retries & idempotency** | Retry transient failures with backoff inside the tool; use idempotency keys for writes so a retried call doesn't duplicate side effects |
+| **Rate limits** | Respect the external API's limits (queue, backoff); surface "rate limited, retry later" to Claude instead of failing silently |
+| **Input mapping & validation** | Translate the model's arguments into the external API's format; validate IDs, ranges and permissions first |
+| **Output mapping** | Convert raw responses into concise, high-signal results (relevant fields, readable IDs, pagination hints) |
+| **Network boundaries** | Allowlist outbound hosts for agent tools; sandbox code-executing tools |
+| **Observability** | Log tool name, sanitized inputs, latency, outcome and the user on whose behalf it ran |
+
+When several apps need the same external system, move this configuration into an **MCP server** (lesson 8.2) so it is maintained once.
+
 ## Agentic harness dispatch
 
 The harness maps tool names to implementations, validates, executes, and returns results:
