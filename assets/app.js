@@ -451,9 +451,9 @@
         <div class="bar" style="margin:10px 0"><span style="width:${(i / list.length) * 100}%;background:var(--accent)"></span></div>
         <div id="qbox" class="narrow"></div>
         <div class="row narrow" style="justify-content:flex-end"><button class="btn btn-primary" id="next" style="display:none">${i + 1 < list.length ? "Next question →" : "See results"}</button></div>`;
-      renderQuestion($("#qbox"), q, {
+      const qc = renderQuestion($("#qbox"), q, {
         mode: "instant", source: "drill", number: i + 1, total: list.length,
-        onCheck(ok) { answered++; if (ok) correct++; results.push({ q, ok }); $("#next").style.display = ""; $("#next").focus(); },
+        onCheck(ok) { answered++; if (ok) correct++; results.push({ q, ok, sel: qc.selected.slice(), order: qc.order }); $("#next").style.display = ""; $("#next").focus(); },
       });
       $("#next").addEventListener("click", () => { i++; step(); window.scrollTo(0, 0); });
     }
@@ -472,7 +472,7 @@
       results.filter((r) => !r.ok).concat(results.filter((r) => r.ok)).forEach((r) => {
         const div = document.createElement("div");
         rev.appendChild(div);
-        renderQuestion(div, r.q, { mode: "review", selected: [] });
+        renderQuestion(div, r.q, { mode: "review", order: r.order, selected: r.sel });
       });
     }
     step();
@@ -495,6 +495,9 @@
   views.exam = () => {
     const exam = store.get(EXAM_KEY, null);
     if (!exam) { location.hash = "#/mock"; return; }
+    exam.items = exam.items.filter((it) => Q[it.id]); // drop items removed from the bank since the exam started
+    if (!exam.items.length) { store.del(EXAM_KEY); location.hash = "#/mock"; return; }
+    exam.cur = Math.min(exam.cur, exam.items.length - 1);
     let timerId;
     const remaining = () => exam.durationSec - (Date.now() - exam.start) / 1000;
     function save() { store.set(EXAM_KEY, exam); }
@@ -867,7 +870,9 @@
       if (e.key === "1") $("#no").click();
       if (e.key === "2") $("#yes").click();
     };
+    if (window.__cleanup) window.__cleanup();
     document.addEventListener("keydown", onKey);
+    window.__cleanup = () => document.removeEventListener("keydown", onKey);
     step();
   }
 
@@ -1046,6 +1051,11 @@
     const next = cur === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     store.set("theme", next);
+  });
+  // A link to the current hash fires no hashchange (e.g. "End drill" while on #/drill) — re-route explicitly.
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (a && a.getAttribute("href") === location.hash && !e.defaultPrevented) { e.preventDefault(); route(); }
   });
   window.addEventListener("hashchange", route);
   route();
