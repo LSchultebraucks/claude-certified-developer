@@ -1,0 +1,142 @@
+{
+  "exam": {
+    "name": "Claude Certified Developer – Foundations",
+    "code": "CCDV-F",
+    "version": "1.0",
+    "effective": "July 2026",
+    "items": 53,
+    "minutes": 120,
+    "format": "Multiple-choice and multiple-response items; each item states how many responses to select",
+    "delivery": "Pearson VUE — online proctored or at a test center",
+    "passing": "Scaled score of 720 on a scale of 100–1,000",
+    "fee": "$125 USD per attempt",
+    "validity": "12 months from the date the credential is awarded",
+    "reporting": "Pass/fail with scaled score (100–1,000), plus percent-correct by domain on the score report",
+    "retakes": "Waiting periods of 14, 30 and 90 days after the 1st, 2nd and 3rd failed attempt; max. four attempts in a rolling twelve-month period; fee applies to each attempt",
+    "renewal": "Free on-time renewal via a non-proctored assessment on the Anthropic Partner Academy; a lapsed credential requires the full exam at the full fee"
+  },
+  "domains": [
+    {
+      "id": 1,
+      "slug": "agents-and-workflows",
+      "name": "Agents and Workflows",
+      "weight": 14.7,
+      "summary": "Decide between workflows and agents, construct agents with the Claude Agent SDK, custom loops or managed deployments, and apply common agent patterns and frameworks.",
+      "skills": [
+        { "id": "1.1", "slug": "agent-architecture", "name": "Agent Architecture", "weight": 4.5,
+          "guide": "Principles, patterns, and tradeoffs of agent and workflow architecture, including the decision criteria for using a workflow versus an agent, the structure of manager/supervisor hierarchies, and the role of subagents in improving task execution." },
+        { "id": "1.2", "slug": "agent-construction", "name": "Agent Construction with Claude", "weight": 5.3,
+          "guide": "Methods, tools, and platforms for constructing Claude agents, including the Claude Agent SDK, custom agent loops and harnesses, managed agent deployment models (self-hosted vs. Anthropic-hosted), and hooks for deterministic actions." },
+        { "id": "1.3", "slug": "agent-patterns-frameworks", "name": "Agent Patterns and Frameworks", "weight": 4.9,
+          "guide": "Common agent design patterns (tool-use loops, sub-agents, memory, context-window management) and agentic abstraction frameworks (e.g., Strands, LangGraph, PydanticAI) for building agents and workflows for multi-step tasks." }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "applications-and-integration",
+      "name": "Applications and Integration",
+      "weight": 33.1,
+      "summary": "The largest domain: requirements, life cycle, Claude API mechanics, software-engineering fundamentals, application design across Claude interfaces, and configuration management.",
+      "skills": [
+        { "id": "2.1", "slug": "understanding-requirements", "name": "Understanding Requirements", "weight": 3.4,
+          "guide": "Functional and infrastructure requirements based on business requirements and solution architecture." },
+        { "id": "2.2", "slug": "systems-life-cycle", "name": "Systems Life Cycle", "weight": 2.8,
+          "guide": "Systems life cycle management concepts and frameworks used to develop, implement, operate, and maintain IT systems." },
+        { "id": "2.3", "slug": "claude-api-mechanics", "name": "Claude API Mechanics", "weight": 6.8,
+          "guide": "Claude API behavior and mechanics, including messages, tools, streaming, vision, thinking, caching, invoking Claude through third-party vendors, Messages API data access patterns, batch API use, and tradeoffs between realtime and batch API selection." },
+        { "id": "2.4", "slug": "software-engineering-foundations", "name": "Software Engineering Foundations", "weight": 7.4,
+          "guide": "Core software engineering principles and practices, including REST APIs, JSON, asynchronous programming, version control, SDLC integration, code review, and small- and large-scale refactoring." },
+        { "id": "2.5", "slug": "claude-application-design", "name": "Claude Application Design", "weight": 8.6,
+          "guide": "Design considerations for building Claude applications, including how Claude interprets instructions across interfaces (Claude Code, Desktop, claude.ai, API, SDKs), content boundaries, schema design, session hygiene, and plugin management." },
+        { "id": "2.6", "slug": "configuration-management", "name": "Configuration Management", "weight": 4.1,
+          "guide": "Configuration management for Claude system components, including CLAUDE.md files, settings.json, model version pinning, prompt versioning, and plugin dependencies." }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "claude-code",
+      "name": "Claude Code",
+      "weight": 3.1,
+      "summary": "Operate Claude Code: rules, skills, commands, subagents, memory, sessions, headless and streaming modes, auto mode, the CLAUDE.md hierarchy and settings.json.",
+      "skills": [
+        { "id": "3.1", "slug": "claude-code-operation", "name": "Claude Code Operation", "weight": 3.1,
+          "guide": "Claude Code core components (Rules, Skills, Commands, Agents, Agent Memory), features (session management, built-in and custom slash commands, headless mode, streaming mode, auto-mode), the CLAUDE.md hierarchy, repository initialization, and settings.json configuration." }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "eval-testing-debugging",
+      "name": "Eval, Testing, and Debugging",
+      "weight": 2.6,
+      "summary": "Identify error types, choose recovery strategies, analyze traces to find failure modes, and isolate whether a problem originates in the integration layer or in model output.",
+      "skills": [
+        { "id": "4.1", "slug": "debugging-error-handling", "name": "Debugging and Error Handling", "weight": 2.6,
+          "guide": "Debugging and error handling techniques for Claude applications, including error type identification, recovery strategy selection, trace analysis to identify failure modes, and problem origin isolation between the integration layer and model output." }
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "model-selection-optimization",
+      "name": "Model Selection and Optimization",
+      "weight": 16.8,
+      "summary": "LLM fundamentals, technical integration fundamentals, choosing between Opus, Sonnet and Haiku, and managing tokens, caching and cost.",
+      "skills": [
+        { "id": "5.1", "slug": "llm-fundamentals", "name": "LLM Fundamentals", "weight": 5.2,
+          "guide": "Basic understanding of LLMs (tokens, context windows, sampling, non-determinism, next-token generation), model options (fast mode, extended thinking, adaptive thinking, effort levels), and fundamental prompting techniques (zero-shot, single-shot, multi-shot)." },
+        { "id": "5.2", "slug": "technical-fundamentals", "name": "Technical Fundamentals", "weight": 6.1,
+          "guide": "Foundational technical concepts supporting AI application development, including basic engineering practices (integrating with SDKs that wrap REST APIs, websockets)." },
+        { "id": "5.3", "slug": "model-selection-tradeoffs", "name": "Model Selection and Tradeoffs", "weight": 2.7,
+          "guide": "Claude model capabilities (Opus vs. Sonnet vs. Haiku use cases, adaptive thinking support), tradeoffs across quality/latency/cost parameters, and breaking behavior changes across model releases when selecting models for tasks." },
+        { "id": "5.4", "slug": "cost-token-management", "name": "Cost and Token Management", "weight": 2.8,
+          "guide": "Token budgeting and cost management techniques for Claude applications, including token usage tracking, cost modeling, and caching techniques (prompt caching, cache check-pointing) for cost optimization." }
+      ]
+    },
+    {
+      "id": 6,
+      "slug": "prompt-context-engineering",
+      "name": "Prompt and Context Engineering",
+      "weight": 11.0,
+      "summary": "Manage context windows and prevent drift and bloat, write and iterate on prompts, and produce, validate and consume Claude output safely.",
+      "skills": [
+        { "id": "6.1", "slug": "context-engineering", "name": "Context Engineering", "weight": 3.8,
+          "guide": "Context and memory management techniques for Claude applications, including context window management, prevention of context drift and bloat (tool output pruning, compaction), and context isolation through subagents or multi-step agentic workflows." },
+        { "id": "6.2", "slug": "prompt-engineering", "name": "Prompt Engineering", "weight": 4.6,
+          "guide": "Prompt engineering principles and methods (instruction clarity, few-shot examples, system versus user placement, output constraints, prompt and instruction placement across components, iterative refinement, prompt adjustment, input sanitization) when writing and iterating on prompts for Claude." },
+        { "id": "6.3", "slug": "output-handling", "name": "Output Handling", "weight": 2.6,
+          "guide": "Established patterns and techniques for producing, validating, and consuming Claude output, including structured output patterns, response validation, defensive parsing, and skepticism toward confident output." }
+      ]
+    },
+    {
+      "id": 7,
+      "slug": "security-safety",
+      "name": "Security and Safety",
+      "weight": 8.1,
+      "summary": "Defend against prompt injection and data leakage, layer guardrails, use hooks to stop destructive actions, and manage secrets and identities.",
+      "skills": [
+        { "id": "7.1", "slug": "ai-application-security", "name": "AI Application Security", "weight": 3.2,
+          "guide": "Data privacy and security best practices, including prompt injection awareness and mitigation, jailbreak defense, untrusted input handling, data leakage prevention, PII handling, and ensuring authentication, authorization, confidentiality, privacy, and integrity." },
+        { "id": "7.2", "slug": "guardrails-safe-deployment", "name": "Guardrails and Safe Deployment", "weight": 2.3,
+          "guide": "Safe and responsible deployment practices (content policy, guardrail layering) and secure-by-design principles (privacy, identity and access management, least privilege)." },
+        { "id": "7.3", "slug": "claude-hooks", "name": "Claude Hooks", "weight": 1.0,
+          "guide": "Leveraging hooks for guardrails and safety controls to prevent destructive actions within Claude applications." },
+        { "id": "7.4", "slug": "identity-secrets-keys", "name": "Identity, Secrets, and Key Management", "weight": 1.6,
+          "guide": "Managing secrets, credentials, and API keys across Claude development and production environments, including identity validation and authentication, access approval and level verification, and authorized access monitoring." }
+      ]
+    },
+    {
+      "id": 8,
+      "slug": "tools-and-mcps",
+      "name": "Tools and MCPs",
+      "weight": 10.6,
+      "summary": "Implement tools and function calling, build and integrate MCP servers, and choose between built-in tools, custom tools, Skills and MCPs.",
+      "skills": [
+        { "id": "8.1", "slug": "tool-implementation", "name": "Tool Implementation", "weight": 4.4,
+          "guide": "Tool implementation practices for Claude applications, including tool use and function calling, configuration for external system interaction, tool description writing, error handling, tool usage patterns (agentic harness dispatch, client-side vs. server-side tools, approval patterns), and tool set construction best practices." },
+        { "id": "8.2", "slug": "mcp-server-development", "name": "MCP Server Development", "weight": 2.1,
+          "guide": "MCP server development practices, including server authoring, deployment, integration with Claude applications, MCP resources, tools, and prompts, and communication patterns (stdio, sockets, client vs. server)." },
+        { "id": "8.3", "slug": "agentic-customization", "name": "Agentic Customization", "weight": 4.1,
+          "guide": "Tradeoffs among built-in Tools, custom Tools, Skills, and MCPs for selecting and applying the appropriate approach for a given use case." }
+      ]
+    }
+  ]
+}

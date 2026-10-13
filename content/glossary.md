@@ -1,0 +1,179 @@
+# Glossary
+
+- **Adaptive thinking** [5.1]: Thinking mode (`thinking: {"type": "adaptive"}`) on Claude 4.6+ models in which Claude decides whether and how much to reason, interleaving thinking between tool calls; depth is steered with effort.
+- **additionalProperties: false** [2.5]: JSON Schema setting that forbids keys not declared in `properties`; required for strict tool use and structured outputs.
+- **Agent** [1.1]: A system where the LLM dynamically directs its own process and tool usage, deciding the next step and when it is done.
+- **Agent SDK (Claude Agent SDK)** [1.2]: Library (`claude-agent-sdk` for Python, `@anthropic-ai/claude-agent-sdk` for TypeScript) that exposes Claude Code's harness — built-in tools, permissions, hooks, sessions, subagents, MCP — for your own applications; self-hosted.
+- **Agent Skills** [8.3]: Folders with a `SKILL.md` (instructions) plus optional scripts and resources that Claude loads when relevant; available in Claude Code, the API, claude.ai and the Agent SDK.
+- **AGENTS.md** [2.6]: Instruction file used by several coding agents; Claude Code can read it when no CLAUDE.md exists, or import it from CLAUDE.md.
+- **Agentic loop** [1.2]: The cycle send request → inspect `stop_reason` → execute tools → append results → repeat until `end_turn`.
+- **allowed_tools / --allowedTools** [3.1]: Permission rules that auto-approve listed tools or patterns without prompting (they don't by themselves make other tools unavailable).
+- **anthropic-beta** [2.3]: Optional HTTP header (SDK: `betas=[...]`) that opts a request into beta features.
+- **anthropic-version** [5.2]: Required HTTP header for the Claude API, e.g. `2023-06-01`.
+- **apiKeyHelper** [7.4]: Claude Code setting pointing to a script that returns a credential, so keys can be fetched (and rotated) from a secret manager instead of stored in files.
+- **Approval gate** [8.1]: Harness step that pauses a proposed tool call and executes it only after human (or policy) approval; used for irreversible or high-impact actions.
+- **Augmented LLM** [1.1]: The basic building block of agentic systems: a model call enhanced with retrieval, tools and memory.
+- **Auto memory** [3.1]: Notes Claude Code writes itself (preferences, corrections, learnings) per repository and loads in later sessions.
+- **Auto mode** [3.1]: Claude Code permission mode in which a background classifier reviews actions such as shell commands and network requests instead of prompting the user.
+- **Autoregressive generation** [5.1]: Producing output one token at a time, each conditioned on all previous tokens.
+- **Bare mode (--bare)** [3.1]: Headless Claude Code option that skips auto-discovery of hooks, skills, plugins, MCP servers, memory and CLAUDE.md for reproducible scripted runs.
+- **Batch API (Message Batches)** [2.3]: Asynchronous endpoint (`/v1/messages/batches`) processing up to 100,000 requests per batch within 24 hours at 50% of standard price; results matched by `custom_id`.
+- **Blue/green deployment** [2.2]: Release technique with two full environments; traffic switches from one to the other at once, allowing instant switchback.
+- **Branch by abstraction** [2.4]: Refactoring technique that introduces an abstraction layer, swaps the implementation behind it, then removes the old one.
+- **budget_tokens** [5.1]: Legacy extended-thinking parameter setting a thinking token budget (≥ 1024 and < `max_tokens`); deprecated or rejected on newer models in favor of adaptive thinking.
+- **Cache breakpoint** [5.4]: A `cache_control` marker on a content block, tool or system block; the prefix up to it is cached. Maximum 4 per request.
+- **Cache check-pointing** [5.4]: Placing multiple cache breakpoints at stability boundaries (tools/system, documents, conversation) and moving the last one forward as a conversation grows.
+- **cache_control** [5.4]: Field marking a cache breakpoint: `{"type": "ephemeral"}` (5-minute TTL) or `{"type": "ephemeral", "ttl": "1h"}`.
+- **cache_creation_input_tokens** [5.4]: Usage field counting tokens written to the prompt cache in this request (billed at a premium).
+- **cache_read_input_tokens** [5.4]: Usage field counting input tokens served from the cache (billed at a steep discount).
+- **Canary release** [2.2]: Routing a small share of real traffic to a new version, monitoring, and expanding gradually.
+- **Chain of thought** [6.2]: Prompting the model to reason step by step before answering; on current models often realized with adaptive thinking.
+- **Characterization test** [2.4]: Test that captures existing behavior before refactoring code with poor coverage.
+- **Citations** [2.3]: Feature on document content blocks that returns answer text linked to exact source locations (`char_location`, `page_location`, …); incompatible with structured outputs.
+- **Claude Code** [3.1]: Anthropic's agentic coding tool for terminal, IDEs, desktop, web and CI; reads code, edits files, runs commands within a permission system.
+- **CLAUDE.md** [2.6]: Markdown instruction file loaded into Claude Code's context at session start (managed, user, project, local scopes); guidance, not enforcement.
+- **CLAUDE.local.md** [2.6]: Personal, gitignored project instructions for Claude Code.
+- **claudeMdExcludes** [2.6]: Setting that skips specific CLAUDE.md or rules files by glob, useful in monorepos.
+- **Client tool** [8.1]: Tool executed by your application (custom tools, bash, text editor, memory, computer use); you return a `tool_result`.
+- **Code execution tool** [8.3]: Anthropic server tool providing a sandboxed container where Claude runs code (data libraries preinstalled).
+- **Compaction** [6.1]: Summarizing earlier conversation into a condensed form to stay within the context window (server-side beta in the API; `/compact` and auto-compaction in Claude Code).
+- **Content block** [2.3]: Typed element of message content: `text`, `image`, `document`, `tool_use`, `tool_result`, `thinking`, server-tool blocks.
+- **Content boundary** [2.5]: Clear separation between trusted instructions and untrusted data (and between tenants/scopes), typically with XML tags and channel discipline.
+- **Context drift** [6.1]: Gradual loss of focus on original goals and constraints as a long session accumulates stale or noisy context.
+- **Context bloat** [6.1]: Context filled with low-value tokens (verbose tool outputs, duplicates, irrelevant history), raising cost and degrading quality.
+- **Context editing** [6.1]: Beta API feature that clears old tool results or thinking blocks from the conversation (`clear_tool_uses_20250919`, `clear_thinking_20251015`).
+- **Context engineering** [6.1]: Curating the full set of tokens the model sees at each step (system prompt, tools, examples, history, retrieved data) to maximize the chance of the desired behavior.
+- **Context rot** [6.1]: Declining ability of the model to use information as the context grows longer.
+- **Context window** [5.1]: Maximum tokens per request, covering input and generated output (including thinking); up to 1M tokens on current models.
+- **count_tokens** [5.4]: Endpoint (`/v1/messages/count_tokens`) returning the exact input token count of a request before sending it.
+- **custom_id** [2.3]: Your identifier on each Message Batches request; the only reliable way to match out-of-order results.
+- **Custom tool** [8.3]: A function you define (name, description, JSON schema) and execute in your application.
+- **Data residency** [2.1]: Requirement that data be processed/stored in a geography; met with options such as inference geography on the Claude API or regional cloud endpoints.
+- **Defensive parsing** [6.3]: Parsing model output robustly: check stop reason, select content blocks by type, use real JSON parsers, validate schemas, handle missing fields, log raw output.
+- **Deny rule** [3.1]: Permission rule that blocks a tool or pattern (e.g., `Read(./.env)`); evaluated before ask and allow rules.
+- **disable_parallel_tool_use** [8.1]: `tool_choice` flag limiting Claude to at most one tool call per response.
+- **disable-model-invocation** [3.1]: Skill frontmatter flag so only the user (via `/name`) can invoke a skill, not Claude automatically.
+- **dontAsk mode** [3.1]: Claude Code permission mode that denies any action that would otherwise prompt; used for locked-down automation.
+- **Effort** [5.1]: `output_config.effort` (`low`…`max`) controlling thoroughness and token spend: thinking depth, number of tool calls, verbosity.
+- **Elicitation** [8.2]: MCP client feature letting a server request additional input or confirmation from the user.
+- **end_turn** [2.3]: Stop reason indicating Claude finished its response naturally.
+- **Eval (evaluation)** [2.2]: Test dataset plus grading method (code-based, LLM-as-judge, human) used to measure prompt/model quality against success criteria.
+- **Evaluator-optimizer** [1.1]: Workflow where one call generates and another evaluates and gives feedback in a loop until criteria are met.
+- **Expand–contract** [2.4]: Parallel-change technique for APIs/schemas: add the new form, migrate callers, remove the old form.
+- **Extended thinking** [5.1]: Claude reasoning in `thinking` blocks before answering; legacy form uses `budget_tokens`, current form is adaptive.
+- **Fast mode** [5.1]: Research-preview option on supported Opus models giving much faster output at premium pricing (`speed: "fast"` + beta header).
+- **Few-shot (multi-shot) prompting** [5.1]: Including several examples of input/output in the prompt to demonstrate format and behavior.
+- **Files API** [2.3]: Endpoint to upload files once and reference them by `file_id` in many requests.
+- **Function calling** [8.1]: Another name for tool use: the model emits structured calls that your code executes.
+- **Guardrail layering** [7.2]: Defense in depth across input screening, prompt boundaries, least-privilege tools, deterministic gates, output checks, human review and monitoring.
+- **Hallucination** [6.3]: Fluent but unsupported or false model output.
+- **Harness** [1.2]: The code around the model that runs the agent loop: tool dispatch, context management, permissions, hooks, limits.
+- **Headless mode** [3.1]: Running Claude Code non-interactively with `claude -p`, for scripts and CI.
+- **Hook** [7.3]: Code that Claude Code or the Agent SDK runs deterministically at lifecycle events (PreToolUse, PostToolUse, Stop, …) to block, modify, audit or automate.
+- **Hook exit code 2** [7.3]: Blocking result for a Claude Code command hook; stderr is fed back to Claude. Exit 0 = success; other codes = non-blocking error.
+- **Human-in-the-loop** [7.2]: Requiring human review or approval at defined points (e.g., before irreversible actions).
+- **Idempotency** [2.4]: Property that repeating an operation has the same effect as doing it once; idempotency keys make retried POSTs safe.
+- **Indirect prompt injection** [7.1]: Malicious instructions embedded in content the model processes (web pages, emails, documents, tool results) rather than typed by the user.
+- **inference_geo** [2.1]: Claude API request parameter that selects the geography where inference runs (data residency).
+- **input_json_delta** [2.3]: Streaming event delta carrying partial JSON of a tool call's input; accumulate until the block stops.
+- **is_error** [8.1]: `tool_result` flag telling Claude the tool failed; pair with an actionable message.
+- **Jailbreak** [7.1]: Attempt to make the model violate its safety policies or the application's rules.
+- **JSON-RPC 2.0** [8.2]: Message format of the MCP data layer (requests with IDs, responses, notifications).
+- **Just-in-time retrieval** [6.1]: Keeping lightweight references in context and loading details via tools only when needed.
+- **Knowledge cutoff** [5.1]: Date after which the model has no training knowledge; current facts require tools or provided documents.
+- **LangGraph** [1.3]: Framework from the LangChain team modeling agents/workflows as graphs over shared state, with checkpointers for persistence and human-in-the-loop interrupts.
+- **Least privilege** [7.2]: Granting only the minimum permissions, tools and data needed for a task.
+- **Lethal trifecta** [7.1]: The risky combination of access to private data, exposure to untrusted content and the ability to communicate externally.
+- **LLM-as-judge** [4.1]: Using a model with a rubric to grade outputs in evals; should be validated against human grading.
+- **Managed Agents (Claude Managed Agents)** [1.2]: Beta API surface where Anthropic runs the agent loop and hosts per-session sandboxes; versioned agent configs, sessions, event streams, vaults.
+- **Managed settings** [2.6]: Organization-deployed Claude Code settings with the highest precedence; cannot be overridden by users.
+- **max_tokens** [2.3]: Required hard cap on output tokens per response; reaching it truncates output (`stop_reason: "max_tokens"`).
+- **MCP (Model Context Protocol)** [8.2]: Open protocol connecting AI applications (hosts) to servers that expose tools, resources and prompts.
+- **MCP client** [8.2]: Component inside a host maintaining one connection to one MCP server.
+- **MCP connector** [8.2]: Messages API beta feature that connects to remote MCP servers server-side (`mcp_servers` + `mcp_toolset`).
+- **MCP host** [8.2]: The AI application (e.g., Claude Code, Claude Desktop) that manages MCP clients.
+- **MCP Inspector** [8.2]: Interactive developer tool for testing MCP servers: list/call tools, read resources, view protocol traffic.
+- **.mcp.json** [2.6]: Project-scoped, committed MCP server configuration for Claude Code; supports `${ENV}` expansion.
+- **Memory tool** [1.3]: Client-side tool (`memory_20250818`) letting Claude manage files in a `/memories` directory that your application stores.
+- **Message Batches API** [2.3]: See Batch API.
+- **Messages API** [2.3]: The core Claude endpoint `POST /v1/messages`.
+- **Minimally qualified candidate (MQC)** [2.1]: The reference candidate the exam's cut score is set for: a hands-on developer who builds, integrates and ships Claude applications.
+- **Model pinning** [2.6]: Referencing a specific model ID in configuration so behavior is reproducible and upgrades are deliberate.
+- **Multi-response item** [2.1]: Exam item that requires selecting a stated number of correct options.
+- **Non-determinism** [5.1]: Variation in outputs across runs for the same input; not eliminated by low temperature.
+- **One-shot (single-shot) prompting** [5.1]: Prompting with exactly one example.
+- **Orchestrator-workers** [1.1]: Workflow where a central LLM decomposes a task dynamically, delegates to workers and synthesizes results.
+- **output_config.format** [6.3]: Request parameter for structured outputs with a JSON schema.
+- **Parallel tool use** [8.1]: Claude requesting several tool calls in one response; answer all in one user message.
+- **Parallelization** [1.1]: Workflow running LLM calls simultaneously — sectioning (different subtasks) or voting (same task, multiple outputs).
+- **pause_turn** [2.3]: Stop reason when a server-side tool loop pauses; resend the conversation to continue.
+- **Permission mode** [3.1]: Claude Code/Agent SDK mode governing approvals: default, acceptEdits, plan, auto, dontAsk, bypassPermissions.
+- **Plan mode** [3.1]: Read-only Claude Code mode for exploring and planning before edits.
+- **Plugin** [2.5]: Installable, versioned Claude Code bundle of skills, agents, hooks, MCP and LSP servers with `.claude-plugin/plugin.json`; distributed via marketplaces.
+- **Plugin marketplace** [2.5]: Catalog (`.claude-plugin/marketplace.json`) listing plugins and their sources; added with `/plugin marketplace add`.
+- **PostToolUse** [7.3]: Hook event after a tool succeeds; used for formatting, linting, tests and auditing (cannot prevent the action).
+- **Prefill** [2.3]: Ending messages with a partial assistant turn to steer output; not supported on current model families — use structured outputs.
+- **PreToolUse** [7.3]: Hook event before a tool runs; can allow, deny, ask or modify input.
+- **Programmatic tool calling** [1.3]: Claude writes code in the code-execution container that calls your tools; intermediate results stay out of its context.
+- **Progressive disclosure** [6.1]: Loading detail only when needed (skill descriptions first, bodies and files on use; tool search for definitions).
+- **Prompt caching** [5.4]: Reusing a processed prompt prefix across requests for lower cost and latency; exact prefix match over tools → system → messages.
+- **Prompt chaining** [1.1]: Workflow splitting a task into sequential LLM calls, each using the previous output, with optional gates.
+- **Prompt injection** [7.1]: Input that attempts to override the application's instructions; direct (user) or indirect (content).
+- **Prompt versioning** [2.6]: Managing prompts as versioned, reviewed artifacts with eval gates and per-request version logging.
+- **PydanticAI** [1.3]: Python agent framework from the Pydantic team focused on type safety, dependency injection and validated structured outputs.
+- **Rate limits** [2.1]: Per-organization/workspace limits on requests and input/output tokens per minute; exceeding them returns 429.
+- **Red-teaming** [7.2]: Adversarial testing of an application's safety and security controls.
+- **Refusal** [4.1]: Stop reason (`refusal`, HTTP 200) when safety classifiers decline a request; `stop_details` gives a category.
+- **request_id** [4.1]: Identifier returned with each API response; log it for debugging and support.
+- **Resources (MCP)** [8.2]: Application-controlled, read-only, URI-addressed data exposed by an MCP server.
+- **Prompts (MCP)** [8.2]: User-controlled prompt templates exposed by an MCP server, often surfaced as slash commands.
+- **Retry with exponential backoff** [4.1]: Retrying transient failures with increasing waits plus jitter, honoring `retry-after`.
+- **Role prompting** [6.2]: Assigning Claude a role/persona in the system prompt to improve domain performance and tone.
+- **Routing** [1.1]: Workflow that classifies an input and directs it to a specialized prompt, tool set or model.
+- **Sampling (MCP)** [8.2]: Older MCP client feature letting servers request completions from the host's model; deprecated in the newest spec.
+- **Sampling parameters** [5.1]: Temperature, top_p, top_k; rejected on the newest Claude models.
+- **Sandbox** [7.2]: Isolated execution environment (container/VM or OS-level isolation) limiting what an agent's commands can access.
+- **Server-sent events (SSE)** [5.2]: One-directional streaming over HTTP used by the Claude API for streaming responses.
+- **Server tool** [8.1]: Tool executed on Anthropic's infrastructure (web search, web fetch, code execution, tool search).
+- **Session hygiene** [2.5]: Keeping conversations clean and isolated: one task per session, clearing/compacting, per-user isolation, bounded history.
+- **settings.json** [2.6]: Claude Code configuration (permissions, hooks, env, model, plugins) at managed, CLI, local, project and user scopes.
+- **Shadow deployment** [2.2]: Running a new version on a copy of live traffic without showing its outputs to users.
+- **Skill** [3.1]: See Agent Skills; in Claude Code, a `SKILL.md`-based capability invoked automatically by relevance or manually as `/name`.
+- **Slash command** [3.1]: Command typed with `/` in Claude Code — built-in (e.g., `/init`, `/compact`) or custom (skills/commands files).
+- **stdio transport** [8.2]: MCP transport where the host launches the server as a local subprocess; stdout carries protocol messages only.
+- **stop_reason** [2.3]: Response field explaining why generation stopped; the authoritative signal for agent loop control.
+- **Strangler fig** [2.4]: Incrementally replacing a legacy system by routing functionality piece by piece to a new implementation.
+- **Strands Agents** [1.3]: Open-source, model-driven agent SDK from AWS; agent = model + tools + prompt; supports MCP and multi-agent patterns.
+- **Streamable HTTP** [8.2]: MCP transport for remote servers using HTTP POST plus optional SSE streaming; supports standard HTTP auth (OAuth recommended).
+- **Strict tool use** [8.1]: `strict: true` on a tool definition guaranteeing tool inputs validate against the schema.
+- **Structured outputs** [6.3]: Constraining responses to a JSON schema (`output_config.format`, `messages.parse()`), guaranteeing valid shape.
+- **Subagent** [1.1]: Agent instance with its own context window, prompt, tools and model to which a parent delegates subtasks, returning a condensed result.
+- **Success criteria** [2.1]: Specific, measurable targets defining "good" for an LLM feature, measured with evals.
+- **Supervisor (manager) hierarchy** [1.1]: Architecture where a lead agent plans, delegates to worker agents and integrates their results.
+- **System prompt** [2.5]: Operator instructions in the top-level `system` parameter: role, rules, format, scope.
+- **Task budget** [5.4]: Beta feature telling the model its token budget for an agentic task so it paces itself.
+- **Temperature** [5.1]: Sampling parameter controlling randomness on models that support it.
+- **Thinking block** [2.3]: Content block containing (summarized or omitted) reasoning; must be passed back unchanged in tool-use continuations.
+- **Token** [5.1]: Sub-word unit models read and write; the unit of context, billing and rate limits.
+- **Tokenizer** [5.1]: Component mapping text to tokens; can differ between model generations.
+- **Tool choice** [8.1]: `tool_choice` parameter: `auto`, `any`, `tool`, `none` (forced choices rejected on the newest models).
+- **Tool description** [8.1]: Natural-language explanation of what a tool does and when to use it; the main input to Claude's tool selection.
+- **Tool poisoning** [8.2]: Malicious instructions hidden in MCP tool descriptions or outputs.
+- **Tool Runner** [1.2]: Beta helper in the Anthropic client SDKs that automates the tool-use loop for tools you define.
+- **Tool search** [8.1]: Server tool letting Claude discover and load tool definitions on demand from large libraries (`defer_loading`).
+- **tool_result** [8.1]: Content block returning a tool's output (or error) for a specific `tool_use_id`.
+- **tool_use** [8.1]: Content block in which Claude requests a tool call (`id`, `name`, `input`); also the stop reason when tools are requested.
+- **TTL (cache)** [5.4]: Cache lifetime: 5 minutes default (refreshed on each hit) or 1 hour at a higher write price.
+- **updatedInput** [7.3]: PreToolUse hook output that replaces a tool call's arguments before execution.
+- **Usage & Cost Admin API** [7.4]: Admin endpoints reporting organization usage and costs for monitoring and attribution.
+- **V-Model** [2.2]: SDLC model pairing each development phase with a corresponding test phase.
+- **Vision** [2.3]: Claude's ability to process images (JPEG, PNG, GIF, WebP) and PDF page images.
+- **WebSocket** [5.2]: Full-duplex, persistent connection protocol for bidirectional real-time communication; not how the Claude API streams.
+- **Web search tool** [8.3]: Anthropic server tool for searching the web, with options such as max uses and domain filters.
+- **Workflow** [1.1]: System where LLM calls and tools are orchestrated through predefined code paths.
+- **Workload identity federation** [7.4]: Exchanging a platform-issued identity token for short-lived API credentials, avoiding long-lived keys.
+- **Workspace** [7.4]: Console grouping of API keys and resources with its own rate and spend limits; used to separate environments and projects.
+- **Worktree (git)** [2.4]: Additional working directory for the same repository, enabling parallel Claude Code sessions on different branches.
+- **XML tags** [6.2]: Delimiters like `<document>` used to structure prompts and separate instructions from data.
+- **Zero-data retention (ZDR)** [7.1]: Arrangement under which the provider does not retain prompts/outputs after processing; availability varies by model.
+- **Zero-shot prompting** [5.1]: Prompting with instructions only, no examples.
