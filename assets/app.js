@@ -1,4 +1,5 @@
-/* CCDV-F Study Guide — single-page app (no build step required at runtime). */
+/* Claude certification study guides — single-page app shared by all tracks (no build step required at runtime).
+   Track-specific text, exam sizes and storage prefix come from blueprint.ui (see content/blueprint.json). */
 (function () {
   "use strict";
   const D = window.CCDV;
@@ -7,7 +8,12 @@
 
   // ------------------------------------------------------------------ indexes
   const BP = D.blueprint;
+  const UI = BP.ui;
+  const EX = UI.exams;
+  const SCEN = {};
+  (BP.exam.scenarios || []).forEach((s) => (SCEN[s.id] = s));
   const DOMAINS = BP.domains;
+  const MAXW = Math.max(...DOMAINS.map((d) => d.weight));
   const SKILLS = {};
   DOMAINS.forEach((d) => d.skills.forEach((s) => (SKILLS[s.id] = { ...s, domain: d })));
   const SKILL_IDS = Object.keys(SKILLS);
@@ -21,7 +27,7 @@
   const DCOLOR = (id) => `var(--d${id})`;
 
   // ------------------------------------------------------------------ storage
-  const PFX = "ccdv:";
+  const PFX = UI.storagePrefix;
   const store = {
     get(k, d) { try { const v = localStorage.getItem(PFX + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
     set(k, v) { try { localStorage.setItem(PFX + k, JSON.stringify(v)); } catch {} },
@@ -48,6 +54,7 @@
   function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
   function fmtTime(sec) { sec = Math.max(0, Math.round(sec)); const m = Math.floor(sec / 60), s = sec % 60; return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`; }
   const lessonHref = (skillId) => { const s = SKILLS[skillId]; return `#/learn/${s.domain.slug}/${s.slug}`; };
+  const skillCount = (n) => `${n} ${n === 1 ? UI.skill.toLowerCase() : UI.skills}`;
   const sameSet = (a, b) => a.length === b.length && a.every((x) => b.includes(x));
 
   // Scaled score: 70% raw ≈ 720 cut (estimate), linear on both sides.
@@ -63,11 +70,12 @@
     return raw;
   }
   // Pick n questions weighted by blueprint, preferring questions not in `avoid` and not answered.
-  function pickWeighted(n, skillIds, avoid = new Set()) {
+  // `prefer` (optional) narrows the pool first, e.g. to the scenarios drawn for an exam; the rest only fills gaps.
+  function pickWeighted(n, skillIds, avoid = new Set(), prefer = null) {
     const ans = getAnswers();
     const plan = allocate(n, skillIds);
     const picked = [];
-    const score = (q) => (avoid.has(q.id) ? 2 : 0) + (ans[q.id] ? 1 : 0) + Math.random() * 0.9;
+    const score = (q) => (prefer && !prefer(q) ? 4 : 0) + (avoid.has(q.id) ? 2 : 0) + (ans[q.id] ? 1 : 0) + Math.random() * 0.9;
     for (const r of plan) {
       const pool = (QBY[r.id] || []).slice().sort((a, b) => score(a) - score(b));
       picked.push(...pool.slice(0, r.k));
@@ -78,6 +86,18 @@
     }
     return shuffle(picked);
   }
+  // Scenario-based exams draw k of the published scenarios and group the items by scenario, like the real exam.
+  function pickExam(n, avoid, k = BP.exam.scenariosPerExam) {
+    if (!k) return pickWeighted(n, SKILL_IDS, avoid);
+    const drawn = shuffle(Object.keys(SCEN)).slice(0, k);
+    const qs = pickWeighted(n, SKILL_IDS, avoid, (q) => drawn.includes(q.scenario));
+    const rank = (q) => { const i = drawn.indexOf(q.scenario); return i < 0 ? k : i; };
+    return qs.sort((a, b) => rank(a) - rank(b));
+  }
+  const scenarioBox = (q, open) => {
+    const s = q.scenario && SCEN[q.scenario];
+    return s ? `<details class="q-scenario" ${open ? "open" : ""}><summary>Scenario: ${h(s.title)}</summary><p>${h(s.text)}</p></details>` : "";
+  };
 
   // ------------------------------------------------------------------ question component
   // opts: { mode: 'instant' | 'exam' | 'review', order, selected, onChange, source, number, total, showSkill }
@@ -98,6 +118,7 @@
             ${opts.showSkill !== false ? `<span class="chip" style="color:${DCOLOR(skill.domain.id)}">D${skill.domain.id} · ${h(skill.id)} ${h(skill.name)}</span>` : ""}
             ${multi ? `<span class="chip chip-accent">Multiple response</span>` : ""}
           </div>
+          ${scenarioBox(q, opts.mode !== "review")}
           <div class="q-stem">${q.stem}</div>
           <div class="q-select-hint">${multi ? `Select ${NUMWORD[need] || need}.` : "Select ONE."}</div>
           <div class="q-options">
@@ -208,21 +229,16 @@
     const resume = store.get("lastLesson", null);
     main.innerHTML = `
       <section class="hero">
-        <div class="eyebrow">Claude Certification Program · Exam Guide v1.0 · Effective July 2026 · Exam code CCDV-F</div>
-        <h1>Claude Certified Developer – Foundations: everything you need to pass.</h1>
-        <p class="lead">A complete prep track built on the official blueprint: lessons for all 25 weighted skills, ${D.questions.length} original exam-style questions, drill mode, flashcards, a diagnostic and timed 53-question mock exams scored on the 100–1,000 scale.</p>
+        <div class="eyebrow">${h(UI.heroEyebrow)}</div>
+        <h1>${h(UI.heroTitle)}</h1>
+        <p class="lead">${h(UI.heroLead.replace("{questions}", D.questions.length))}</p>
         <div class="row" style="margin-top:20px">
           <a class="btn btn-primary" href="${resume ? resume : "#/learn"}">${resume ? "Continue studying →" : "Start the curriculum →"}</a>
           <a class="btn" href="#/diagnostic">Take the diagnostic</a>
           <a class="btn" href="#/mock">Mock exam</a>
         </div>
         <div class="facts">
-          <div class="fact"><div class="num">53</div><div class="lbl">Items</div></div>
-          <div class="fact"><div class="num">120</div><div class="lbl">Minutes</div></div>
-          <div class="fact"><div class="num">720</div><div class="lbl">Pass (100–1,000)</div></div>
-          <div class="fact"><div class="num">8 / 25</div><div class="lbl">Domains / skills</div></div>
-          <div class="fact"><div class="num">$125</div><div class="lbl">Fee per attempt</div></div>
-          <div class="fact"><div class="num">12 mo</div><div class="lbl">Validity</div></div>
+          ${UI.facts.map(([num, lbl]) => `<div class="fact"><div class="num">${h(num)}</div><div class="lbl">${h(lbl)}</div></div>`).join("")}
         </div>
       </section>
 
@@ -236,18 +252,13 @@
       <section class="section">
         <h2>How to use this guide</h2>
         <div class="grid grid-4">
-          ${[
-            ["1", "Diagnose", "Take the 24-question diagnostic to see which domains need the most work.", "#/diagnostic"],
-            ["2", "Learn", "Work through the 25 lessons. Each ends with exam traps, practice questions and a build exercise.", "#/learn"],
-            ["3", "Drill & memorize", "Drill weak skills with instant feedback, and run flashcards daily for facts and numbers.", "#/drill"],
-            ["4", "Simulate", "Sit full 53-question mocks under the 120-minute clock. Aim for 800+ consistently before booking.", "#/mock"],
-          ].map(([n, t, d, href]) => `<a class="card" href="${href}"><div class="eyebrow">Step ${n}</div><h3 style="margin:.3em 0">${t}</h3><p class="muted" style="margin:0;font-size:14.5px">${d}</p></a>`).join("")}
+          ${UI.steps.map(([t, d, href], i) => `<a class="card" href="${href}"><div class="eyebrow">Step ${i + 1}</div><h3 style="margin:.3em 0">${h(t)}</h3><p class="muted" style="margin:0;font-size:14.5px">${h(d)}</p></a>`).join("")}
         </div>
       </section>
 
       <section class="section">
         <h2>Exam blueprint</h2>
-        <p class="muted">Anthropic weights the 25 skills individually. A third of the exam sits in Applications and Integration; lessons and the question bank are sized by these weights.</p>
+        <p class="muted">${h(UI.blueprintNote)}</p>
         <div class="card">${blueprintBars()}</div>
       </section>
 
@@ -262,8 +273,8 @@
     return DOMAINS.map((d) => {
       const done = d.skills.filter((s) => st[s.id].done).length;
       return `<div class="bp-row">
-        <div class="bp-name"><a href="#/learn/${d.slug}">D${d.id} · ${h(d.name)}</a>${withProgress ? `<small>${done}/${d.skills.length} lessons done · ${d.skills.length} skill${d.skills.length > 1 ? "s" : ""}</small>` : ""}</div>
-        <div class="bar"><span style="width:${(d.weight / 33.1) * 100}%;background:${DCOLOR(d.id)}"></span></div>
+        <div class="bp-name"><a href="#/learn/${d.slug}">D${d.id} · ${h(d.name)}</a>${withProgress ? `<small>${done}/${d.skills.length} lessons done · ${skillCount(d.skills.length)}</small>` : ""}</div>
+        <div class="bar"><span style="width:${(d.weight / MAXW) * 100}%;background:${DCOLOR(d.id)}"></span></div>
         <div class="bp-pct">${d.weight}%</div>
       </div>`;
     }).join("");
@@ -286,19 +297,19 @@
     main.innerHTML = `
       <div class="eyebrow">Core syllabus</div>
       <h1>Curriculum</h1>
-      <p class="lead">The CCDV-F exam covers 8 domains and 25 individually weighted skills. Each lesson below maps 1:1 to a skill in the official Exam Guide v1.0 and is sized by its weight — spend your time accordingly.</p>
+      <p class="lead">${h(UI.learnLead)}</p>
       <div class="card" style="margin:22px 0">${blueprintBars()}</div>
       ${domainCards()}
       <div class="section card">
         <h3>Blueprint coverage</h3>
-        <p class="muted" style="font-size:14px">Every skill in the official Exam Guide v1.0 maps to one lesson. Question counts are sized by skill weight.</p>
-        <div class="table-wrap" style="border:0"><table class="skill-table"><thead><tr><th>Skill</th><th>Lesson sections</th><th>Weight</th><th>Questions</th><th>Flashcards</th></tr></thead><tbody>
+        <p class="muted" style="font-size:14px">${h(UI.coverageNote)}</p>
+        <div class="table-wrap" style="border:0"><table class="skill-table"><thead><tr><th>${UI.skill}</th><th>Lesson sections</th><th>Weight</th><th>Questions</th><th>Flashcards</th></tr></thead><tbody>
           ${SKILL_IDS.map((id) => { const l = LESSON[id]; return `<tr><td><a href="${lessonHref(id)}">${id} ${h(SKILLS[id].name)}</a></td><td style="font-size:13px;color:var(--ink-2)">${l.headings.map((x) => h(x.text)).filter((t) => !/^(What you need to know|Exam traps|Practice questions|Build exercise)$/.test(t)).join(" · ")}</td><td>${SKILLS[id].weight}%</td><td>${(QBY[id] || []).length}</td><td>${D.flashcards.filter((c) => c.skill === id).length}</td></tr>`; }).join("")}
         </tbody></table></div>
       </div>
       <div class="section card">
         <h3>Recommended order</h3>
-        <p class="muted" style="margin-bottom:0">Follow the numbering (1.1 → 8.3). Domain 2 builds on the API concepts you meet in Domain 1, and Domains 5–8 assume you can read a Messages API request. If you are short on time, prioritize by weight: 2.5, 2.4, 2.3, 5.2, 1.2, 5.1, 1.3, 6.2, 1.1, 8.1.</p>
+        <p class="muted" style="margin-bottom:0">${h(UI.recommendedOrder)}</p>
       </div>`;
   };
 
@@ -315,7 +326,7 @@
           const l = LESSON[s.id];
           const x = st[s.id];
           return `<a class="card" href="${lessonHref(s.id)}">
-            <div class="row"><span class="eyebrow">Skill ${s.id}</span><span class="spacer"></span><span class="chip">${s.weight}%</span>${x.done ? '<span class="chip chip-good">✓ Done</span>' : ""}</div>
+            <div class="row"><span class="eyebrow">${UI.skill} ${s.id}</span><span class="spacer"></span><span class="chip">${s.weight}%</span>${x.done ? '<span class="chip chip-good">✓ Done</span>' : ""}</div>
             <h3 style="margin:.4em 0">${h(s.name)}</h3>
             <p class="muted" style="font-size:14.5px">${h(l ? l.summary : s.guide)}</p>
             <div class="row muted" style="font-size:13px"><span>${l ? l.minutes : "?"} min read</span><span>·</span><span>${x.total} practice questions</span>${x.acc != null ? `<span>·</span><span>${pct(x.acc)}% correct</span>` : ""}</div>
@@ -348,11 +359,11 @@
             <span class="chip">${nq} practice questions</span>
             <button class="chip ${comp[s.id] ? "chip-good" : ""}" id="mark" style="cursor:pointer">${comp[s.id] ? "✓ Completed" : "Mark complete"}</button>
           </div>
-          <div class="guide-box"><b>Official skill description (Exam Guide v1.0)</b>${h(s.guide)}</div>
+          <div class="guide-box"><b>${h(UI.guideLabel)}</b>${h(s.guide)}</div>
           <div class="prose" id="lesson-body">${l.html}</div>
           ${l.sources.length ? `<h3>Sources & further reading</h3><ul class="prose">${l.sources.map((x) => { const m = x.match(/^(.*?)\s*\|\s*(https?:\S+)$/); return m ? `<li><a href="${m[2]}" target="_blank" rel="noopener">${h(m[1])}</a></li>` : `<li>${h(x)}</li>`; }).join("")}</ul>` : ""}
           <div class="card" style="margin-top:28px">
-            <div class="row"><div><h3 style="margin:0">Practice skill ${s.id}</h3><p class="muted" style="margin:0">${nq} questions for this skill in the bank.</p></div><span class="spacer"></span>
+            <div class="row"><div><h3 style="margin:0">Practice ${UI.skill.toLowerCase()} ${s.id}</h3><p class="muted" style="margin:0">${nq} questions for this ${UI.skill.toLowerCase()} in the bank.</p></div><span class="spacer"></span>
             <a class="btn btn-primary" href="#/drill?skill=${s.id}">Drill ${s.id}</a>
             <button class="btn" id="mark2">${comp[s.id] ? "✓ Completed" : "Mark complete"}</button></div>
           </div>
@@ -365,7 +376,7 @@
           <h4>On this page</h4>
           ${l.headings.map((x) => `<a href="#" data-target="${x.id}">${h(x.text)}</a>`).join("")}
           <div class="toc-actions">
-            <a class="btn btn-sm" href="#/drill?skill=${s.id}">Drill this skill</a>
+            <a class="btn btn-sm" href="#/drill?skill=${s.id}">Drill this ${UI.skill.toLowerCase()}</a>
             <a class="btn btn-sm" href="#/flashcards?skill=${s.id}">Flashcards</a>
           </div>
         </aside>
@@ -400,14 +411,14 @@
           <select id="scope">
             <option value="all">All domains (weighted by blueprint)</option>
             ${DOMAINS.map((d) => `<option value="d${d.id}" ${preDomain == d.id ? "selected" : ""}>Domain ${d.id}: ${h(d.name)} (${d.weight}%)</option>`).join("")}
-            ${SKILL_IDS.map((id) => `<option value="s${id}" ${preSkill === id ? "selected" : ""}>Skill ${id}: ${h(SKILLS[id].name)} (${(QBY[id] || []).length} q)</option>`).join("")}
+            ${SKILL_IDS.map((id) => `<option value="s${id}" ${preSkill === id ? "selected" : ""}>${UI.skill} ${id}: ${h(SKILLS[id].name)} (${(QBY[id] || []).length} q)</option>`).join("")}
           </select>
         </div>
         <div class="field"><span>Which questions</span>
           <select id="filter">
             <option value="unseen">Unseen first, then the rest</option>
             <option value="missed">Only questions I got wrong last time (${Object.values(ans).filter((a) => !a.last).length})</option>
-            <option value="weak">Weakest skills first (adaptive)</option>
+            <option value="weak">Weakest ${UI.skills} first (adaptive)</option>
             <option value="any">Random</option>
           </select>
         </div>
@@ -463,7 +474,7 @@
       main.innerHTML = `
         <div class="eyebrow">Drill complete</div>
         <h1>${correct} / ${answered} correct (${answered ? pct(correct / answered) : 0}%)</h1>
-        <div class="card narrow"><table class="skill-table"><thead><tr><th>Skill</th><th></th><th>Result</th></tr></thead><tbody>
+        <div class="card narrow"><table class="skill-table"><thead><tr><th>${UI.skill}</th><th></th><th>Result</th></tr></thead><tbody>
           ${Object.entries(bySkill).map(([id, b]) => `<tr><td><a href="${lessonHref(id)}">${id} ${h(SKILLS[id].name)}</a></td><td></td><td>${b.c}/${b.n}</td></tr>`).join("")}
         </tbody></table></div>
         <div class="row section"><a class="btn btn-primary" href="#/drill">New drill</a><a class="btn" href="#/progress">Progress dashboard</a></div>
@@ -482,7 +493,7 @@
   const EXAM_KEY = "examInProgress";
   function startExam(cfg) {
     const avoid = new Set(store.get("mockSeen", []));
-    const qs = pickWeighted(cfg.n, SKILL_IDS, cfg.mode === "diagnostic" ? new Set() : avoid);
+    const qs = pickExam(cfg.n, cfg.mode === "diagnostic" ? new Set() : avoid, cfg.scenarios);
     const exam = {
       mode: cfg.mode, title: cfg.title, durationSec: cfg.minutes * 60, start: Date.now(),
       items: qs.map((q) => ({ id: q.id, order: shuffle(q.options.map((_, i) => i)), sel: [], flag: false })),
@@ -644,7 +655,7 @@
         </div>
         <div class="card"><h3>Study next</h3>
           ${weakSkills.length ? `<ul class="skill-list">${weakSkills.slice(0, 8).map((x) => `<li><span class="sid">${x.id}</span><a href="${lessonHref(x.id)}">${h(SKILLS[x.id].name)}</a><span class="w">${x.c}/${x.n}</span></li>`).join("")}</ul>
-          <div class="row" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="#/drill?skill=${weakSkills[0].id}">Drill ${weakSkills[0].id}</a><a class="btn btn-sm" href="#/progress">Progress</a></div>` : `<p>No skill below 70% — excellent. Keep sitting full mocks under time pressure.</p>`}
+          <div class="row" style="margin-top:14px"><a class="btn btn-primary btn-sm" href="#/drill?skill=${weakSkills[0].id}">Drill ${weakSkills[0].id}</a><a class="btn btn-sm" href="#/progress">Progress</a></div>` : `<p>No ${UI.skill.toLowerCase()} below 70% — excellent. Keep sitting full mocks under time pressure.</p>`}
         </div>
       </div>
       <h2>Review your answers</h2>
@@ -674,25 +685,25 @@
     main.innerHTML = `
       <div class="eyebrow">Practice</div>
       <h1>Mock Exam</h1>
-      <p class="lead">Sit an exam-realistic simulation: questions are drawn in proportion to the 25 skill weights, options are shuffled, multiple-response items tell you how many to select, and there is no feedback until you submit. Scored on the 100–1,000 scale with 720 to pass.</p>
+      <p class="lead">${h(UI.mockLead)}</p>
       ${inprog ? `<div class="callout callout-warn"><div class="callout-label">Exam in progress</div><div class="callout-body"><p>You have an unfinished ${h(inprog.title)}.</p><div class="row"><a class="btn btn-primary btn-sm" href="#/exam">Resume</a><button class="btn btn-sm" id="discard">Discard</button></div></div></div>` : ""}
       <div class="grid grid-2" style="margin-top:20px">
-        <div class="card"><div class="eyebrow">Full length</div><h3>Full mock · 53 questions · 120 minutes</h3><p class="muted">The real exam's format and pace (≈ 2 min 15 s per item). Use this for your final readiness checks.</p><button class="btn btn-primary" data-start="full">Start full mock</button></div>
-        <div class="card"><div class="eyebrow">Half length</div><h3>Quick mock · 27 questions · 60 minutes</h3><p class="muted">Same weighting and scoring in half the time — good for mid-preparation checkpoints.</p><button class="btn" data-start="half">Start quick mock</button></div>
+        <div class="card"><div class="eyebrow">Full length</div><h3>Full mock · ${EX.full.n} questions · ${EX.full.minutes} minutes</h3><p class="muted">${h(EX.full.note)}</p><button class="btn btn-primary" data-start="full">Start full mock</button></div>
+        <div class="card"><div class="eyebrow">Half length</div><h3>Quick mock · ${EX.half.n} questions · ${EX.half.minutes} minutes</h3><p class="muted">Same weighting and scoring in half the time — good for mid-preparation checkpoints.</p><button class="btn" data-start="half">Start quick mock</button></div>
       </div>
       <p class="muted" style="margin-top:14px">Question bank: ${D.questions.length} items. Mocks prefer questions you have not seen in earlier mocks (${seen} seen so far). <button class="btn btn-sm btn-ghost" id="resetseen">Reset mock rotation</button></p>
       <div class="section"><h2>Exam technique</h2>
         <div class="grid grid-3">
           <div class="card"><h4 style="margin-top:0">Read the last sentence first</h4><p class="muted" style="margin:0">Questions ask for the <em>best</em>, <em>most effective</em> or <em>first</em> step. Identify that qualifier before reading options; several options are often technically possible.</p></div>
           <div class="card"><h4 style="margin-top:0">Prefer deterministic controls</h4><p class="muted" style="margin:0">When an option enforces something in code (hooks, permissions, schemas, server-side checks) and another only asks the model nicely in a prompt, the enforced option is usually right for safety- or compliance-critical requirements.</p></div>
-          <div class="card"><h4 style="margin-top:0">Pace and flag</h4><p class="muted" style="margin:0">53 items in 120 minutes. Answer every item (no penalty for guessing), flag uncertain ones, and leave ~15 minutes to revisit flags.</p></div>
+          <div class="card"><h4 style="margin-top:0">Pace and flag</h4><p class="muted" style="margin:0">${EX.full.n} items in ${EX.full.minutes} minutes. Answer every item (no penalty for guessing), flag uncertain ones, and leave ~15 minutes to revisit flags.</p></div>
         </div>
       </div>
       ${hist.length ? `<div class="section"><h2>History</h2><div class="card">${historyTable(hist)}</div></div>` : ""}`;
     $$("[data-start]").forEach((b) => b.addEventListener("click", () => {
       if (store.get(EXAM_KEY, null) && !confirm("Discard the exam in progress and start a new one?")) return;
-      if (b.dataset.start === "full") startExam({ mode: "full", title: "Full mock exam", n: 53, minutes: 120 });
-      else startExam({ mode: "half", title: "Quick mock exam", n: 27, minutes: 60 });
+      if (b.dataset.start === "full") startExam({ mode: "full", title: "Full mock exam", ...EX.full });
+      else startExam({ mode: "half", title: "Quick mock exam", ...EX.half });
     }));
     $("#discard")?.addEventListener("click", () => { store.del(EXAM_KEY); views.mock(); });
     $("#resetseen").addEventListener("click", () => { store.del("mockSeen"); toast("Mock rotation reset"); views.mock(); });
@@ -709,11 +720,11 @@
     main.innerHTML = `
       <div class="eyebrow">Practice</div>
       <h1>Diagnostic Test</h1>
-      <p class="lead">24 questions in 45 minutes, sampled across all 8 domains in proportion to the blueprint. Take it before you start studying to find your weak areas, then again halfway through.</p>
+      <p class="lead">${h(UI.diagnosticLead)}</p>
       <div class="card narrow" style="margin-top:20px">
         <ul>
           <li>Same item formats as the real exam (single answer and multiple response).</li>
-          <li>No feedback until the end; then you get per-domain results and a list of skills to study first.</li>
+          <li>No feedback until the end; then you get per-domain results and a list of ${UI.skills} to study first.</li>
           <li>Results feed your Progress Dashboard and the adaptive drill.</li>
         </ul>
         <button class="btn btn-primary" id="startdiag">Start diagnostic</button>
@@ -721,7 +732,7 @@
       ${last ? `<p class="muted" style="margin-top:14px">Last diagnostic: ${new Date(last.date).toLocaleDateString()} — ${last.correct}/${last.n} (${pct(last.p)}%), estimated ${last.scaled}.</p>` : ""}`;
     $("#startdiag").addEventListener("click", () => {
       if (store.get(EXAM_KEY, null) && !confirm("Discard the exam in progress?")) return;
-      startExam({ mode: "diagnostic", title: "Diagnostic test", n: 24, minutes: 45 });
+      startExam({ mode: "diagnostic", title: "Diagnostic test", ...EX.diagnostic });
     });
   };
 
@@ -746,13 +757,13 @@
         <div class="card stat"><div class="lbl">Mocks taken</div><div class="num">${hist.filter((m) => m.mode !== "diagnostic").length}</div></div>
       </div>
       <div class="grid grid-2 section">
-        <div class="card"><h3>Focus next</h3><p class="muted" style="font-size:14px">Ranked by exam weight × (1 − accuracy). Unpracticed skills rank high.</p>
+        <div class="card"><h3>Focus next</h3><p class="muted" style="font-size:14px">Ranked by exam weight × (1 − accuracy). Unpracticed ${UI.skills} rank high.</p>
           <ul class="skill-list">${weak.map((x) => `<li><span class="sid">${x.id}</span><a href="${lessonHref(x.id)}">${h(SKILLS[x.id].name)}</a><span class="w">${x.acc == null ? "not practiced" : pct(x.acc) + "%"}</span><a class="btn btn-sm" href="#/drill?skill=${x.id}">Drill</a></li>`).join("")}</ul>
         </div>
         <div class="card"><h3>Score trend</h3>${trendChart(hist)}</div>
       </div>
-      <div class="section card"><h3>All skills</h3>
-        <div class="table-wrap" style="border:0"><table class="skill-table"><thead><tr><th>Skill</th><th>Lesson</th><th>Weight</th><th>Practiced</th><th>Accuracy (last attempt)</th></tr></thead><tbody>
+      <div class="section card"><h3>All ${UI.skills}</h3>
+        <div class="table-wrap" style="border:0"><table class="skill-table"><thead><tr><th>${UI.skill}</th><th>Lesson</th><th>Weight</th><th>Practiced</th><th>Accuracy (last attempt)</th></tr></thead><tbody>
           ${DOMAINS.map((d) => `<tr><td colspan="5" style="background:var(--bg-sunk);font-weight:700;color:${DCOLOR(d.id)}">D${d.id} · ${h(d.name)} (${d.weight}%)</td></tr>` + d.skills.map((s) => { const x = st[s.id]; return `<tr><td><a href="${lessonHref(s.id)}">${s.id} ${h(s.name)}</a></td><td>${x.done ? "✓" : "—"}</td><td>${s.weight}%</td><td>${x.seen}/${x.total}</td><td>${x.acc == null ? "—" : pct(x.acc) + "%"}<span class="mini-bar"><span style="width:${(x.acc || 0) * 100}%;background:${x.acc >= 0.7 ? "var(--good)" : "var(--bad)"}"></span></span></td></tr>`; }).join("")).join("")}
         </tbody></table></div>
       </div>
@@ -765,7 +776,7 @@
       for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith(PFX)) dump[k] = localStorage.getItem(k); }
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([JSON.stringify(dump, null, 1)], { type: "application/json" }));
-      a.download = `ccdv-progress-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `${UI.progressFile}-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
     });
     $("#imp").addEventListener("change", async (e) => {
@@ -813,7 +824,7 @@
             <option value="due">Due today — core deck (${dueCards(D.flashcards, cards).length})</option>
             <option value="all">All core cards (${D.flashcards.length})</option>
             ${DOMAINS.map((d) => `<option value="d${d.id}">Domain ${d.id}: ${h(d.name)}</option>`).join("")}
-            ${SKILL_IDS.map((id) => `<option value="s${id}" ${pre === id ? "selected" : ""}>Skill ${id}: ${h(SKILLS[id].name)}</option>`).join("")}
+            ${SKILL_IDS.map((id) => `<option value="s${id}" ${pre === id ? "selected" : ""}>${UI.skill} ${id}: ${h(SKILLS[id].name)}</option>`).join("")}
             <option value="gloss">Glossary terms (${D.glossary.length})</option>
           </select>
         </div>
@@ -899,10 +910,10 @@
     pageView("exam-guide", "Look up");
     const ex = BP.exam;
     const facts = `<div class="table-wrap"><table><tbody>
-      ${[["Credential", ex.name], ["Exam code", ex.code], ["Number of items", ex.items], ["Item format", ex.format], ["Time limit", ex.minutes + " minutes"], ["Delivery", ex.delivery], ["Passing score", ex.passing], ["Exam fee", ex.fee], ["Validity", ex.validity], ["Result reporting", ex.reporting], ["Retakes", ex.retakes], ["Renewal", ex.renewal]].map(([k, v]) => `<tr><th style="width:200px">${k}</th><td>${h(v)}</td></tr>`).join("")}
+      ${[["Credential", ex.name], ["Exam code", ex.code], ["Number of items", ex.items], ["Item format", ex.format], ["Time limit", ex.minutes + " minutes"], ["Scenarios", ex.scenarioFormat], ["Delivery", ex.delivery], ["Passing score", ex.passing], ["Exam fee", ex.fee], ["Validity", ex.validity], ["Result reporting", ex.reporting], ["Retakes", ex.retakes], ["Renewal", ex.renewal]].filter(([, v]) => v != null).map(([k, v]) => `<tr><th style="width:200px">${k}</th><td>${h(v)}</td></tr>`).join("")}
     </tbody></table></div>
     <h2 id="blueprint-weights">Blueprint weights</h2>
-    ${DOMAINS.map((d) => `<h3>Domain ${d.id}: ${h(d.name)} (${d.weight}%)</h3><div class="table-wrap"><table><thead><tr><th>Skill</th><th style="width:80px">Weight</th><th>What is measured</th></tr></thead><tbody>${d.skills.map((s) => `<tr><td><a href="${lessonHref(s.id)}">${s.id} ${h(s.name)}</a></td><td>${s.weight}%</td><td>${h(s.guide)}</td></tr>`).join("")}</tbody></table></div>`).join("")}`;
+    ${DOMAINS.map((d) => `<h3>Domain ${d.id}: ${h(d.name)} (${d.weight}%)</h3><div class="table-wrap"><table><thead><tr><th>${UI.skill}</th><th style="width:80px">Weight</th><th>What is measured</th></tr></thead><tbody>${d.skills.map((s) => `<tr><td><a href="${lessonHref(s.id)}">${s.id} ${h(s.name)}</a></td><td>${s.weight}%</td><td>${h(s.guide)}</td></tr>`).join("")}</tbody></table></div>`).join("")}`;
     const slot = $("#exam-facts-slot");
     if (slot) slot.outerHTML = facts;
   };
@@ -911,8 +922,8 @@
     main.innerHTML = `
       <div class="eyebrow">Practice</div>
       <h1>Build Exercises</h1>
-      <p class="lead">The Exam Guide recommends building and operating at least one Claude application that exercises the API, integrates tools, applies prompt and context engineering, and includes simple security and evaluation practices. Every lesson ends with a hands-on exercise; together they form that application.</p>
-      <div class="callout callout-tip"><div class="callout-label">Reference solutions</div><div class="callout-body"><p>The repository folder <code>exercises/</code> contains tested reference implementations for the core exercises — agent loop (1.2/8.1), retry strategy (4.1), cost model (5.4), guardrail hook (7.3) and MCP server (8.2). Run <code>python exercises/test_solutions.py</code> (offline, no API key) to verify them.</p></div></div>
+      <p class="lead">${h(UI.exercisesLead)}</p>
+      <div class="callout callout-tip"><div class="callout-label">Reference solutions</div><div class="callout-body"><p>${UI.exercisesNote}</p></div></div>
       <div class="grid grid-2" style="margin-top:20px">
         ${ORDERED.map((l) => {
           const tmp = document.createElement("div");
@@ -921,7 +932,7 @@
           const title = ex ? ex.querySelector(".callout-title")?.textContent : null;
           if (!title) return "";
           const steps = ex.querySelectorAll("ol > li").length;
-          return `<a class="card" href="${lessonHref(l.skill)}#exercise"><div class="row"><span class="eyebrow">Skill ${l.skill}</span><span class="spacer"></span><span class="chip">${steps} steps</span></div><h3 style="margin:.4em 0">${h(title)}</h3><p class="muted" style="margin:0;font-size:14px">${h(SKILLS[l.skill].name)}</p></a>`;
+          return `<a class="card" href="${lessonHref(l.skill)}#exercise"><div class="row"><span class="eyebrow">${UI.skill} ${l.skill}</span><span class="spacer"></span><span class="chip">${steps} steps</span></div><h3 style="margin:.4em 0">${h(title)}</h3><p class="muted" style="margin:0;font-size:14px">${h(SKILLS[l.skill].name)}</p></a>`;
         }).join("")}
       </div>`;
   };
@@ -931,7 +942,7 @@
     main.innerHTML = `
       <div class="eyebrow">Look up</div>
       <h1>Glossary</h1>
-      <p class="lead">${g.length} terms from the Claude API, Agent SDK, Claude Code, MCP, LLM fundamentals and application security.</p>
+      <p class="lead">${g.length} ${h(UI.glossaryLead)}</p>
       <input type="search" class="big" id="gq" placeholder="Filter terms…" style="width:100%;max-width:520px;margin:10px 0 6px" value="${h(params.get("q") || "")}">
       <div id="glist" class="narrow"></div>`;
     function draw() {
@@ -952,7 +963,7 @@
     const q0 = params.get("q") || "";
     main.innerHTML = `
       <div class="eyebrow">Look up</div><h1>Search</h1>
-      <input type="search" class="big" id="sq" placeholder="e.g. cache_control, stop_reason, exit code 2, stdio" style="width:100%;max-width:640px" value="${h(q0)}">
+      <input type="search" class="big" id="sq" placeholder="${h(UI.searchPlaceholder)}" style="width:100%;max-width:640px" value="${h(q0)}">
       <div id="sres" class="narrow" style="margin-top:14px"></div>`;
     function run() {
       const q = $("#sq").value.trim();
@@ -1028,13 +1039,13 @@
     if (anchor) setTimeout(() => $(".callout-exercise")?.scrollIntoView({ behavior: "smooth" }), 50);
     else window.scrollTo(0, 0);
     const t = $("h1", main);
-    document.title = (t ? t.textContent.trim() + " · " : "") + "CCDV-F Study Guide";
+    document.title = (t ? t.textContent.trim() + " · " : "") + UI.siteTitle;
   }
 
   // ------------------------------------------------------------------ chrome
   function closeMenus() { $$(".nav-group").forEach((g) => g.classList.remove("open")); $(".main-nav").classList.remove("open"); }
-  $("#nav-curriculum").innerHTML = `<a href="#/learn" style="grid-column:1/-1"><b>All domains & lessons</b><span>8 domains · 25 weighted skills</span></a>` +
-    DOMAINS.map((d) => `<a href="#/learn/${d.slug}" class="nav-dom"><span class="dot" style="background:${DCOLOR(d.id)}"></span><span><b>D${d.id} · ${h(d.name)}</b><span>${d.weight}% · ${d.skills.length} skill${d.skills.length > 1 ? "s" : ""}</span></span></a>`).join("");
+  $("#nav-curriculum").innerHTML = `<a href="#/learn" style="grid-column:1/-1"><b>All domains & lessons</b><span>${h(UI.navCurriculum)}</span></a>` +
+    DOMAINS.map((d) => `<a href="#/learn/${d.slug}" class="nav-dom"><span class="dot" style="background:${DCOLOR(d.id)}"></span><span><b>D${d.id} · ${h(d.name)}</b><span>${d.weight}% · ${skillCount(d.skills.length)}</span></span></a>`).join("");
   $$(".nav-trigger").forEach((b) => b.addEventListener("click", (e) => {
     e.stopPropagation();
     const g = b.parentElement, was = g.classList.contains("open");

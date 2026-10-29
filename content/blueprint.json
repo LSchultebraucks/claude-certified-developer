@@ -15,6 +15,41 @@
     "retakes": "Waiting periods of 14, 30 and 90 days after the 1st, 2nd and 3rd failed attempt; max. four attempts in a rolling twelve-month period; fee applies to each attempt",
     "renewal": "Free on-time renewal via a non-proctored assessment on the Anthropic Partner Academy; a lapsed credential requires the full exam at the full fee"
   },
+  "ui": {
+    "track": "developer",
+    "storagePrefix": "ccdv:",
+    "siteTitle": "CCDV-F Study Guide",
+    "skill": "Skill",
+    "skills": "skills",
+    "guideLabel": "Official skill description (Exam Guide v1.0)",
+    "heroEyebrow": "Claude Certification Program · Exam Guide v1.0 · Effective July 2026 · Exam code CCDV-F",
+    "heroTitle": "Claude Certified Developer – Foundations: everything you need to pass.",
+    "heroLead": "A complete prep track built on the official blueprint: lessons for all 25 weighted skills, {questions} original exam-style questions, drill mode, flashcards, a diagnostic and timed 53-question mock exams scored on the 100–1,000 scale.",
+    "facts": [["53", "Items"], ["120", "Minutes"], ["720", "Pass (100–1,000)"], ["8 / 25", "Domains / skills"], ["$125", "Fee per attempt"], ["12 mo", "Validity"]],
+    "steps": [
+      ["Diagnose", "Take the 24-question diagnostic to see which domains need the most work.", "#/diagnostic"],
+      ["Learn", "Work through the 25 lessons. Each ends with exam traps, practice questions and a build exercise.", "#/learn"],
+      ["Drill & memorize", "Drill weak skills with instant feedback, and run flashcards daily for facts and numbers.", "#/drill"],
+      ["Simulate", "Sit full 53-question mocks under the 120-minute clock. Aim for 800+ consistently before booking.", "#/mock"]
+    ],
+    "blueprintNote": "Anthropic weights the 25 skills individually. A third of the exam sits in Applications and Integration; lessons and the question bank are sized by these weights.",
+    "learnLead": "The CCDV-F exam covers 8 domains and 25 individually weighted skills. Each lesson below maps 1:1 to a skill in the official Exam Guide v1.0 and is sized by its weight — spend your time accordingly.",
+    "coverageNote": "Every skill in the official Exam Guide v1.0 maps to one lesson. Question counts are sized by skill weight.",
+    "recommendedOrder": "Follow the numbering (1.1 → 8.3). Domain 2 builds on the API concepts you meet in Domain 1, and Domains 5–8 assume you can read a Messages API request. If you are short on time, prioritize by weight: 2.5, 2.4, 2.3, 5.2, 1.2, 5.1, 1.3, 6.2, 1.1, 8.1.",
+    "navCurriculum": "8 domains · 25 weighted skills",
+    "exams": {
+      "full": { "n": 53, "minutes": 120, "note": "The real exam's format and pace (≈ 2 min 15 s per item). Use this for your final readiness checks." },
+      "half": { "n": 27, "minutes": 60 },
+      "diagnostic": { "n": 24, "minutes": 45 }
+    },
+    "mockLead": "Sit an exam-realistic simulation: questions are drawn in proportion to the 25 skill weights, options are shuffled, multiple-response items tell you how many to select, and there is no feedback until you submit. Scored on the 100–1,000 scale with 720 to pass.",
+    "diagnosticLead": "24 questions in 45 minutes, sampled across all 8 domains in proportion to the blueprint. Take it before you start studying to find your weak areas, then again halfway through.",
+    "exercisesLead": "The Exam Guide recommends building and operating at least one Claude application that exercises the API, integrates tools, applies prompt and context engineering, and includes simple security and evaluation practices. Every lesson ends with a hands-on exercise; together they form that application.",
+    "exercisesNote": "The repository folder <code>exercises/</code> contains tested reference implementations for the core exercises — agent loop (1.2/8.1), retry strategy (4.1), cost model (5.4), guardrail hook (7.3) and MCP server (8.2). Run <code>python exercises/test_solutions.py</code> (offline, no API key) to verify them.",
+    "glossaryLead": "terms from the Claude API, Agent SDK, Claude Code, MCP, LLM fundamentals and application security.",
+    "searchPlaceholder": "e.g. cache_control, stop_reason, exit code 2, stdio",
+    "progressFile": "ccdv-progress"
+  },
   "domains": [
     {
       "id": 1,

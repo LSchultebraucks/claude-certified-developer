@@ -1,11 +1,16 @@
-// Build script: compiles content/ (Markdown) into assets/data.js (window.CCDV).
-// Usage: node build.mjs
+// Build script: compiles each track's Markdown content into a data file (window.CCDV).
+//   content/            -> assets/data.js            (Developer, CCDV-F)
+//   architect/content/  -> assets/data-architect.js  (Architect, CCA-F)
+// Usage: node build.mjs [developer|architect]   (no argument builds both)
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const C = (...p) => join(ROOT, "content", ...p);
+const TRACKS = {
+  developer: { content: "content", out: "assets/data.js" },
+  architect: { content: "architect/content", out: "assets/data-architect.js" },
+};
 const read = (p) => readFileSync(p, "utf8").replace(/\r\n/g, "\n");
 
 // ---------------------------------------------------------------- markdown
@@ -226,9 +231,14 @@ function frontmatter(text) {
 }
 
 // ---------------------------------------------------------------- load
+function build(track) {
+const C = (...p) => join(ROOT, TRACKS[track].content, ...p);
+console.log(`
+=== ${track} (${TRACKS[track].content}) ===`);
 const blueprint = JSON.parse(read(C("blueprint.json")));
 const skillIndex = {};
 for (const d of blueprint.domains) for (const s of d.skills) skillIndex[s.id] = { ...s, domain: d.id };
+const scenarioIds = new Set((blueprint.exam.scenarios || []).map((s) => s.id));
 
 const problems = [];
 
@@ -242,6 +252,7 @@ for (const f of readdirSync(qdir).filter((f) => f.endsWith(".md")).sort()) {
     const lines = b.split("\n");
     const id = lines[0].trim();
     const q = { id, skill: null, type: "single", stem: "", options: [], correct: [], explanation: "" };
+    let scenario = null;
     let section = "stem";
     const stem = [];
     const expl = [];
@@ -249,6 +260,7 @@ for (const f of readdirSync(qdir).filter((f) => f.endsWith(".md")).sort()) {
       let m;
       if (section === "stem" && (m = l.match(/^skill:\s*(.+)$/))) { q.skill = m[1].trim(); continue; }
       if (section === "stem" && (m = l.match(/^type:\s*(.+)$/))) { q.type = m[1].trim(); continue; }
+      if (section === "stem" && (m = l.match(/^scenario:\s*(.+)$/))) { scenario = m[1].trim(); continue; }
       if ((m = l.match(/^- \[( |x)\]\s+(.*)$/))) {
         section = "options";
         q.options.push(inline(m[2]));
@@ -272,6 +284,10 @@ for (const f of readdirSync(qdir).filter((f) => f.endsWith(".md")).sort()) {
     if (q.type === "multi" && q.correct.length < 2) problems.push(`Question ${id}: multi but ${q.correct.length} correct`);
     if (!q.explanation) problems.push(`Question ${id}: missing explanation`);
     if (questions.find((x) => x.id === id)) problems.push(`Duplicate question id ${id}`);
+    if (scenario) {
+      if (!scenarioIds.has(scenario)) problems.push(`Question ${id}: unknown scenario '${scenario}'`);
+      q.scenario = scenario;
+    } else if (scenarioIds.size) problems.push(`Question ${id}: missing scenario (scenario-based track)`);
     q.domain = skillIndex[q.skill]?.domain;
     questions.push(q);
   }
@@ -339,7 +355,7 @@ const perSkill = {};
 for (const q of questions) perSkill[q.skill] = (perSkill[q.skill] || 0) + 1;
 console.log("Lessons:", lessons.length, "| Questions:", questions.length, "| Glossary:", glossary.length, "| Flashcards:", flashcards.length, "| Pages:", Object.keys(pages).join(", "));
 for (const id of Object.keys(skillIndex)) {
-  const target = Math.round((skillIndex[id].weight / 100) * 53 * 4.5);
+  const target = Math.round((skillIndex[id].weight / 100) * blueprint.exam.items * 4.5);
   console.log(`  ${id.padEnd(4)} ${skillIndex[id].name.padEnd(40)} questions ${String(perSkill[id] || 0).padStart(3)}  (weight ${skillIndex[id].weight}%, ~${Math.max(8, target)} recommended)`);
 }
 // answer-length bias: share of single-answer items whose correct option is the unique longest
@@ -359,12 +375,22 @@ for (const q of questions.filter((q) => q.type === "single")) {
 console.log("  correct answer noticeably (≥15%) longest / shortest by domain (target: low): " + Object.entries(bias).map(([d, b]) => `D${d} ${Math.round((100 * b.longest) / b.n)}/${Math.round((100 * b.shortest) / b.n)}%`).join(" · "));
 const multi = questions.filter((q) => q.type === "multi").length;
 console.log(`  multiple-response: ${multi} (${Math.round((multi / Math.max(1, questions.length)) * 100)}%)`);
+if (scenarioIds.size) {
+  const perScen = {};
+  for (const q of questions) perScen[q.scenario] = (perScen[q.scenario] || 0) + 1;
+  console.log("  questions per scenario: " + [...scenarioIds].map((s) => `${s} ${perScen[s] || 0}`).join(" · "));
+}
 if (problems.length) {
   console.log("\nPROBLEMS:");
   for (const p of problems) console.log("  - " + p);
 }
 
 const data = { blueprint, lessons, questions, glossary, flashcards, pages, built: new Date().toISOString().slice(0, 10) };
-writeFileSync(join(ROOT, "assets", "data.js"), "window.CCDV = " + JSON.stringify(data) + ";\n");
-console.log("\nWrote assets/data.js (" + Math.round(JSON.stringify(data).length / 1024) + " KB)");
+writeFileSync(join(ROOT, TRACKS[track].out), "window.CCDV = " + JSON.stringify(data) + ";\n");
+console.log("\nWrote " + TRACKS[track].out + " (" + Math.round(JSON.stringify(data).length / 1024) + " KB)");
 if (problems.length) process.exitCode = 1;
+}
+
+const only = process.argv[2];
+if (only && !TRACKS[only]) { console.error(`Unknown track '${only}'. Use one of: ${Object.keys(TRACKS).join(", ")}`); process.exit(1); }
+for (const t of only ? [only] : Object.keys(TRACKS)) build(t);

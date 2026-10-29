@@ -1,0 +1,112 @@
+# Glossary
+
+- **@import** [3.1]: CLAUDE.md syntax (`@path/to/file.md`) that pulls another file into memory, so large instruction sets can be split into focused modules.
+- **Adaptive decomposition** [1.6]: Breaking a task into subtasks at runtime based on what earlier steps discover — suited to open-ended investigation where the subtasks can't be known in advance.
+- **AgentDefinition** [1.3]: Agent SDK object that defines a subagent: `description` (when to use it), `prompt` (its system instructions), `tools` (its allowed tools) and optionally `model`.
+- **Agent SDK (Claude Agent SDK)** [1.1]: Library that exposes Claude Code's agent harness — tools, permissions, hooks, sessions, subagents, MCP — for building your own agents in Python or TypeScript.
+- **Agentic loop** [1.1]: Request → inspect `stop_reason` → execute requested tools → append `tool_result` blocks → repeat until `end_turn`.
+- **Aggregate accuracy** [5.5]: A single accuracy number across all documents; can hide poor accuracy on specific document types or fields.
+- **allowed-tools** [3.2]: Skill/command frontmatter that restricts which tools Claude may use while the skill runs.
+- **allowedTools / allowed_tools** [1.3]: Agent SDK and Claude Code option listing auto-approved tools; a coordinator needs `Task` (the Agent tool) in it to spawn subagents.
+- **Anchor text** [2.5]: The exact, unique string the Edit tool replaces; if it occurs more than once the edit fails or needs more surrounding context.
+- **argument-hint** [3.2]: Skill/command frontmatter that tells users what argument to pass, e.g. `[path to file]`.
+- **$ARGUMENTS** [3.2]: Placeholder in a command or skill body that is replaced by the text typed after the slash command.
+- **Batch interacting issues** [3.5]: Reporting related problems in one message so Claude can fix them together, instead of one at a time where each fix may break another.
+- **Built-in tools** [2.5]: Claude Code / Agent SDK tools such as Read, Write, Edit, Bash, Grep, Glob, WebSearch and WebFetch.
+- **Business error** [2.2]: A tool failure caused by a policy or rule (e.g. refund exceeds limit); not retryable — explain or escalate.
+- **Case facts block** [5.1]: A persistent, verbatim section of the context holding critical values (amounts, dates, IDs, commitments) that is never summarized away.
+- **Claim–source mapping** [5.6]: Structured link from each claim to its source (URL or document, excerpt, date) that survives summarization and synthesis.
+- **CLAUDE.md** [3.1]: Markdown memory file that Claude Code loads as standing instructions; exists at user, project and directory level.
+- **Context degradation** [5.4]: Declining answer quality in long sessions as the context fills with stale or verbose material; the model starts citing "typical patterns" instead of the specific code it read.
+- **context: fork** [3.2]: Skill frontmatter that runs the skill in an isolated sub-agent context so its verbose work doesn't pollute the main conversation.
+- **Coordinator (lead agent)** [1.2]: The agent in a hub-and-spoke system that decomposes the task, delegates to subagents, routes all communication and synthesizes results.
+- **Coverage annotation** [5.3]: A note in a synthesized output stating which parts are incomplete because a source or subagent failed.
+- **Coverage gap** [1.2]: Part of the question no subagent investigated — usually caused by an overly narrow decomposition by the coordinator.
+- **Crash-recovery manifest** [5.4]: A file recording completed steps, findings and next steps so a long task can resume after a crash or context reset.
+- **Cross-file integration pass** [1.6]: A review pass that looks at interactions between files (data flow, API contracts) after per-file local passes.
+- **custom_id** [4.5]: Caller-defined identifier on each Message Batches request used to match results (which can arrive in any order) and to resubmit only failed items.
+- **Data normalization hook** [1.5]: A PostToolUse hook that converts heterogeneous tool outputs (dates, currencies, status codes) into one format before the model sees them.
+- **Delegation prompt** [1.3]: The prompt a coordinator writes for a subagent; must contain all context the subagent needs, since it doesn't inherit the parent conversation.
+- **detected_pattern** [4.4]: A field recording which rule or pattern triggered a finding, so dismissed findings can be analyzed and the prompt improved.
+- **Deterministic enforcement** [1.4]: Guaranteeing a rule in code (hooks, gates, permissions, schemas) instead of relying on the model to follow prompt instructions.
+- **Directory-level CLAUDE.md** [3.1]: A CLAUDE.md inside a subdirectory that applies when Claude works in that part of the tree.
+- **end_turn** [1.1]: `stop_reason` meaning Claude finished its response; the loop ends.
+- **Enum with "other"** [4.3]: Schema pattern pairing a fixed category list with an `"other"` value plus a free-text detail field, so unforeseen cases aren't forced into a wrong category.
+- **Error category** [2.2]: Classification of a tool failure — transient, validation, business or permission — that tells the agent whether and how to recover.
+- **Escalation** [5.2]: Handing a case to a human (or higher-authority agent) — on explicit request, policy gaps, or when the agent can't make progress.
+- **Evaluator-optimizer** [1.6]: Pattern in which one call generates and another critiques against criteria, looping until the criteria are met.
+- **Explicit criteria** [4.1]: Concrete, checkable conditions for what to report or do, replacing vague instructions such as "be conservative" or "only important issues".
+- **Explore subagent** [3.4]: Claude Code's built-in read-only subagent for codebase discovery; keeps verbose search output out of the main context.
+- **False positive** [4.1]: A reported finding that isn't a real problem; high false-positive rates make developers ignore all findings.
+- **Few-shot prompting** [4.2]: Including a small number of worked examples in the prompt to demonstrate format and judgment, especially for ambiguous cases.
+- **fork_session** [1.7]: Agent SDK option that branches a new session from an existing one, so several approaches can be explored from the same baseline.
+- **Forced tool choice** [4.3]: `tool_choice: {"type": "tool", "name": "..."}` — Claude must call that specific tool.
+- **Glob** [2.5]: Built-in tool that finds files by path pattern (e.g. `**/*.test.tsx`); it does not search file contents.
+- **Graceful degradation** [5.3]: Returning partial results with clear annotations when some components fail, instead of failing completely.
+- **Grep** [2.5]: Built-in tool that searches file contents with regular expressions — e.g. finding all callers of a function.
+- **Handoff summary** [1.4]: Structured summary passed to a human agent on escalation: customer ID, issue, what was verified and tried, amounts, recommended next step.
+- **Hook** [1.5]: Code that runs at a lifecycle event (PreToolUse, PostToolUse, etc.) in Claude Code or the Agent SDK and can allow, block, modify or log deterministically.
+- **Hub-and-spoke** [1.2]: Multi-agent topology in which all communication goes through the coordinator; subagents don't talk to each other.
+- **Human-in-the-loop** [5.5]: Routing some outputs to human reviewers — by confidence, sampling or risk — before they are acted on.
+- **Independent review instance** [4.6]: A separate Claude session that reviews output without the generator's reasoning, avoiding self-confirmation bias.
+- **Interview pattern** [3.5]: Asking Claude to question you about requirements and edge cases before implementing, useful in unfamiliar domains.
+- **isError** [2.2]: MCP tool-result flag signalling that the call failed, so the client and model treat the content as an error.
+- **isRetryable** [2.2]: Field in a structured tool error telling the agent whether retrying the same call can succeed.
+- **Iteration cap** [1.1]: Maximum number of loop turns; a safety net against runaway loops, not the primary completion signal.
+- **JSON schema** [4.3]: Specification of an object's fields, types, required properties and enums; used in tool `input_schema` to constrain output.
+- **--json-schema** [3.6]: Claude Code CLI flag that constrains print-mode output to a JSON schema for machine parsing.
+- **Lost in the middle** [5.1]: Models attend less reliably to information buried in the middle of long inputs than to the beginning and end.
+- **max_tokens (stop reason)** [1.1]: `stop_reason` meaning the output was cut off at the token limit — the answer is incomplete, not finished.
+- **MCP (Model Context Protocol)** [2.4]: Open protocol through which servers expose tools, resources and prompts to Claude clients such as Claude Code and the Agent SDK.
+- **MCP resource** [2.4]: Read-only content an MCP server exposes (e.g. a document catalog or schema) that the client can load without a tool call.
+- **.mcp.json** [2.4]: Project-scoped MCP configuration in the repository root, shared with the team through version control.
+- **Message Batches API** [4.5]: Asynchronous API for large request sets at 50% of standard cost, processed within up to 24 hours, without latency guarantees.
+- **/memory** [3.1]: Claude Code command that shows which memory files are loaded and lets you edit them — the first step when instructions seem ignored.
+- **Multi-concern request** [1.4]: A single customer message containing several distinct issues; decompose it, handle each, then synthesize one reply.
+- **Multi-pass review** [4.6]: Reviewing in several focused passes (per-file, then cross-file) rather than one pass over everything.
+- **Nullable field** [4.3]: Schema field that may be `null`, letting the model say "not present" instead of fabricating a value.
+- **Output format json** [3.6]: `--output-format json` makes `claude -p` emit structured JSON (result plus metadata) for scripts and CI.
+- **Parallel subagents** [1.3]: Several subagents launched by emitting multiple Task/Agent tool calls in one coordinator response.
+- **Path-specific rules** [3.3]: `.claude/rules/*.md` files with `paths:` glob frontmatter that load only when Claude works on matching files.
+- **pause_turn** [1.1]: `stop_reason` indicating a server-side tool loop paused; send the response back so Claude can continue.
+- **Per-file local pass** [1.6]: A review or analysis pass focused on one file at a time, giving consistent depth across a large change set.
+- **Permission error** [2.2]: Tool failure because the caller lacks rights; not retryable — escalate or request access.
+- **Personal scope** [3.2]: `~/.claude/` locations (CLAUDE.md, skills, commands) that apply only to one user and aren't shared via the repository.
+- **Plan mode** [3.4]: Claude Code mode in which Claude explores and proposes a plan without editing files, for complex or risky changes.
+- **PostToolUse** [1.5]: Hook event after a tool runs; used to normalize, enrich, validate or log its result.
+- **PreToolUse** [1.5]: Hook event before a tool runs; can block, modify or redirect the call — e.g. enforce a refund limit.
+- **Prerequisite gate** [1.4]: Programmatic check that blocks a tool until required earlier steps (e.g. identity verification) have succeeded.
+- **-p / --print** [3.6]: Runs Claude Code non-interactively: one prompt in, result out, exit — required for CI pipelines.
+- **Progressive summarization** [5.1]: Repeatedly summarizing conversation history to save context; tends to lose exact numbers, dates and commitments.
+- **Project scope** [3.1]: Configuration in the repository (`CLAUDE.md`, `.claude/`, `.mcp.json`) shared with everyone who clones it.
+- **Prompt chaining** [1.6]: Fixed sequence of calls where each output feeds the next; suits predictable, multi-aspect tasks.
+- **Provenance** [5.6]: Where a piece of information came from and when — source, excerpt, publication or collection date.
+- **Refusal (stop reason)** [1.1]: `stop_reason` indicating Claude declined to continue; handle explicitly rather than retrying blindly.
+- **--resume** [1.7]: Claude Code flag that continues a previous (optionally named) session with its history.
+- **Retry with error feedback** [4.4]: Re-prompting with the original input, the failed output and the specific validation error so the model can correct it.
+- **Scenario**: One of the six contexts (support agent, code generation, research system, developer productivity, CI/CD, extraction) that frame CCA-F items.
+- **Scratchpad file** [5.4]: A file where Claude records findings during long exploration so they survive context compaction or resets.
+- **Self-correction field** [4.4]: Extra schema field (e.g. `calculated_total` next to `stated_total`) that makes inconsistencies detectable in code.
+- **Self-review limitation** [4.6]: A model reviewing its own output in the same session tends to confirm its earlier reasoning and miss its own errors.
+- **Session** [1.7]: A persisted conversation (messages, tool calls) that can be resumed or forked.
+- **Skill** [3.2]: A folder with `SKILL.md` (frontmatter + instructions, optional scripts/resources) that Claude loads on demand or when invoked as a slash command.
+- **Slash command (custom)** [3.2]: A reusable prompt stored as Markdown in `.claude/commands/` (team) or `~/.claude/commands/` (personal), invoked as `/name`.
+- **Stale tool results** [1.7]: Results in a resumed session that no longer reflect the files or data; tell Claude what changed or start fresh with a summary.
+- **Stratified random sampling** [5.5]: Sampling outputs for human review from each document type/confidence band, so rare segments are checked too.
+- **stop_reason** [1.1]: Field on each Messages API response stating why generation stopped; the control signal of the agentic loop.
+- **Structured error response** [2.2]: Tool error with machine-readable category, retryability, attempted operation and a human-readable message.
+- **Structured outputs** [4.3]: API feature that constrains Claude's response to a supplied JSON schema; schema compliance still doesn't guarantee correct values.
+- **Subagent** [1.2]: An agent invoked by another agent for a focused subtask, with its own context, prompt and tools; returns a condensed result.
+- **Task tool (Agent tool)** [1.3]: The tool through which a Claude Code / Agent SDK agent spawns subagents; it must be allowed for delegation to work.
+- **Test-driven iteration** [3.5]: Writing or providing failing tests first and letting Claude iterate until they pass — tests give objective feedback.
+- **tool_choice** [2.3]: Request parameter controlling tool use: `auto` (may answer in text), `any` (must call some tool), `tool` (must call a named tool), `none`.
+- **Tool description** [2.1]: The natural-language description in a tool definition — the primary signal Claude uses to choose between tools.
+- **tool_result** [1.1]: Content block in a user message returning a tool's output, matched to the request by `tool_use_id`.
+- **tool_use** [1.1]: Content block (and `stop_reason`) in which Claude requests a tool call with name and input.
+- **Tool overload** [2.3]: Giving one agent too many tools; selection accuracy drops and similar tools get confused.
+- **Transient error** [2.2]: Temporary failure (timeout, 503, rate limit); retry with backoff before propagating.
+- **Two-tier escalation threshold** [5.2]: Separate policies for what the agent may handle autonomously and what always requires a human (e.g. refunds above a limit).
+- **"unclear" value** [4.3]: Enum option letting the model express that the source is ambiguous instead of guessing.
+- **User scope (MCP)** [2.4]: MCP servers configured in `~/.claude.json`, available to one user across projects but not shared with the team.
+- **Validation error** [2.2]: Tool failure caused by invalid input; fix the input and retry.
+- **Validation–retry loop** [4.4]: Validate model output in code; on failure, retry with specific feedback up to a limit, then route to review.

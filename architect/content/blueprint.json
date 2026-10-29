@@ -1,0 +1,176 @@
+{
+  "exam": {
+    "name": "Claude Certified Architect – Foundations",
+    "code": "CCA-F",
+    "version": "Foundations",
+    "effective": "March 2026",
+    "items": 60,
+    "minutes": 120,
+    "format": "Multiple choice — every item has one correct answer and three plausible distractors; unanswered items are scored as incorrect and there is no penalty for guessing",
+    "scenarioFormat": "Scenario-based: 4 of the 6 published scenarios are drawn at random for each sitting, and each scenario frames a group of items",
+    "delivery": "Proctored; registration through Anthropic Academy (Skilljar) for Claude Partner Network organisations",
+    "passing": "Scaled score of 720 on a scale of 100–1,000",
+    "fee": "Reported as $99 USD per attempt (complimentary for the first 5,000 Claude Partner Network employees at launch) — confirm on the Academy listing",
+    "validity": "See the current Certification Terms on Anthropic Academy",
+    "reporting": "Pass/fail with a scaled score (100–1,000)",
+    "retakes": "See the current Certification Exam Policy on Anthropic Academy",
+    "renewal": null,
+    "scenariosPerExam": 4,
+    "scenarios": [
+      { "id": "S1", "title": "Customer Support Resolution Agent",
+        "text": "You are building a customer support resolution agent with the Claude Agent SDK. It handles high-ambiguity requests — returns, billing disputes, account issues — through custom MCP tools such as get_customer, lookup_order, process_refund and escalate_to_human. The goal is 80%+ first-contact resolution while knowing when to escalate to a human." },
+      { "id": "S2", "title": "Code Generation with Claude Code",
+        "text": "Your team uses Claude Code to generate code, refactor and write documentation. You configure CLAUDE.md files, custom slash commands and skills for the team, and decide when to use plan mode versus direct execution." },
+      { "id": "S3", "title": "Multi-Agent Research System",
+        "text": "You are building a research system with the Claude Agent SDK in which a coordinator agent delegates to specialized subagents — web search, document analysis, synthesis and report generation — and produces comprehensive reports with citations." },
+      { "id": "S4", "title": "Developer Productivity with Claude",
+        "text": "You are building developer productivity tooling with the Claude Agent SDK. The agent helps engineers explore unfamiliar codebases, understand legacy systems, generate boilerplate and automate repetitive tasks using the built-in tools (Read, Write, Edit, Bash, Grep, Glob) and MCP servers." },
+      { "id": "S5", "title": "Claude Code for CI/CD",
+        "text": "You are integrating Claude Code into a CI/CD pipeline for automated code review, test generation and pull-request feedback. The output must be actionable, machine-parseable where needed, and low on false positives." },
+      { "id": "S6", "title": "Structured Data Extraction",
+        "text": "You are building a system that extracts information from unstructured documents (contracts, invoices, papers, forms), validates it against JSON schemas, handles edge cases gracefully and feeds downstream systems with high accuracy." }
+    ]
+  },
+  "ui": {
+    "track": "architect",
+    "storagePrefix": "ccar:",
+    "siteTitle": "CCA-F Study Guide",
+    "skill": "Task",
+    "skills": "tasks",
+    "guideLabel": "Task statement — what the exam measures",
+    "heroEyebrow": "Claude Certification Program · Claude Partner Network · Launched March 2026 · Exam code CCA-F",
+    "heroTitle": "Claude Certified Architect – Foundations: everything you need to pass.",
+    "heroLead": "A complete prep track built on the published blueprint: lessons for all 30 task statements, {questions} original scenario-based questions, drill mode, flashcards, a diagnostic and timed 60-question mock exams that draw 4 of the 6 exam scenarios — scored on the 100–1,000 scale.",
+    "facts": [["60", "Items"], ["120", "Minutes"], ["720", "Pass (100–1,000)"], ["5 / 30", "Domains / tasks"], ["4 of 6", "Scenarios per sitting"], ["Mar 2026", "Launched"]],
+    "steps": [
+      ["Diagnose", "Take the 24-question diagnostic to see which domains and scenarios need the most work.", "#/diagnostic"],
+      ["Learn", "Work through the 30 task lessons. Each ends with exam traps, scenario questions and a build exercise.", "#/learn"],
+      ["Drill & memorize", "Drill weak task statements with instant feedback, and run flashcards daily for patterns and anti-patterns.", "#/drill"],
+      ["Simulate", "Sit full 60-question, 4-scenario mocks under the 120-minute clock. Aim for 800+ consistently before booking.", "#/mock"]
+    ],
+    "blueprintNote": "Anthropic publishes weights per domain; agentic architecture alone is more than a quarter of the exam. Task weights shown here split each domain weight evenly across its task statements — an estimate used to size lessons, mocks and the question bank.",
+    "learnLead": "The CCA-F exam covers 5 domains and 30 task statements. Each lesson maps 1:1 to a task statement. The exam tests architectural judgment in realistic scenarios — which pattern, which control, which trade-off — not API trivia.",
+    "coverageNote": "Every task statement maps to one lesson. Question counts are sized by the estimated task weight, and every question is set in one of the six exam scenarios.",
+    "recommendedOrder": "Follow the numbering (1.1 → 5.6): Domain 1 builds the agent mental model the other domains rely on. Read 2.x before 3.x, because Claude Code configuration reuses tool and MCP concepts. Short on time? Prioritize Domain 1 (27%) end to end, then 4.3, 4.4, 3.1, 2.1, 2.2 and 5.2.",
+    "navCurriculum": "5 domains · 30 task statements",
+    "exams": {
+      "full": { "n": 60, "minutes": 120, "scenarios": 4, "note": "The real exam's format and pace (2 min per item), with 4 of the 6 scenarios drawn at random and items grouped by scenario." },
+      "half": { "n": 30, "minutes": 60, "scenarios": 2 },
+      "diagnostic": { "n": 24, "minutes": 45, "scenarios": 6 }
+    },
+    "mockLead": "Sit an exam-realistic simulation: 4 of the 6 scenarios are drawn at random, questions are allocated in proportion to the task weights and grouped by scenario, options are shuffled, and there is no feedback until you submit. Scored on the 100–1,000 scale with 720 to pass.",
+    "diagnosticLead": "24 questions in 45 minutes, sampled across all 5 domains and all 6 scenarios in proportion to the blueprint. Take it before you start studying to find your weak areas, then again halfway through.",
+    "exercisesLead": "The exam rewards hands-on experience with the Claude API, the Agent SDK, Claude Code and MCP. Every lesson ends with a build exercise; together they cover all six exam scenarios — a support agent, a research system, CI review, extraction pipelines and team Claude Code configuration.",
+    "exercisesNote": "The repository folder <code>architect/exercises/</code> contains tested reference implementations for the core patterns — stop_reason-driven agent loop with a hard budget (1.1), prerequisite gate (1.4), structured MCP-style errors (2.2), validation-retry extraction with tool_choice (4.3/4.4), batch failure resubmission by custom_id (4.5) and escalation routing (5.2). Run <code>python architect/exercises/test_solutions.py</code> (offline, no API key) to verify them.",
+    "glossaryLead": "terms for agent architecture, the Agent SDK, MCP, Claude Code configuration, structured output and production reliability.",
+    "searchPlaceholder": "e.g. stop_reason, tool_choice, custom_id, .claude/rules, fork_session",
+    "progressFile": "cca-progress"
+  },
+  "domains": [
+    {
+      "id": 1,
+      "slug": "agentic-architecture-orchestration",
+      "name": "Agentic Architecture & Orchestration",
+      "weight": 27,
+      "summary": "The largest domain: stop_reason-driven agent loops, coordinator–subagent orchestration, context passing between agents, enforced multi-step workflows, Agent SDK hooks, task decomposition and session management.",
+      "skills": [
+        { "id": "1.1", "slug": "agentic-loops", "name": "Agentic Loops", "weight": 3.9,
+          "guide": "Design and implement agentic loops for autonomous task execution: continue on stop_reason \"tool_use\", stop on \"end_turn\", append tool results to the conversation, and avoid anti-patterns such as parsing natural language for completion or using iteration caps as the primary stop signal." },
+        { "id": "1.2", "slug": "multi-agent-orchestration", "name": "Multi-Agent Orchestration", "weight": 3.9,
+          "guide": "Orchestrate multi-agent systems with coordinator–subagent (hub-and-spoke) patterns: the coordinator decomposes, delegates, routes all communication, aggregates results and refines; subagents work in isolated contexts; overly narrow decomposition causes coverage gaps." },
+        { "id": "1.3", "slug": "subagent-invocation-context", "name": "Subagent Invocation & Context Passing", "weight": 3.9,
+          "guide": "Configure subagent invocation, context passing and spawning: the Task/Agent tool and allowedTools, AgentDefinition (description, prompt, tools), explicit context in the delegation prompt, structured hand-back data with metadata, and parallel spawning in a single response." },
+        { "id": "1.4", "slug": "workflow-enforcement-handoff", "name": "Workflow Enforcement & Handoff", "weight": 3.9,
+          "guide": "Implement multi-step workflows with enforcement and handoff patterns: programmatic prerequisite gates instead of prompt-only guidance when compliance must be deterministic, decomposing multi-concern requests, and structured handoff summaries for human agents." },
+        { "id": "1.5", "slug": "agent-sdk-hooks", "name": "Agent SDK Hooks", "weight": 3.8,
+          "guide": "Apply Agent SDK hooks for tool-call interception and data normalization: PostToolUse to normalize heterogeneous tool results before the model sees them, PreToolUse to block or redirect policy-violating calls, and choosing hooks over prompts when guarantees are required." },
+        { "id": "1.6", "slug": "task-decomposition", "name": "Task Decomposition Strategies", "weight": 3.8,
+          "guide": "Design task decomposition strategies for complex workflows: fixed prompt chains for predictable multi-aspect work versus dynamic, adaptive decomposition for open-ended investigation; per-file local passes plus a cross-file integration pass for large reviews." },
+        { "id": "1.7", "slug": "session-state-resumption", "name": "Session State, Resumption & Forking", "weight": 3.8,
+          "guide": "Manage session state, resumption and forking: named sessions and --resume, fork_session for divergent explorations from a shared baseline, informing a resumed session about changed files, and starting fresh with a structured summary when prior tool results are stale." }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "tool-design-mcp-integration",
+      "name": "Tool Design & MCP Integration",
+      "weight": 18,
+      "summary": "Tool interfaces the model can choose between reliably, structured error responses, scoping tools per agent and configuring tool_choice, integrating MCP servers into Claude Code and agents, and using the built-in tools well.",
+      "skills": [
+        { "id": "2.1", "slug": "tool-interface-design", "name": "Tool Interface Design", "weight": 3.6,
+          "guide": "Design effective tool interfaces with clear descriptions and boundaries: descriptions are the primary signal for tool selection; include input formats, example queries, edge cases and when to use one tool versus a similar one; split generic tools and rename overlapping ones." },
+        { "id": "2.2", "slug": "structured-tool-errors", "name": "Structured Error Responses for MCP Tools", "weight": 3.6,
+          "guide": "Implement structured error responses for MCP tools: the isError flag, error categories (transient, validation, business, permission), retryability and human-readable descriptions; distinguish an access failure from a valid empty result; recover locally before propagating." },
+        { "id": "2.3", "slug": "tool-distribution-tool-choice", "name": "Tool Distribution & tool_choice", "weight": 3.6,
+          "guide": "Distribute tools appropriately across agents and configure tool choice: too many tools degrade selection; scope each agent to the tools its role needs, add narrow cross-role tools for frequent needs; use tool_choice auto, any or a forced tool to control behavior." },
+        { "id": "2.4", "slug": "mcp-server-integration", "name": "MCP Server Integration", "weight": 3.6,
+          "guide": "Integrate MCP servers into Claude Code and agent workflows: project-scoped .mcp.json versus user-scoped configuration, environment-variable expansion for secrets, tools from all servers available at once, MCP resources for content catalogs, and preferring existing servers for standard integrations." },
+        { "id": "2.5", "slug": "built-in-tools", "name": "Built-in Tools", "weight": 3.6,
+          "guide": "Select and apply the built-in tools (Read, Write, Edit, Bash, Grep, Glob) effectively: Grep for content, Glob for path patterns, Edit with unique anchor text and Read + Write as the fallback, and incremental exploration instead of reading everything up front." }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "claude-code-configuration-workflows",
+      "name": "Claude Code Configuration & Workflows",
+      "weight": 20,
+      "summary": "Configure Claude Code for teams: the CLAUDE.md hierarchy and modular rules, custom slash commands and skills, path-scoped conventions, plan mode versus direct execution, iterative refinement and CI/CD integration.",
+      "skills": [
+        { "id": "3.1", "slug": "claude-md-hierarchy", "name": "CLAUDE.md Hierarchy & Organization", "weight": 3.4,
+          "guide": "Configure CLAUDE.md files with appropriate hierarchy, scoping and modular organization: user-level versus project-level versus directory-level files, what is shared through version control, @import for modularity, .claude/rules/ topic files, and diagnosing what is loaded with /memory." },
+        { "id": "3.2", "slug": "slash-commands-skills", "name": "Custom Slash Commands & Skills", "weight": 3.4,
+          "guide": "Create and configure custom slash commands and skills: project-scoped (.claude/) versus personal (~/.claude/) locations, SKILL.md frontmatter such as context: fork, allowed-tools and argument-hint, and choosing skills (on-demand workflows) versus CLAUDE.md (always-on conventions)." },
+        { "id": "3.3", "slug": "path-specific-rules", "name": "Path-Specific Rules", "weight": 3.3,
+          "guide": "Apply path-specific rules for conditional convention loading: .claude/rules/ files with paths glob frontmatter that load only when matching files are edited, and choosing them over directory-level CLAUDE.md when conventions span many directories (e.g. all test files)." },
+        { "id": "3.4", "slug": "plan-mode-vs-direct", "name": "Plan Mode vs Direct Execution", "weight": 3.3,
+          "guide": "Determine when to use plan mode versus direct execution: plan mode for large-scale, multi-file, architectural or ambiguous changes; direct execution for small, well-scoped changes; the Explore subagent to keep verbose discovery out of the main context; combining planning with execution." },
+        { "id": "3.5", "slug": "iterative-refinement", "name": "Iterative Refinement", "weight": 3.3,
+          "guide": "Apply iterative refinement techniques for progressive improvement: concrete input/output examples, test-driven iteration with failing tests as feedback, the interview pattern for unfamiliar domains, and batching interacting issues versus fixing independent ones sequentially." },
+        { "id": "3.6", "slug": "ci-cd-integration", "name": "CI/CD Integration", "weight": 3.3,
+          "guide": "Integrate Claude Code into CI/CD pipelines: non-interactive -p mode, --output-format json and --json-schema for machine-parseable results, CLAUDE.md as CI context, an independent review instance rather than self-review, and passing prior findings to avoid duplicate comments." }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "prompt-engineering-structured-output",
+      "name": "Prompt Engineering & Structured Output",
+      "weight": 20,
+      "summary": "Precise prompts with explicit criteria, targeted few-shot examples, schema-enforced output through tool use, validation–retry loops, batch processing strategy, and multi-instance or multi-pass review architectures.",
+      "skills": [
+        { "id": "4.1", "slug": "explicit-criteria", "name": "Explicit Criteria & Precision", "weight": 3.4,
+          "guide": "Design prompts with explicit criteria to improve precision and reduce false positives: concrete categorical criteria instead of vague instructions such as 'be conservative', defining what to report and what to skip, severity definitions with examples, and temporarily disabling high false-positive categories to restore trust." },
+        { "id": "4.2", "slug": "few-shot-prompting", "name": "Few-Shot Prompting", "weight": 3.3,
+          "guide": "Apply few-shot prompting to improve output consistency and quality: 2–4 targeted examples for ambiguous cases that show the reasoning behind the choice, demonstrating output format, generalizing to novel patterns, and reducing hallucination for varied document layouts." },
+        { "id": "4.3", "slug": "structured-output-tool-use", "name": "Structured Output via Tool Use & JSON Schemas", "weight": 3.4,
+          "guide": "Enforce structured output using tool use and JSON schemas: schemas eliminate syntax errors but not semantic errors; tool_choice any versus forced tool; required versus nullable fields to prevent fabrication; enums with 'other' plus detail and 'unclear' values; normalization rules." },
+        { "id": "4.4", "slug": "validation-retry-loops", "name": "Validation, Retry & Feedback Loops", "weight": 3.3,
+          "guide": "Implement validation, retry and feedback loops for extraction quality: retry with the document, the failed output and the specific validation error; recognize when retries cannot help because information is absent; self-correction fields such as calculated versus stated totals; detected_pattern fields for analyzing dismissals." },
+        { "id": "4.5", "slug": "batch-processing", "name": "Batch Processing Strategy", "weight": 3.3,
+          "guide": "Design efficient batch processing strategies: the Message Batches API's 50% cost saving and up-to-24-hour window without latency guarantees, matching it to latency-tolerant workloads only, custom_id correlation, resubmitting only failed items, and refining prompts on a sample before large runs." },
+        { "id": "4.6", "slug": "multi-pass-review", "name": "Multi-Instance & Multi-Pass Review", "weight": 3.3,
+          "guide": "Design multi-instance and multi-pass review architectures: why a model reviewing its own output in the same session is less effective, independent reviewer instances without the generator's reasoning, per-file local passes plus cross-file integration passes, and confidence self-reports for routing review." }
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "context-management-reliability",
+      "name": "Context Management & Reliability",
+      "weight": 15,
+      "summary": "Preserve critical facts across long interactions, escalate and resolve ambiguity correctly, propagate errors across agents, explore large codebases without context degradation, calibrate human review, and keep provenance in multi-source synthesis.",
+      "skills": [
+        { "id": "5.1", "slug": "conversation-context", "name": "Preserving Critical Context", "weight": 2.5,
+          "guide": "Manage conversation context to preserve critical information across long interactions: progressive summarization loses numbers, dates and commitments; keep a persistent case-facts block; the lost-in-the-middle effect; trim verbose tool outputs to the fields that matter; place key findings at the start." },
+        { "id": "5.2", "slug": "escalation-ambiguity", "name": "Escalation & Ambiguity Resolution", "weight": 2.5,
+          "guide": "Design effective escalation and ambiguity resolution patterns: honor explicit requests for a human, escalate on policy gaps and when progress stalls, avoid unreliable triggers such as sentiment or self-reported confidence, and ask for identifiers when a lookup returns multiple matches." },
+        { "id": "5.3", "slug": "error-propagation", "name": "Error Propagation in Multi-Agent Systems", "weight": 2.5,
+          "guide": "Implement error propagation strategies across multi-agent systems: return structured error context (failure type, attempted query, partial results, alternatives) to the coordinator; never silently suppress errors as empty success or abort the whole workflow on one failure; annotate coverage gaps." },
+        { "id": "5.4", "slug": "large-codebase-context", "name": "Context in Large Codebase Exploration", "weight": 2.5,
+          "guide": "Manage context effectively in large codebase exploration: recognize context degradation in long sessions, keep scratchpad files of findings, delegate verbose exploration to subagents, summarize before moving to the next phase, use /compact deliberately, and keep crash-recovery manifests." },
+        { "id": "5.5", "slug": "human-review-calibration", "name": "Human Review & Confidence Calibration", "weight": 2.5,
+          "guide": "Design human review workflows and confidence calibration: aggregate accuracy hides weak document types and fields; validate per type and per field, use stratified random sampling of automated results, and calibrate field-level confidence thresholds on labeled validation sets." },
+        { "id": "5.6", "slug": "information-provenance", "name": "Information Provenance & Uncertainty", "weight": 2.5,
+          "guide": "Preserve information provenance and uncertainty in multi-source synthesis: claim–source mappings that survive summarization, annotating conflicting values with their sources instead of picking one, carrying publication and collection dates, and rendering each content type appropriately." }
+      ]
+    }
+  ]
+}

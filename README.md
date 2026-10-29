@@ -1,4 +1,13 @@
-# CCDV-F Study Guide — Claude Certified Developer (Foundations)
+# Claude Certification Study Guides — Developer (CCDV-F) & Architect (CCA-F)
+
+Two offline-capable prep tracks that share one app (switch tracks in the header):
+
+| Track | Open | Content |
+|---|---|---|
+| **Claude Certified Developer – Foundations (CCDV-F)** | `index.html` | 25 lessons · 365 questions · 53-item mocks |
+| **Claude Certified Architect – Foundations (CCA-F)** | `architect/index.html` | 30 lessons · 241 scenario-based questions · 60-item mocks drawing 4 of 6 scenarios |
+
+## Developer track
 
 A complete, offline-capable prep track for Anthropic's **Claude Certified Developer – Foundations (CCDV-F)** exam, built on the official Exam Guide v1.0 (effective July 2026): 53 items, 120 minutes, pass at 720/1,000, 8 domains and 25 individually weighted skills.
 
@@ -14,6 +23,18 @@ A complete, offline-capable prep track for Anthropic's **Claude Certified Develo
 | **Look Up** | Quick-reference cheat sheets, glossary (177 terms), exam guide summary, full-text search |
 
 Question bank: 365 items (original questions plus the three official sample questions), sized by skill weight, with explanations for every answer and option lengths balanced so the correct answer can't be guessed from length.
+
+## Architect track
+
+Prep for **Claude Certified Architect – Foundations (CCA-F)** (launched March 2026 via the Claude Partner Network): 60 single-answer items, 120 minutes, pass at 720/1,000, 5 domains (Agentic Architecture & Orchestration 27%, Tool Design & MCP Integration 18%, Claude Code Configuration & Workflows 20%, Prompt Engineering & Structured Output 20%, Context Management & Reliability 15%) and 30 task statements. Each sitting draws 4 of 6 published scenarios.
+
+- **Curriculum:** one lesson per task statement (patterns, anti-patterns, exam traps, scenario questions, build exercise).
+- **Practice:** every question is tagged with one of the six scenarios; mocks draw scenarios at random and group items by scenario like the real exam.
+- **Weights:** Anthropic publishes domain weights only; task weights split each domain evenly (an estimate used to size lessons, mocks and the bank).
+- **Exercises:** `architect/exercises/` — tested reference solutions (agent loop with budget, prerequisite gate, structured MCP errors, validation–retry extraction, batch resubmission, escalation). Run `python architect/exercises/test_solutions.py`.
+- Administrative facts (exam code, fee, retake/validity rules) vary between public sources; the guide marks them as "confirm on Anthropic Academy".
+
+Progress is stored separately per track (`ccdv:` / `ccar:` localStorage prefixes).
 
 ## Build exercises
 
@@ -34,7 +55,7 @@ then open http://localhost:8765. Progress is stored in your browser's localStora
 
 ## Edit content
 
-All content lives in Markdown under `content/`:
+All Developer content lives in Markdown under `content/`; the Architect track mirrors the same layout under `architect/content/` (questions additionally carry `scenario: S1`–`S6`). Track-specific UI text, exam sizes and the storage prefix live in each `blueprint.json` under `ui`.
 
 ```
 content/
@@ -46,7 +67,7 @@ content/
   pages/*.md            # exam-guide, quick-reference, study-plan
 ```
 
-Rebuild after editing:
+Rebuild after editing (both tracks, or one: `node build.mjs architect`):
 
 ```bash
 node build.mjs
