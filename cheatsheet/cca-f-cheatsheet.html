@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>CCA-F Cheat Sheet</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 7.6pt; line-height: 1.28; }
+  .page { width: 210mm; height: 297mm; padding: 7mm 7.5mm 6mm; overflow: hidden; page-break-after: always; break-after: page; position: relative; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .cols { column-count: 3; column-gap: 4mm; column-fill: auto; height: calc(297mm - 13mm - 4mm); }
+  .page.first .cols { height: calc(297mm - 13mm - 4mm - 17mm); }
+  .foot { position: absolute; bottom: 2.5mm; left: 7.5mm; right: 7.5mm; font-size: 6pt; color: #888; display: flex; justify-content: space-between; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #c15f3c; padding-bottom: 2mm; margin-bottom: 2.5mm; height: 14.5mm; }
+  header h1 { font-size: 15pt; margin: 0; color: #c15f3c; letter-spacing: -0.2px; }
+  header .sub { font-size: 7.5pt; color: #555; }
+  header .facts { text-align: right; font-size: 7.4pt; }
+  h2 { font-size: 9pt; margin: 2.2mm 0 1mm; padding: 0.6mm 1.5mm; color: #fff; background: #333; border-radius: 1mm; break-after: avoid; }
+  h2 .w { float: right; font-weight: 400; opacity: .9; }
+  h2.d1 { background: #8a4fbf; } h2.d2 { background: #2f6db5; } h2.d3 { background: #2a8a7a; } h2.d4 { background: #b5427a; } h2.d5 { background: #c15f3c; } h2.gen { background: #333; }
+  h3 { font-size: 8.1pt; margin: 1.5mm 0 0.5mm; color: #222; border-bottom: 0.5px solid #bbb; break-after: avoid; }
+  p { margin: 0.4mm 0 0.8mm; }
+  ul, ol { margin: 0.3mm 0 0.9mm; padding-left: 3.4mm; }
+  li { margin: 0.15mm 0; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 0.92em; background: #f1efe9; padding: 0 0.6mm; border-radius: 0.5mm; overflow-wrap: anywhere; }
+  td code { font-size: 0.88em; }
+  pre { font-family: Consolas, monospace; font-size: 6pt; line-height: 1.22; overflow-wrap: anywhere; background: #f1efe9; padding: 1mm 1.3mm; margin: 0.6mm 0 1mm; white-space: pre-wrap; border-radius: 0.8mm; break-inside: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 0.5mm 0 1.1mm; break-inside: avoid; }
+  th, td { border: 0.5px solid #c9c4b8; padding: 0.35mm 0.9mm; vertical-align: top; text-align: left; }
+  th { background: #ece8de; font-weight: 600; }
+  .trap { background: #fdecea; border-left: 2px solid #b33a3a; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .key { background: #eaf2fb; border-left: 2px solid #2f6db5; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .ok { background: #ebf5ea; border-left: 2px solid #3a7a3a; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .trap b:first-child, .key b:first-child, .ok b:first-child { display: block; }
+  .bar { display: flex; height: 3.4mm; margin: 0.6mm 0 0.3mm; border-radius: 0.6mm; overflow: hidden; font-size: 5.8pt; color: #fff; font-weight: 600; }
+  .bar span { display: flex; align-items: center; justify-content: center; }
+  .small { font-size: 6.4pt; color: #444; }
+  .nobr { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ============ SEITE 1 ============ -->
+<div class="page first">
+<header>
+  <div>
+    <h1>Claude Certified Architect – Foundations (CCA-F)</h1>
+    <div class="sub">Kompakt-Spickzettel für die Prüfung · 5 Domains · 30 Task Statements · 6 Szenarien · Fokus: <i>Welches Design ist richtig – und warum?</i></div>
+  </div>
+  <div class="facts"><b>60 Items · 120 Min · Bestehen ab 720/1000</b><br>≈ 2 Min pro Frage · 4 von 6 Szenarien · jede Frage beantworten</div>
+</header>
+<div class="cols">
+
+<h2 class="gen">Prüfung auf einen Blick</h2>
+<table>
+<tr><td>Format</td><td><b>Nur Single Choice</b>: 1 richtige Antwort + 3 plausible Distraktoren (meist eine <i>echte</i> Technik, falsch angewendet)</td></tr>
+<tr><td>Szenarien</td><td>Pro Termin werden <b>4 der 6</b> Szenarien zufällig gezogen; jedes rahmt eine Gruppe von Fragen → <b>alle 6 vorbereiten</b></td></tr>
+<tr><td>Bewertung</td><td>Scaled Score 100–1.000, <b>Pass 720</b>, Ergebnis Pass/Fail. Unbeantwortet = falsch, <b>kein Malus</b> fürs Raten</td></tr>
+<tr><td>Rahmen</td><td>Proctored, closed book, ohne KI. Anmeldung über Anthropic Academy (Skilljar), Claude Partner Network. Start: März 2026</td></tr>
+<tr><td>Admin</td><td>Gebühr (berichtet ~$99), Retakes, Gültigkeit, Code (CCA-F / CCAR-F) <b>vor Buchung auf der Academy prüfen</b></td></tr>
+</table>
+
+<h3>Gewichtung der Domains</h3>
+<div class="bar">
+  <span style="width:27%;background:#8a4fbf">D1 27 %</span><span style="width:18%;background:#2f6db5">D2 18 %</span><span style="width:20%;background:#2a8a7a">D3 20 %</span><span style="width:20%;background:#b5427a">D4 20 %</span><span style="width:15%;background:#c15f3c">D5 15 %</span>
+</div>
+<table>
+<tr><th>Domain</th><th>%</th><th>Tasks</th></tr>
+<tr><td><b>D1 Agentic Architecture &amp; Orchestration</b></td><td><b>27</b></td><td>1.1–1.7: Loops, Multi-Agent, Subagent-Kontext, Enforcement/Handoff, SDK-Hooks, Decomposition, Sessions</td></tr>
+<tr><td>D2 Tool Design &amp; MCP Integration</td><td>18</td><td>2.1–2.5: Tool-Interfaces, strukturierte Fehler, Tool-Verteilung/<code>tool_choice</code>, MCP-Server, Built-in Tools</td></tr>
+<tr><td>D3 Claude Code Configuration &amp; Workflows</td><td>20</td><td>3.1–3.6: CLAUDE.md, Commands/Skills, Path Rules, Plan Mode, Iteration, CI/CD</td></tr>
+<tr><td>D4 Prompt Engineering &amp; Structured Output</td><td>20</td><td>4.1–4.6: Kriterien, Few-Shot, Schemas, Validation-Retry, Batch, Multi-Pass-Review</td></tr>
+<tr><td>D5 Context Management &amp; Reliability</td><td>15</td><td>5.1–5.6: Kontext, Eskalation, Fehlerweitergabe, große Codebases, Human Review, Provenance</td></tr>
+</table>
+
+<h3>Die 6 Szenarien – was dort typischerweise geprüft wird</h3>
+<table>
+<tr><td><b>S1</b> Customer Support Resolution Agent<br><span class="small">Agent SDK + MCP-Tools <code>get_customer</code>, <code>lookup_order</code>, <code>process_refund</code>, <code>escalate_to_human</code>; Ziel 80 %+ First-Contact-Resolution</span></td><td>Agent Loop, <b>Prerequisite Gate</b> (Identität vor Refund), Hooks, Tool-Design, Eskalation, Handoff, Case-Facts</td></tr>
+<tr><td><b>S2</b> Code Generation with Claude Code</td><td>CLAUDE.md-Hierarchie, Rules, Skills/Commands, Plan Mode vs. direkt, iterative Verfeinerung</td></tr>
+<tr><td><b>S3</b> Multi-Agent Research System<br><span class="small">Coordinator → Websuche, Dokumentanalyse, Synthese, Report mit Zitaten</span></td><td>Hub-and-Spoke, Kontextübergabe, parallele Subagents, Fehlerweitergabe, Provenance</td></tr>
+<tr><td><b>S4</b> Developer Productivity</td><td>Built-in Tools (Read/Write/Edit/Bash/Grep/Glob), Codebase-Exploration, Kontextdegradation, Sessions, MCP</td></tr>
+<tr><td><b>S5</b> Claude Code for CI/CD</td><td><code>-p</code>, JSON-Output, unabhängige Review-Instanz, explizite Kriterien, False Positives, Batch vs. synchron</td></tr>
+<tr><td><b>S6</b> Structured Data Extraction</td><td>Tool-Use-Schemas, <code>tool_choice</code>, nullable Felder, Validation-Retry, Few-Shot, Human Review, Kalibrierung</td></tr>
+</table>
+
+<h2 class="gen">Die 4 Lösungsmuster der Prüfung</h2>
+<ol>
+<li><b>Deterministisch schlägt probabilistisch</b>, wenn eine <i>Garantie</i> verlangt ist („muss immer", „nie", Compliance, Geld, Identität) → Hook, Gate, Permission, Schema – <b>nicht</b> ein stärkerer Prompt.</li>
+<li><b>Ursache auf der richtigen Ebene beheben:</b> falsches Tool → <i>Tool-Beschreibung</i>; erfundene Werte → <i>nullable</i> Feld; Subagent fehlt Info → <i>explizit übergeben</i>.</li>
+<li><b>Verhältnismäßig:</b> Die einfachste Lösung, die das Problem <i>vollständig</i> löst, schlägt Klassifikator, Fine-Tuning, zusätzliche Agent-Ebene, größeres Modell/Kontextfenster.</li>
+<li><b>Qualifier lesen:</b> „most effective <i>first</i> step", „most reliable", „lowest cost while meeting SLA" – mehrere Optionen sind <i>möglich</i>, nur eine ist <i>am besten</i>.</li>
+</ol>
+
+<h2 class="gen">Die 10 Entscheidungsregeln</h2>
+<table>
+<tr><th>Wenn das Szenario sagt …</th><th>… ist die Antwort meist</th></tr>
+<tr><td>„must always", „never", Compliance, Geld, Identität</td><td><b>Deterministische Kontrolle</b>: Hook, Prerequisite Gate, Permission, Schema</td></tr>
+<tr><td>Modell wählt das falsche Tool</td><td><b>Tool-Beschreibungen</b> verbessern (Zweck, Inputs, Abgrenzung); überlappende Tools umbenennen/splitten</td></tr>
+<tr><td>Subagent fehlt Info, die der Coordinator hatte</td><td><b>Explizit im Delegations-Prompt übergeben</b> – Subagents erben keinen Kontext</td></tr>
+<tr><td>Output muss valides JSON für ein Downstream-System sein</td><td><b>Tool Use mit JSON Schema</b> (Structured Outputs), danach Semantik im Code validieren</td></tr>
+<tr><td>Modell erfindet Werte, die nicht in der Quelle stehen</td><td>Feld <b>optional/nullable</b>, „unclear" erlauben</td></tr>
+<tr><td>Dieselbe Session hat Code erzeugt und reviewt</td><td><b>Unabhängige Review-Instanz</b> ohne das Reasoning des Generators</td></tr>
+<tr><td>Nachts / wöchentlich / nicht blockierend, große Mengen</td><td><b>Message Batches API</b> (−50 %, ≤ 24 h). Blockierender Pre-Merge-Check → synchron</td></tr>
+<tr><td>Kunde verlangt einen Menschen</td><td><b>Sofort eskalieren</b> – nicht erst selbst lösen</td></tr>
+<tr><td>Subagent-Aufruf schlägt fehl</td><td><b>Strukturierten Fehlerkontext</b> an den Coordinator; kein Fake-Erfolg, kein Totalabbruch</td></tr>
+<tr><td>Lange Session vergisst Zahlen &amp; Daten</td><td><b>Persistenter Case-Facts-Block</b> statt progressiver Zusammenfassungen</td></tr>
+</table>
+
+<h2 class="d1">D1 Agentic Architecture &amp; Orchestration <span class="w">27 %</span></h2>
+<h3>1.1 Agentic Loop – die erwartete Form</h3>
+<pre>messages = [{"role": "user", "content": task}]
+while True:
+    resp = client.messages.create(model=MODEL, max_tokens=4096,
+                                  tools=TOOLS, messages=messages)
+    messages.append({"role": "assistant", "content": resp.content})
+    if resp.stop_reason != "tool_use":   # end_turn → fertig
+        break
+    results = [run_tool(b) for b in resp.content
+               if b.type == "tool_use"]
+    messages.append({"role": "user", "content": results})
+    # tool_result-Blöcke mit passender tool_use_id</pre>
+<table>
+<tr><th><code>stop_reason</code></th><th>Bedeutung → Aktion</th></tr>
+<tr><td><code>tool_use</code></td><td>Tools gewünscht → <b>alle</b> ausführen, Ergebnisse anhängen, erneut aufrufen</td></tr>
+<tr><td><code>end_turn</code></td><td>Fertig → Loop verlassen, Antwort zurückgeben</td></tr>
+<tr><td><code>max_tokens</code></td><td>Budget mitten in Antwort erschöpft → erhöhen / fortsetzen, <b>nicht</b> als fertig werten</td></tr>
+<tr><td><code>pause_turn</code></td><td>Server-Tool-Loop pausiert → Antwort zurückschicken, Claude macht weiter</td></tr>
+<tr><td><code>refusal</code></td><td>Abgelehnt → behandeln/anzeigen, nicht blind wiederholen</td></tr>
+</table>
+
+</div>
+<div class="foot"><span>CCA-F Cheat Sheet · unabhängige Lernhilfe, nicht von Anthropic</span><span>Seite 1/4 · Überblick, Szenarien, Entscheidungsregeln, Agent Loop</span></div>
+</div>
+
+<!-- ============ SEITE 2 ============ -->
+<div class="page">
+<div class="cols">
+
+<div class="trap"><b>1.1 Anti-Patterns im Agent Loop</b>Prüfen, ob die Antwort „fertig klingt" · stoppen, sobald ein Textblock kommt · <b>Iterations-Cap als primäres Stoppsignal</b> (Cap = Sicherheitsnetz, das flaggt/wirft, kein stilles „done") · Tool-Results (auch Fehler) nicht in die History schreiben · nur einen von mehreren <code>tool_use</code>-Blöcken beantworten.</div>
+
+<h3>1.2 Multi-Agent-Orchestrierung (Hub-and-Spoke)</h3>
+<ul>
+<li><b>Coordinator</b> zerlegt, delegiert, leitet <b>alle</b> Kommunikation, aggregiert, entscheidet über weitere Iterationen. Subagents reden <b>nie direkt</b> miteinander (Beobachtbarkeit, Konfliktlösung).</li>
+<li><b>Isolation:</b> Jeder Subagent hat eigenen Kontext; sieht nur Delegations-Prompt + eigenen System-Prompt, Tools (ggf. CLAUDE.md).</li>
+<li><b>Coverage-Lücke</b> trotz guter Subagent-Arbeit → Fehler liegt in der <b>Zerlegung des Coordinators</b> (zu eng), nicht bei den Subagents.</li>
+<li>Aufwand skaliert mit der Frage: einfache Faktenfrage ≠ volle Pipeline.</li>
+</ul>
+
+<h3>1.3 Subagent-Aufruf &amp; Kontextübergabe</h3>
+<ul>
+<li>Coordinator braucht das <b>Task/Agent-Tool in <code>allowed_tools</code></b> – sonst kann er nicht delegieren („delegiert nie").</li>
+<li><code>AgentDefinition(description, prompt, tools)</code>: <code>description</code> steuert, <i>wann</i> delegiert wird.</li>
+<li><b>Explizit übergeben:</b> bisherige Findings, Constraints, Quellen-Metadaten, erwartetes Output-Format.</li>
+<li>Rückgabe als <b>strukturierte Daten mit Metadaten</b> (URL, Datum, Confidence).</li>
+<li><b>Parallel:</b> mehrere Task-Aufrufe <b>in einer Antwort</b> emittieren.</li>
+</ul>
+<pre>options = ClaudeAgentOptions(
+  allowed_tools=["Task", "Read", "Grep", "Glob"],
+  agents={"web-researcher": AgentDefinition(
+    description="Searches the web for one sub-question.",
+    prompt="Return JSON: [{claim, source_url, published,
+            excerpt}]. Never drop dates.",
+    tools=["WebSearch", "WebFetch"])})</pre>
+<div class="trap"><b>Falle</b>„Größeres Kontextfenster / größeres Modell für den Subagent" – irrelevant, die Info wurde nie übergeben. Subagents teilen <b>keine Konversation</b> mit dem Coordinator (höchstens das Dateisystem).</div>
+
+<h3>1.4 Workflow-Enforcement &amp; Handoff</h3>
+<ul>
+<li><b>Prerequisite Gate</b> im Code: <code>process_refund</code> blockiert, bis <code>get_customer</code> eine verifizierte ID geliefert hat. Gate gibt <b>strukturierten Fehler</b> zurück (was fehlt) – kein stilles Blocken.</li>
+<li>Mehrteilige Anfragen (Retoure + Adressänderung + Rechnungsfrage) in Teilanliegen zerlegen, jedes abarbeiten.</li>
+<li><b>Handoff an Menschen:</b> knappe strukturierte Zusammenfassung (Kunden-ID, Bestell-IDs, Beträge, Bisheriges, Ursache, empfohlene Aktion) – <b>kein Transkript-Dump</b>.</li>
+</ul>
+<div class="trap"><b>Falle</b>„System-Prompt verschärfen / Few-Shot / GROSSBUCHSTABEN" bei Compliance-Fehlern → bleibt probabilistisch (Fehlerrate &gt; 0). Gate oder Hook wählen.</div>
+
+<h3>1.5 Agent SDK Hooks</h3>
+<table>
+<tr><th>Bedarf</th><th>Mechanismus</th></tr>
+<tr><td>Refunds &gt; $500 nur durch Menschen</td><td><b>PreToolUse</b>: blockieren + umleiten (Grund nennen!)</td></tr>
+<tr><td>Tools liefern Unix-Zeit, ISO, „MM/DD", Statuscodes 3 vs. „shipped"</td><td><b>PostToolUse</b>: normalisieren, bevor das Modell es sieht</td></tr>
+<tr><td>Third-Party-MCP-Server, nicht änderbar</td><td>Hook um das Tool herum</td></tr>
+<tr><td>Stil / Vorlieben / Vorgehen</td><td>Prompt oder CLAUDE.md (reicht, wenn keine 100 % nötig)</td></tr>
+</table>
+<pre>async def refund_policy(input_data, tool_use_id, context):
+    if input_data["tool_input"]["amount"] > 500:
+        return {"hookSpecificOutput": {
+          "hookEventName": "PreToolUse",
+          "permissionDecision": "deny",
+          "permissionDecisionReason":
+            "Over $500: call escalate_to_human instead."}}
+    return {}
+options = ClaudeAgentOptions(hooks={"PreToolUse": [
+  HookMatcher(matcher="mcp__billing__process_refund",
+              hooks=[refund_policy])]})</pre>
+<p class="small">Der <b>Grund</b> geht an Claude zurück → Agent eskaliert statt zu wiederholen. Claude Code: Hooks = Shell-Commands in <code>settings.json</code>, <b>Exit 2 blockiert</b>; Agent SDK: Callbacks in <code>ClaudeAgentOptions(hooks=…)</code>.</p>
+
+<h3>1.6 Task Decomposition</h3>
+<table>
+<tr><td><b>Fester Prompt Chain</b></td><td>vorhersehbare, immer gleiche Schritte (Checkliste) → billiger, schneller, zuverlässiger als ein Agent</td></tr>
+<tr><td><b>Dynamisch / adaptiv</b></td><td>offene Untersuchung → Agent plant und re-plant je nach Fund</td></tr>
+<tr><td><b>Großes Review</b></td><td>Pro-Datei-Pässe (lokal) + <b>ein Cross-File-Integrationspass</b> – statt ein Mega-Pass über 40 Dateien</td></tr>
+</table>
+
+<h3>1.7 Sessions: Resume, Fork, Neustart</h3>
+<table>
+<tr><th>Operation</th><th>Wie</th><th>Wann</th></tr>
+<tr><td><b>Resume</b></td><td><code>claude --resume &lt;id|name&gt;</code>, <code>--continue</code>; SDK <code>resume=</code></td><td>gleiche Arbeit, Kontext noch gültig</td></tr>
+<tr><td><b>Fork</b></td><td>SDK <code>resume=…, fork_session=True</code>; CLI <code>--fork-session</code></td><td><b>divergente Ansätze</b> vom gleichen Stand vergleichen, ohne Kontamination</td></tr>
+<tr><td><b>Neu + Summary</b></td><td>neue Session mit strukturierter Zusammenfassung</td><td>Tool-Results <b>veraltet</b> / Kontext zugemüllt</td></tr>
+</table>
+<p class="small">Wenige bekannte Dateien geändert → resumen und <b>genau sagen, was sich geändert hat</b> („re-read billing.py"). Nie das alte Transkript in eine neue Session kippen. Sessions benennen (<code>/rename</code>).</p>
+
+<h2 class="d2">D2 Tool Design &amp; MCP Integration <span class="w">18 %</span></h2>
+<h3>2.1 Tool-Interfaces</h3>
+<ul>
+<li>Die <b>Beschreibung ist das primäre Auswahlsignal</b>: Zweck, Input-Formate, Beispiel-Queries, Edge Cases, <b>wann dieses statt des ähnlichen Tools</b>.</li>
+<li>Generische Tools splitten: <code>analyze_document</code> → <code>extract_data_points</code>, <code>summarize_content</code>, <code>verify_claim_against_source</code>. Überlappende umbenennen.</li>
+</ul>
+<div class="trap"><b>Falle</b>Als erster Fix „Routing-Klassifikator bauen" (overengineered), „Tools zusammenlegen" (versteckt Mehrdeutigkeit in Parametern) oder Few-Shot als Hauptfix (Tokens pro Call, skaliert nicht). <b>Erst Beschreibungen.</b></div>
+
+<h3>2.2 Strukturierte Fehler für MCP-Tools</h3>
+<pre>{ "isError": true,
+  "content": [{ "type": "text", "text":
+   "{\"errorCategory\":\"transient\",\"isRetryable\":true,
+     \"message\":\"Order service timed out after 5s\",
+     \"attempted\":\"lookup_order(ORD-1182)\"}" }] }</pre>
+<table>
+<tr><th>Kategorie</th><th>Beispiel</th><th>Agent soll</th></tr>
+<tr><td>Transient</td><td>Timeout, 503</td><td>Retry mit Backoff</td></tr>
+<tr><td>Validation</td><td>falsches ID-Format</td><td>Input korrigieren, retry</td></tr>
+<tr><td>Business</td><td>Refund über Policy</td><td>erklären/eskalieren, <b>kein Retry</b></td></tr>
+<tr><td>Permission</td><td>nicht autorisiert</td><td>eskalieren, <b>kein Retry</b></td></tr>
+</table>
+<div class="key"><b>Leer ≠ fehlgeschlagen</b>„0 passende Bestellungen" = erfolgreiches Ergebnis. „DB nicht erreichbar" = Fehler. <b>Nie <code>[]</code> bei einem Fehler zurückgeben</b> (stiller Fehler als Erfolg getarnt = fast immer die schlechteste Option). Generisches „Operation failed" verhindert passende Recovery. Lokal recovern, bevor man weiterreicht.</div>
+
+<h3>2.3 Tool-Verteilung &amp; <code>tool_choice</code></h3>
+<ul>
+<li>Zu viele Tools verschlechtern die Auswahl: <b>4–5 fokussierte</b> pro Agent schlagen 18. Tools nach Rolle scopen; für häufigen Cross-Role-Bedarf ein <b>schmales</b> Zusatz-Tool.</li>
+</ul>
+<table>
+<tr><td><code>{"type":"auto"}</code></td><td>darf auch nur Text antworten</td></tr>
+<tr><td><code>{"type":"any"}</code></td><td>muss <b>irgendein</b> Tool aufrufen → strukturiert, wenn Dokumenttyp unbekannt (Claude wählt Schema)</td></tr>
+<tr><td><code>{"type":"tool","name":"x"}</code></td><td>muss <b>x</b> aufrufen → bekannter, fester Schritt</td></tr>
+<tr><td><code>{"type":"none"}</code></td><td>kein Tool</td></tr>
+</table>
+<div class="trap"><b>Falle</b><code>auto</code>, obwohl „immer strukturierte Daten" verlangt ist. Forced Tool, obwohl das richtige Tool vom Input abhängt (→ <code>any</code>).</div>
+
+</div>
+<div class="foot"><span>CCA-F Cheat Sheet</span><span>Seite 2/4 · D1 Orchestrierung, Hooks, Sessions · D2 Tools, Fehler, tool_choice</span></div>
+</div>
+
+<!-- ============ SEITE 3 ============ -->
+<div class="page">
+<div class="cols">
+
+<h3>2.4 MCP-Server-Integration</h3>
+<table>
+<tr><th>Scope</th><th>Ort</th><th>Geteilt?</th></tr>
+<tr><td>Project</td><td><code>.mcp.json</code> im Repo-Root</td><td><b>Ja</b> – versioniert, fürs Team</td></tr>
+<tr><td>User</td><td><code>~/.claude.json</code></td><td>Nein – persönlich / experimentell</td></tr>
+<tr><td>Secrets</td><td><code>"env": {"TOKEN": "${GITHUB_TOKEN}"}</code></td><td>zur Laufzeit expandiert – <b>nie Tokens committen</b></td></tr>
+</table>
+<ul>
+<li>Tools <b>aller</b> konfigurierten Server sind gleichzeitig verfügbar (Namensschema <code>mcp__server__tool</code>).</li>
+<li><b>MCP Resources</b> für Content-Kataloge (Doku, Schemas): Sichtbarkeit ohne explorative Tool-Calls.</li>
+<li>Für Standard-Integrationen (GitHub, Jira …) <b>bestehende Server</b> nutzen statt eigene bauen.</li>
+</ul>
+
+<h3>2.5 Built-in Tools</h3>
+<table>
+<tr><td><b>Grep</b></td><td>Datei-<b>Inhalte</b> durchsuchen: Aufrufer einer Funktion, Fehlerstrings, Imports</td></tr>
+<tr><td><b>Glob</b></td><td>Dateien nach <b>Pfadmuster</b>: <code>**/*.test.tsx</code> (nie für Aufrufer!)</td></tr>
+<tr><td><b>Read / Write</b></td><td>Datei laden / ganze Datei schreiben</td></tr>
+<tr><td><b>Edit</b></td><td>gezielte Änderung über <b>eindeutigen</b> Anker-String; nicht eindeutig → mehr Kontext oder <b>Read + Write</b> (nicht denselben Edit wiederholen)</td></tr>
+<tr><td><b>Bash</b></td><td>Befehle, Tests, Builds</td></tr>
+</table>
+<p class="small"><b>Inkrementell erkunden</b> (Grep → gezielt Read) statt die ganze Codebase vorab zu lesen.</p>
+
+<h2 class="d3">D3 Claude Code Configuration &amp; Workflows <span class="w">20 %</span></h2>
+<h3>3.1 CLAUDE.md-Hierarchie</h3>
+<table>
+<tr><th>Was</th><th>Wo</th><th>Geladen</th></tr>
+<tr><td>Persönliche Präferenzen</td><td><code>~/.claude/CLAUDE.md</code></td><td>immer, <b>nur für dich</b> (nicht geteilt)</td></tr>
+<tr><td>Team-Konventionen</td><td><code>CLAUDE.md</code> / <code>.claude/CLAUDE.md</code></td><td>immer, für alle (versioniert)</td></tr>
+<tr><td>Paket-/Bereichsregeln</td><td><code>&lt;dir&gt;/CLAUDE.md</code></td><td>beim Arbeiten in dem Verzeichnis</td></tr>
+<tr><td>Dateityp-Regeln über Verzeichnisse</td><td><code>.claude/rules/*.md</code> mit <code>paths:</code></td><td>nur wenn passende Dateien berührt werden</td></tr>
+<tr><td>Modulare Includes</td><td><code>@path/to/file.md</code> in CLAUDE.md</td><td>mit der einbindenden Datei</td></tr>
+<tr><td>Team-Workflow on demand</td><td><code>.claude/skills/&lt;n&gt;/SKILL.md</code>, <code>.claude/commands/*.md</code></td><td>bei Aufruf / Relevanz</td></tr>
+<tr><td>Persönlicher Workflow</td><td><code>~/.claude/skills/</code>, <code>~/.claude/commands/</code></td><td>nur für dich</td></tr>
+</table>
+<div class="trap"><b>Fallen</b>Team-Regeln in <code>~/.claude/CLAUDE.md</code> (nur dein Rechner) · eine Riesen-CLAUDE.md im Monorepo (splitten: <code>@import</code>, Verzeichnis-Dateien, Rules) · „Anweisung wird ignoriert" → zuerst mit <b><code>/memory</code></b> prüfen, ob die Datei überhaupt geladen ist, nicht umformulieren.</div>
+
+<h3>3.2 Slash Commands &amp; Skills</h3>
+<pre>--- .claude/skills/review-api/SKILL.md
+name: review-api
+description: Review an API route against our REST
+  conventions. Use when asked to review endpoints.
+argument-hint: "[path to route file]"
+allowed-tools: Read, Grep, Glob
+context: fork
+---
+Review $ARGUMENTS against docs/api-conventions.md.
+Report only violations, with line numbers.</pre>
+<ul>
+<li><code>context: fork</code> → läuft in isoliertem Subagent-Kontext; verbose Skills fluten sonst den Hauptkontext.</li>
+<li><code>allowed-tools</code> → „nur auditieren, nicht ändern" deterministisch machen.</li>
+<li><code>argument-hint</code> / <code>$ARGUMENTS</code> → Parameter.</li>
+<li><b>Skill</b> = On-Demand-Workflow · <b>CLAUDE.md</b> = immer aktive Konventionen. Team-Command in <code>.claude/commands/</code> (Repo), nicht <code>~/.claude/</code>.</li>
+</ul>
+
+<h3>3.3 Path-specific Rules</h3>
+<pre>--- .claude/rules/testing.md
+paths:
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+---
+Use Vitest and Testing Library. One behaviour per test.</pre>
+<p>Wählen, wenn Konventionen <b>über viele Verzeichnisse verteilt</b> gelten (z. B. alle Testdateien). Verzeichnis-CLAUDE.md würde Duplikate erfordern; Root-CLAUDE.md lädt Irrelevantes in jede Session; ein Skill wird nicht automatisch angewendet.</p>
+
+<h3>3.4 Plan Mode vs. direkte Ausführung</h3>
+<table>
+<tr><td><b>Plan Mode</b></td><td>groß, mehrere Dateien, architektonisch, mehrdeutig, riskant (z. B. Migration, sweeping Refactor) – Alternativen abwägen, bevor Code entsteht</td></tr>
+<tr><td><b>Direkt</b></td><td>klein, klar, eine Datei (Bugfix mit klarer Ursache, Validierung ergänzen)</td></tr>
+<tr><td><b>Explore-Subagent</b></td><td>verbose Discovery isolieren – nur die Zusammenfassung landet im Hauptkontext</td></tr>
+</table>
+<p class="small">Kombinierbar: erst planen, dann ausführen. Plan Mode für jede Kleinigkeit = Overhead.</p>
+
+<h3>3.5 Iterative Verfeinerung</h3>
+<ul>
+<li><b>Konkrete Input/Output-Beispiele</b> statt längerer Prosa bei mehrdeutigen Transformationen.</li>
+<li><b>Test-driven:</b> fehlschlagende Tests / Stacktrace <b>einfügen</b> statt beschreiben.</li>
+<li><b>Interview-Pattern:</b> in unbekannter Domäne erst Claude Fragen stellen lassen.</li>
+<li>Zusammenhängende (interagierende) Probleme <b>gebündelt</b> lösen, unabhängige <b>nacheinander</b>.</li>
+</ul>
+
+<h3>3.6 CI/CD-Integration</h3>
+<pre>claude -p "Review the diff against CLAUDE.md. Report only
+  bugs and security issues." --output-format json \
+  --json-schema "$(cat review-schema.json)" > review.json</pre>
+<ul>
+<li><b><code>-p</code> / <code>--print</code></b> = nicht-interaktiv; ohne hängt der Job und wartet auf Eingabe.</li>
+<li><code>--output-format json</code> + <code>--json-schema</code> → maschinenlesbar (Inline-PR-Kommentare) – kein Regex auf Freitext.</li>
+<li>Review-Kriterien &amp; Testkonventionen in <b>CLAUDE.md</b> → CI bekommt denselben Kontext wie Entwickler.</li>
+<li>Review durch <b>separate Instanz</b>, nicht die generierende Session.</li>
+<li><b>Bisherige Findings mitgeben</b> → Re-Runs melden nur neue/ungelöste Punkte (keine Duplikat-Kommentare).</li>
+<li>Blockierender Pre-Merge-Check → <b>synchron</b>, nie Batch API.</li>
+</ul>
+
+<h2 class="d4">D4 Prompt Engineering &amp; Structured Output <span class="w">20 %</span></h2>
+<h3>4.1 Explizite Kriterien &amp; Präzision</h3>
+<ul>
+<li>Konkrete <b>kategoriale Kriterien</b> statt „sei konservativ / nur wichtige Probleme": was melden, was <b>überspringen</b> (z. B. Stil, Naming, TODOs).</li>
+<li><b>Severity-Definitionen mit Beispielen</b>.</li>
+<li>Kategorien mit hoher False-Positive-Rate <b>vorübergehend abschalten</b>, um Vertrauen in die präzisen wiederherzustellen; dann nachschärfen.</li>
+</ul>
+<div class="trap"><b>Falle</b>„Nur Findings mit Confidence &gt; 0,8" als Hauptfix – selbstberichtete Confidence ist unkalibriert. Erst Kriterien.</div>
+
+<h3>4.2 Few-Shot Prompting</h3>
+<ul>
+<li><b>2–4 gezielte</b> Beispiele für <b>mehrdeutige</b> Grenzfälle, die das <b>Reasoning</b> zeigen (nicht nur das Label).</li>
+<li>Formate variieren (Rechnungslayouts) → weniger Halluzination bei neuen Layouts; demonstriert Output-Format.</li>
+<li>10 offensichtliche Beispiele lehren die Grenze nicht. Few-Shot ersetzt <b>kein Schema</b> (macht JSON wahrscheinlich, nicht garantiert).</li>
+</ul>
+
+<h3>4.3 Structured Output via Tool Use &amp; JSON Schema</h3>
+<pre>tools=[{"name": "record_invoice",
+  "input_schema": {"type": "object",
+    "properties": {
+      "invoice_no": {"type": "string"},
+      "due_date": {"type": ["string", "null"]},
+      "category": {"enum": ["goods","services",
+                            "other","unclear"]},
+      "category_detail": {"type": ["string","null"]},
+      "stated_total": {"type": "number"},
+      "calculated_total": {"type": "number"},
+      "conflict_detected": {"type": "boolean"}},
+    "required": ["invoice_no", "stated_total"]}}],
+tool_choice={"type": "tool", "name": "record_invoice"}</pre>
+<ul>
+<li>Schema eliminiert <b>Syntaxfehler, nicht semantische</b> → Summen, Datumsplausibilität im Code prüfen.</li>
+<li><b>Required + nicht-nullable</b> für evtl. fehlende Infos → <b>Fabrikation</b>. Nullable/optional verwenden.</li>
+<li>Enums mit <code>"other"</code> + Detail-String und <code>"unclear"</code>; Normalisierungsregeln (Datumsformat, Währung) festlegen.</li>
+<li>Nur „antworte in JSON" im Prompt reicht für Downstream-Integration nicht.</li>
+</ul>
+
+</div>
+<div class="foot"><span>CCA-F Cheat Sheet</span><span>Seite 3/4 · D2 MCP &amp; Built-ins · D3 Claude Code · D4 Kriterien, Few-Shot, Schemas</span></div>
+</div>
+
+<!-- ============ SEITE 4 ============ -->
+<div class="page">
+<div class="cols">
+
+<h3>4.4 Validation, Retry &amp; Feedback</h3>
+<ul>
+<li>Retry mit <b>Dokument + fehlerhaftem Output + konkretem Validierungsfehler</b> (ohne Fehler → derselbe Fehler).</li>
+<li>Retries helfen <b>nicht</b>, wenn die Info <b>nicht im Dokument steht</b> → Retries deckeln, an Human Review routen.</li>
+<li><b>Self-Check-Felder:</b> <code>calculated_total</code> vs. <code>stated_total</code>, <code>conflict_detected</code>. Abweichung <b>flaggen</b>, nicht stillschweigend überschreiben.</li>
+<li><code>detected_pattern</code>-Felder, um abgelehnte Findings systematisch zu analysieren.</li>
+</ul>
+
+<h3>4.5 Message Batches API</h3>
+<table>
+<tr><td>Kosten</td><td><b>50 %</b> des Standardpreises</td></tr>
+<tr><td>Laufzeit</td><td>bis <b>24 h</b>, <b>keine Latenz-SLA</b></td></tr>
+<tr><td>Zuordnung</td><td><code>custom_id</code> pro Request – Ergebnisse in <b>beliebiger Reihenfolge</b></td></tr>
+<tr><td>Fehler</td><td><b>Nur fehlgeschlagene <code>custom_id</code>s</b> neu einreichen (Ursache vorher fixen, z. B. zu große Dokumente splitten)</td></tr>
+<tr><td>Ungeeignet</td><td>blockierende Workflows (Pre-Merge), Multi-Turn-Tool-Loops innerhalb eines Requests</td></tr>
+<tr><td>Vorgehen</td><td>Prompt erst an einer <b>Stichprobe</b> verfeinern, dann der große Lauf</td></tr>
+</table>
+
+<h3>4.6 Multi-Instance &amp; Multi-Pass Review</h3>
+<ul>
+<li>Selbst-Review in derselben Session = <b>Selbstbestätigung</b> (Reasoning des Generators im Kontext) → <b>unabhängige Instanz</b>.</li>
+<li>Pro Datei lokal + Cross-File-Integrationspass statt ein Mega-Pass (ungleichmäßige Tiefe).</li>
+<li>Confidence-Selbstauskunft nur zum <b>Routen</b> von Reviews – Schwellen erst auf gelabelten Daten validieren, nie unkalibriert auto-approven.</li>
+</ul>
+
+<h2 class="d5">D5 Context Management &amp; Reliability <span class="w">15 %</span></h2>
+<h3>5.1 Kritischen Kontext erhalten</h3>
+<ul>
+<li>Progressive Summaries verlieren <b>Zahlen, Daten, Zusagen</b> → <b>persistenter Case-Facts-Block</b> (Beträge, Daten, Bestell-IDs, Commitments) wörtlich außerhalb der zusammengefassten History.</li>
+<li><b>Lost in the Middle:</b> Kernbefunde an den <b>Anfang</b>, Section Headers in langen Inputs.</li>
+<li><b>Tool-Output trimmen</b> auf benötigte Felder, bevor er sich ansammelt.</li>
+</ul>
+<div class="trap"><b>Falle</b>„Modell mit größerem Kontextfenster" – verschiebt das Problem nur; Summaries verlieren weiter Zahlen, die Mitte wird weiter vernachlässigt.</div>
+
+<h3>5.2 Eskalation &amp; Mehrdeutigkeit</h3>
+<table>
+<tr><th>Eskalieren bei</th><th>Nicht (allein) bei</th></tr>
+<tr><td><b>Expliziter Bitte um Menschen</b> (sofort!), Policy-Lücke/Ausnahme, kein Fortschritt</td><td>Sentiment/Frust-Score (misst Stimmung, nicht Bedarf), selbstberichteter Confidence</td></tr>
+</table>
+<p><b>Mehrdeutiger Treffer</b> (zwei „J. Smith") → <b>nach Identifikator fragen</b> (E-Mail, Bestellnr.), nie den wahrscheinlichsten raten.</p>
+
+<h3>5.3 Fehlerweitergabe in Multi-Agent-Systemen</h3>
+<ul>
+<li>Subagent liefert <b>strukturierten Fehlerkontext</b>: Fehlertyp, versuchte Query, Teilergebnisse, Alternativen.</li>
+<li><b>Nie</b> als leeren Erfolg unterdrücken (falsche Schlüsse ohne Signal); <b>nie</b> alles wegen eines Fehlers abbrechen (verwirft valide Arbeit); keine rohen Stacktraces.</li>
+<li>Coordinator: andere Quelle/Retry versuchen, sonst <b>Coverage-Lücke im Report annotieren</b>.</li>
+</ul>
+
+<h3>5.4 Kontext in großen Codebases</h3>
+<ul>
+<li>Degradation in langen Sessions erkennen (widersprüchliche/vergessene Details).</li>
+<li><b>Scratchpad-Dateien</b> mit Findings; verbose Exploration an <b>Subagents</b> delegieren.</li>
+<li>Vor Phasenwechsel zusammenfassen; <b><code>/compact</code> bewusst an Phasengrenzen</b> mit Anweisung, was erhalten bleibt.</li>
+<li><b>Crash-Recovery-Manifeste</b> (Fortschritt, erledigte Dateien) für lange Läufe.</li>
+</ul>
+
+<h3>5.5 Human Review &amp; Confidence-Kalibrierung</h3>
+<ul>
+<li><b>Aggregierte Accuracy versteckt Schwächen</b> (97 % gesamt, aber 70 % bei handschriftlichen Formularen) → pro <b>Dokumenttyp und Feld</b> messen, bevor Review reduziert wird.</li>
+<li><b>Stratifizierte</b> Stichproben (seltene, fehleranfällige Segmente) statt einfacher Zufallsstichprobe.</li>
+<li>Feld-Confidence-Schwellen auf <b>gelabeltem Validierungsset</b> kalibrieren.</li>
+</ul>
+
+<h3>5.6 Provenance &amp; Unsicherheit</h3>
+<ul>
+<li><b>Claim → Quelle</b> (URL/Dokument, Auszug, Datum) muss Zusammenfassungen überleben.</li>
+<li>Widersprüchliche Werte: <b>beide behalten, mit Quelle annotieren</b> – nicht einen auswählen; unterschiedliche Daten/Methoden erklären.</li>
+<li>Veröffentlichungs- und Erhebungsdatum mitführen; Inhaltstypen passend darstellen (Tabelle für Zahlen, Prosa für Erklärungen).</li>
+</ul>
+
+<h2 class="gen">Verwechslungsgefahr</h2>
+<table>
+<tr><td>Hook / Gate ↔ Prompt</td><td>Garantie ↔ Guidance</td></tr>
+<tr><td>PreToolUse ↔ PostToolUse</td><td>blockieren/umleiten ↔ normalisieren</td></tr>
+<tr><td>Resume ↔ Fork ↔ Neu</td><td>weiter ↔ Alternativen ↔ veraltete Daten</td></tr>
+<tr><td>Grep ↔ Glob</td><td>Inhalt ↔ Pfad</td></tr>
+<tr><td><code>auto</code> ↔ <code>any</code> ↔ forced</td><td>Text erlaubt ↔ irgendein Tool ↔ genau dieses</td></tr>
+<tr><td><code>.mcp.json</code> ↔ <code>~/.claude.json</code></td><td>Team ↔ persönlich</td></tr>
+<tr><td>Rules ↔ Dir-CLAUDE.md ↔ Skill</td><td>Dateityp quer ↔ ein Bereich ↔ on demand</td></tr>
+<tr><td>Batch ↔ synchron</td><td>−50 %, ≤ 24 h ↔ blockierend</td></tr>
+<tr><td>Leeres Ergebnis ↔ Fehler</td><td>Erfolg mit 0 Treffern ↔ <code>isError</code></td></tr>
+<tr><td>Business/Permission ↔ Transient</td><td>kein Retry ↔ Retry mit Backoff</td></tr>
+</table>
+
+<h2 class="gen">Nicht im Fokus (Out of Scope)</h2>
+<p class="small">Fine-Tuning/Training (RLHF, Constitutional AI), Embeddings &amp; Vektor-DB-Interna, API-Auth &amp; Billing-Admin, Hosting von MCP-Servern, Computer Use/Vision-Details, Streaming-Implementierung, Cloud-Provider-Konfiguration. Prompt Caching / Token Counting: Existenz kennen reicht.</p>
+
+<h2 class="gen">Prüfungstaktik</h2>
+<ul>
+<li><b>Zeit:</b> 2 Min/Item → nach 60 Min ≈ Frage 30. Schwere Items flaggen, weiter, am Ende zurück.</li>
+<li>Szenario-Kontext lesen: welche Tools, welche Constraints (Geld? Compliance? Latenz? Team vs. persönlich?).</li>
+<li>Eliminieren: <b>nur Prompt</b> bei Garantie-Anforderung · <b>überdimensioniert</b> (Klassifikator, Fine-Tuning, größeres Modell/Kontext) · <b>stiller Fehler</b> · <b>am Root Cause vorbei</b>.</li>
+<li>Keine Frage leer lassen. <b>Bereit</b> bei stabil <b>≥ 80 %</b> in vollen Mocks über verschiedene Szenario-Ziehungen; offizielle Practice Exam auf der Academy machen.</li>
+</ul>
+
+<h2 class="gen">Last-Minute-Check pro Szenario</h2>
+<table>
+<tr><td><b>S1 Support</b></td><td>Identität per <b>Gate</b> vor <code>process_refund</code> · Betragslimit per <b>PreToolUse</b> · Mensch verlangt → sofort eskalieren · zwei Treffer → ID erfragen · Case-Facts-Block · Handoff = strukturierte Summary · Business-Fehler nicht retryen</td></tr>
+<tr><td><b>S2 Code-Gen</b></td><td>Team → Projekt-CLAUDE.md / <code>.claude/</code> · persönlich → <code>~/.claude/</code> · Testkonventionen quer → <code>.claude/rules/</code> + <code>paths</code> · verboser Skill → <code>context: fork</code> · ignoriert → <code>/memory</code> · großer Umbau → Plan Mode</td></tr>
+<tr><td><b>S3 Research</b></td><td>Lücke → Zerlegung des Coordinators · Kontext explizit übergeben · Task-Tool erlaubt? · parallel = mehrere Calls in einer Antwort · Fehler strukturiert + Lücke annotieren · Claim→Quelle, Konflikte beide behalten</td></tr>
+<tr><td><b>S4 Dev-Prod.</b></td><td>Grep = Inhalt, Glob = Pfad · Edit braucht eindeutigen Anker · inkrementell erkunden · Explore-Subagent · Scratchpad + <code>/compact</code> an Phasengrenzen · Fork für Alternativen, Neustart bei veralteten Results · <code>.mcp.json</code> + <code>${ENV}</code></td></tr>
+<tr><td><b>S5 CI/CD</b></td><td><code>-p</code> · <code>--output-format json</code> + <code>--json-schema</code> · separate Review-Instanz · alte Findings mitgeben · explizite Kriterien, laute Kategorien abschalten · Pre-Merge synchron, Nightly → Batch</td></tr>
+<tr><td><b>S6 Extraction</b></td><td>Tool Use + Schema · <code>any</code> bei unbekanntem Typ, forced bei festem Schritt · nullable statt Fabrikation · <code>other</code>/<code>unclear</code> · Retry mit konkretem Fehler, gedeckelt · stated vs. calculated total flaggen · Accuracy pro Typ/Feld, stratifiziert prüfen · Batch: <code>custom_id</code>, nur Fehlgeschlagene neu</td></tr>
+</table>
+<div class="ok"><b>Merksatz</b>Garantie → Code (Hook/Gate/Schema). Auswahl → Beschreibung. Wissen → explizit übergeben. Fehler → strukturiert, nie still. Kosten ohne Eile → Batch. Prüfen → unabhängige Instanz.</div>
+
+</div>
+<div class="foot"><span>CCA-F Cheat Sheet</span><span>Seite 4/4 · D4 Retry, Batch, Review · D5 Kontext &amp; Reliability · Taktik</span></div>
+</div>
+
+</body>
+</html>
