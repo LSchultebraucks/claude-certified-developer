@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>CCDV-F Cheat Sheet</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; font-size: 7.9pt; line-height: 1.3; }
+  .page { width: 210mm; height: 297mm; padding: 7mm 7.5mm 6mm; overflow: hidden; page-break-after: always; break-after: page; position: relative; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .cols { column-count: 3; column-gap: 4mm; column-fill: auto; height: calc(297mm - 13mm - 4mm); }
+  .page.first .cols { height: calc(297mm - 13mm - 4mm - 17mm); }
+  .foot { position: absolute; bottom: 2.5mm; left: 7.5mm; right: 7.5mm; font-size: 6pt; color: #888; display: flex; justify-content: space-between; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #c15f3c; padding-bottom: 2mm; margin-bottom: 2.5mm; height: 14.5mm; }
+  header h1 { font-size: 15pt; margin: 0; color: #c15f3c; letter-spacing: -0.2px; }
+  header .sub { font-size: 7.5pt; color: #555; }
+  header .facts { text-align: right; font-size: 7.4pt; }
+  h2 { font-size: 9.2pt; margin: 2.4mm 0 1mm; padding: 0.6mm 1.5mm; color: #fff; background: #333; border-radius: 1mm; break-after: avoid; }
+  h2 .w { float: right; font-weight: 400; opacity: .9; }
+  h2.d1 { background: #8a4fbf; } h2.d2 { background: #2f6db5; } h2.d3 { background: #2a8a7a; } h2.d4 { background: #7a6a2a; }
+  h2.d5 { background: #c15f3c; } h2.d6 { background: #b5427a; } h2.d7 { background: #b33a3a; } h2.d8 { background: #3a7a3a; } h2.gen { background: #333; }
+  h3 { font-size: 8.3pt; margin: 1.6mm 0 0.5mm; color: #222; border-bottom: 0.5px solid #bbb; break-after: avoid; }
+  p { margin: 0.4mm 0 0.8mm; }
+  ul, ol { margin: 0.3mm 0 0.9mm; padding-left: 3.4mm; }
+  li { margin: 0.15mm 0; }
+  code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 0.92em; background: #f1efe9; padding: 0 0.6mm; border-radius: 0.5mm; overflow-wrap: anywhere; }
+  td code { font-size: 0.88em; }
+  pre { font-family: Consolas, monospace; font-size: 6.1pt; overflow-wrap: anywhere; background: #f1efe9; padding: 1mm 1.3mm; margin: 0.6mm 0 1mm; white-space: pre-wrap; border-radius: 0.8mm; break-inside: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 0.5mm 0 1.1mm; break-inside: avoid; }
+  th, td { border: 0.5px solid #c9c4b8; padding: 0.35mm 0.9mm; vertical-align: top; text-align: left; }
+  th { background: #ece8de; font-weight: 600; }
+  .trap { background: #fdecea; border-left: 2px solid #b33a3a; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .key { background: #eaf2fb; border-left: 2px solid #2f6db5; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .ok { background: #ebf5ea; border-left: 2px solid #3a7a3a; padding: 0.7mm 1.3mm; margin: 0.8mm 0 1.1mm; break-inside: avoid; }
+  .trap b:first-child, .key b:first-child, .ok b:first-child { display: block; }
+  .bar { display: flex; height: 3.2mm; margin: 0.6mm 0 0.3mm; border-radius: 0.6mm; overflow: hidden; font-size: 5.8pt; color: #fff; font-weight: 600; }
+  .bar span { display: flex; align-items: center; justify-content: center; }
+  .small { font-size: 6.4pt; color: #444; }
+  .nobr { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<!-- ============ SEITE 1 ============ -->
+<div class="page first">
+<header>
+  <div>
+    <h1>Claude Certified Developer – Foundations (CCDV-F)</h1>
+    <div class="sub">Kompakt-Spickzettel für die Prüfung · Exam Guide v1.0 (gültig ab Juli 2026) · 8 Domains · 25 Skills</div>
+  </div>
+  <div class="facts"><b>53 Items · 120 Min · Bestehen ab 720/1000</b><br>≈ 2:15 Min pro Frage · jede Frage beantworten (kein Malus)</div>
+</header>
+<div class="cols">
+
+<h2 class="gen">Prüfung auf einen Blick</h2>
+<table>
+<tr><td>Format</td><td>Multiple Choice + <b>Multiple Response</b> (Anzahl wird genannt – genau so viele wählen, kein Teilpunkt)</td></tr>
+<tr><td>Bewertung</td><td>Scaled Score 100–1.000, <b>Pass 720</b>, kriterienbasiert (nicht gegen andere Kandidaten). Domain-% nur diagnostisch.</td></tr>
+<tr><td>Ablauf</td><td>Anthropic Partner Academy → Pearson VUE (online oder Testcenter). Umbuchen bis <b>24 h</b> vorher. NDA vor Start.</td></tr>
+<tr><td>Gebühr / Gültigkeit</td><td><b>$125</b>/Versuch · gültig <b>12 Monate</b> · rechtzeitige Verlängerung kostenlos (unbeaufsichtigtes Assessment)</td></tr>
+<tr><td>Wiederholung</td><td>Wartezeit <b>14 / 30 / 90 Tage</b> · max. <b>4 Versuche</b> pro rollierende 12 Monate</td></tr>
+<tr><td>Ausweis</td><td>Gültiger amtlicher Lichtbildausweis, Name exakt wie bei Registrierung</td></tr>
+</table>
+
+<h3>Gewichtung der Domains (%)</h3>
+<div class="bar">
+  <span style="width:14.7%;background:#8a4fbf">D1</span><span style="width:33.1%;background:#2f6db5">D2 33,1</span><span style="width:3.1%;background:#2a8a7a"></span><span style="width:2.6%;background:#7a6a2a"></span><span style="width:16.8%;background:#c15f3c">D5</span><span style="width:11%;background:#b5427a">D6</span><span style="width:8.1%;background:#b33a3a">D7</span><span style="width:10.6%;background:#3a7a3a">D8</span>
+</div>
+<table>
+<tr><th>Domain</th><th>%</th><th>Skills (Gewicht %)</th></tr>
+<tr><td>D1 Agents &amp; Workflows</td><td>14,7</td><td>1.1 Architektur 4,5 · 1.2 Konstruktion 5,3 · 1.3 Patterns 4,9</td></tr>
+<tr><td><b>D2 Applications &amp; Integration</b></td><td><b>33,1</b></td><td>2.1 Requirements 3,4 · 2.2 Life Cycle 2,8 · <b>2.3 API 6,8</b> · <b>2.4 SWE 7,4</b> · <b>2.5 App Design 8,6</b> · 2.6 Config 4,1</td></tr>
+<tr><td>D3 Claude Code</td><td>3,1</td><td>3.1 Bedienung 3,1</td></tr>
+<tr><td>D4 Eval, Test, Debug</td><td>2,6</td><td>4.1 Debugging &amp; Errors 2,6</td></tr>
+<tr><td>D5 Model Selection</td><td>16,8</td><td>5.1 LLM-Grundlagen 5,2 · <b>5.2 Technik 6,1</b> · 5.3 Modellwahl 2,7 · 5.4 Kosten 2,8</td></tr>
+<tr><td>D6 Prompt &amp; Context</td><td>11,0</td><td>6.1 Context 3,8 · 6.2 Prompt 4,6 · 6.3 Output 2,6</td></tr>
+<tr><td>D7 Security &amp; Safety</td><td>8,1</td><td>7.1 Security 3,2 · 7.2 Guardrails 2,3 · 7.3 Hooks 1,0 · 7.4 Secrets 1,6</td></tr>
+<tr><td>D8 Tools &amp; MCPs</td><td>10,6</td><td>8.1 Tools 4,4 · 8.2 MCP-Server 2,1 · 8.3 Customization 4,1</td></tr>
+</table>
+
+<h2 class="gen">Die 10 Antwort-Heuristiken</h2>
+<ol>
+<li><b>Einfachste ausreichende Lösung</b> gewinnt: Single Call → Workflow → Agent → Multi-Agent.</li>
+<li><b>„Muss immer / darf nie"</b> → deterministische Kontrolle (Code-Gate, Hook, Permission-Regel, Schema, Sandbox) – <b>nie nur Prompt</b>.</li>
+<li><b>Untrusted Content</b> (Web, E-Mail, Docs, Tool-Results) = <b>Daten, keine Anweisungen</b> → abgegrenzt im User-Turn, nie im System-Prompt; Least Privilege; Approvals.</li>
+<li><b>Autorisierung</b> gehört in Code/Datenschicht, nie in den Prompt.</li>
+<li><b>Erst messen</b>: Erfolgskriterien + Evals vor/nach jeder Änderung; immer nur eine Sache ändern.</li>
+<li><b>Kosten</b>: erst Gratis-Hebel (Caching, Batch, Trimmen, Output kürzen), dann Trade-offs (Effort, kleineres Modell).</li>
+<li><b>Wiederverwendbare Integration</b> über Apps → MCP-Server · <b>App-spezifische Aktion</b> → Custom Tool · <b>Know-how/Prozedur</b> → Skill · <b>generische Fähigkeit</b> → Built-in Tool.</li>
+<li>Latenz-tolerant + kostenkritisch + viel Volumen → <b>Message Batches</b> (−50 %).</li>
+<li>Kontextproblem → prunen, compacten, Subagent isolieren, Just-in-time-Retrieval – <b>nicht</b> „größeres Fenster".</li>
+<li>Bei Fehlern: 4xx <b>nicht</b> retryen; 429/5xx/529 mit Backoff + Jitter.</li>
+</ol>
+<div class="trap"><b>Typische Distraktoren</b>„Größeres/stärkeres Modell", „Temperature erhöhen/auf 0", „GROSSBUCHSTABEN im Prompt", „Iterations-Limit als primärer Stopp", „400er retryen", „Multi-Agent als Default", „bessere Modelle widerstehen Injection".</div>
+
+<h2 class="d1">D1 · Agents &amp; Workflows <span class="w">14,7 %</span></h2>
+<div class="key"><b>Workflow vs. Agent</b><b style="display:inline">Workflow</b>: LLM-Calls + Tools über <b>vordefinierte Codepfade</b> – dein Code entscheidet. <b style="display:inline">Agent</b>: das Modell steuert dynamisch eigene Schritte und Tool-Nutzung in einer Schleife mit Feedback aus der Umgebung.</div>
+<p><b>Agent ja/nein?</b> Complexity · Value · Viability · Cost of error. Feste Abfolge → Workflow. Offene, unvorhersehbare Schritte → Agent.</p>
+
+<h3>Workflow-Patterns (Signal in der Frage)</h3>
+<table>
+<tr><td><b>Prompt Chaining</b></td><td>feste sequentielle Schritte, Gates dazwischen</td></tr>
+<tr><td><b>Routing</b></td><td>klar getrennte Input-Kategorien; billiges vs. teures Modell</td></tr>
+<tr><td><b>Parallel – Sectioning</b></td><td><i>verschiedene</i> unabhängige Teilaufgaben gleichzeitig (z. B. Antwort + Guardrail)</td></tr>
+<tr><td><b>Parallel – Voting</b></td><td><i>dieselbe</i> Aufgabe N-mal → Konsens</td></tr>
+<tr><td><b>Orchestrator-Workers</b></td><td>Teilaufgaben <b>vorher unbekannt</b>, zur Laufzeit bestimmt</td></tr>
+<tr><td><b>Evaluator-Optimizer</b></td><td>klare Kriterien, iterative Verbesserung</td></tr>
+<tr><td><b>Agent</b></td><td>offen, unvorhersehbar, Umgebungs-Feedback</td></tr>
+</table>
+
+<h3>Subagents</h3>
+<p><b>+</b> Kontext-Isolation, Parallelität, Spezialisierung, billigere Modelle für Teilaufgaben. <b>−</b> mehr Tokens, Koordinationsaufwand.</p>
+<div class="trap"><b>Falle</b>Subagents starten mit <b>frischem Kontext</b> – sie teilen kein Gedächtnis mit dem Parent. Fehlt Info → explizit im Delegations-Prompt mitgeben (nicht ganzes Transkript, nicht Modell wechseln). Nur das Endergebnis kommt zurück.</div>
+
+<h3>Agent-Loop (manuell)</h3>
+<pre>while True:
+  r = client.messages.create(
+        model=…, max_tokens=…, system=…,
+        tools=tools, messages=msgs)
+  msgs.append({"role": "assistant",
+               "content": r.content})
+  if r.stop_reason != "tool_use":
+      break
+  results = [run(b) for b in r.content
+             if b.type == "tool_use"]
+  # ALLE tool_results in EINER User-Message
+  msgs.append({"role": "user",
+               "content": results})</pre>
+<div class="trap"><b>Fallen</b>Loop-Ende per <code>stop_reason</code>, nicht „Antwort enthält Text". Tool-Results nie in getrennten User-Messages. Iterations-Cap = Sicherheitsnetz, nicht Hauptabbruch.</div>
+
+<h3>Bau-Optionen</h3>
+<table>
+<tr><th></th><th>Loop</th><th>Hosting</th><th>Built-in Tools</th></tr>
+<tr><td>Manueller Loop</td><td>du</td><td>du</td><td>keine</td></tr>
+<tr><td>Tool Runner</td><td>SDK-Helper</td><td>du</td><td>keine (nur deine Tools)</td></tr>
+<tr><td><b>Agent SDK</b></td><td>Claude-Code-Harness</td><td><b>du</b></td><td>Read, Write, Edit, Bash, Glob, Grep, Web; Subagents, MCP, Hooks, Sessions</td></tr>
+<tr><td><b>Managed Agents</b> (beta)</td><td>Anthropic</td><td><b>Anthropic</b> (Sandbox pro Session)</td><td>Bash, Files, Code Exec, Skills, MCP, Vaults, versionierte Agents</td></tr>
+</table>
+<p class="small">Tool Runner = <code>client.beta.messages.tool_runner</code> im <code>anthropic</code>-SDK.</p>
+<p><b>Agent SDK</b> (<code>claude-agent-sdk</code>): <code>query()</code> (one-off) vs. <code>ClaudeSDKClient</code> (multi-turn) · <code>allowed_tools</code> = <b>auto-approve</b> (keine Einschränkung!) · <code>disallowed_tools</code> = verbieten · <code>permission_mode</code> · <code>can_use_tool</code> Callback · <code>setting_sources</code> · <code>mcp_servers</code> · <code>@tool</code> + <code>create_sdk_mcp_server</code> → Name <code>mcp__server__tool</code> · <code>hooks={"PreToolUse":[HookMatcher(...)]}</code> · <code>resume</code>/<code>fork_session</code> · <code>max_turns</code>, <code>max_budget_usd</code> · <code>ResultMessage.total_cost_usd</code>.</p>
+<p><b>Memory</b> ist nichts, was das Modell „hat": etwas muss in einen Store schreiben und wieder in den Kontext laden (Memory-Tool: <i>deine</i> App implementiert die Speicheroperationen). Framework (LangGraph etc.) nicht für Ein-Call-Probleme.</p>
+<div class="trap"><b>Harte Geschäftsregeln</b>„Ab $10.000 immer Freigabe" → Workflow-Gate/Hook im Code, nicht System-Prompt.</div>
+
+</div>
+<div class="foot"><span>CCDV-F Cheat Sheet · unabhängige Lernhilfe, nicht von Anthropic</span><span>Seite 1/4 · Überblick, Heuristiken, D1</span></div>
+</div>
+
+<!-- ============ SEITE 2 ============ -->
+<div class="page">
+<div class="cols">
+
+<h2 class="d2">D2 · Applications &amp; Integration <span class="w">33,1 % – größter Block!</span></h2>
+
+<h3>2.3 Messages API</h3>
+<pre>POST https://api.anthropic.com/v1/messages
+Header: x-api-key
+        anthropic-version: 2023-06-01
+        content-type: application/json
+        [anthropic-beta]
+Pflicht: model, max_tokens, messages
+         (user zuerst, alternierend)
+Optional: system, tools, tool_choice, stream,
+  thinking, output_config{effort,format},
+  stop_sequences, metadata{user_id}</pre>
+<ul>
+<li>API ist <b>stateless</b> → gesamte History jedes Mal mitsenden. System-Prompt = Top-Level-Feld <code>system</code>.</li>
+<li><b>Prefill</b> auf aktuellen Modellen nicht unterstützt → Structured Outputs. <b>Sampling-Params</b> (temperature …) auf neuesten Modellen abgelehnt.</li>
+<li>Weitere Endpoints: <code>/v1/messages/count_tokens</code>, <code>/v1/messages/batches</code>, <code>/v1/files</code>, <code>/v1/models</code>.</li>
+</ul>
+<table>
+<tr><th style="width:55%"><code>stop_reason</code></th><th>Reaktion</th></tr>
+<tr><td><code>end_turn</code></td><td>fertig</td></tr>
+<tr><td><code>tool_use</code></td><td>Tools ausführen → eine User-Msg mit allen <code>tool_result</code>s → erneut aufrufen</td></tr>
+<tr><td><code>max_tokens</code></td><td>abgeschnitten → Limit erhöhen/fortsetzen, <b>nicht</b> als vollständig parsen</td></tr>
+<tr><td><code>stop_sequence</code></td><td>eigene Stop-Sequenz getroffen</td></tr>
+<tr><td><code>pause_turn</code></td><td>Server-Tool-Loop pausiert → erneut senden</td></tr>
+<tr><td><code>refusal</code></td><td>Sicherheits-Ablehnung, <b>HTTP 200</b> → keine Tools ausführen, Fallback</td></tr>
+<tr><td><code>model_context_window_exceeded</code></td><td>Fenster voll → Input reduzieren</td></tr>
+</table>
+
+<h3>Streaming (SSE – nicht WebSockets!)</h3>
+<p><code>message_start</code> → <code>content_block_start</code> → <code>content_block_delta</code> (<code>text_delta</code> · <code>input_json_delta</code> · <code>thinking_delta</code>) → <code>content_block_stop</code> → <code>message_delta</code> (stop_reason, usage) → <code>message_stop</code>. <code>ping</code> jederzeit; <code>error</code> auch mitten im Stream. <b>Gleiche Kosten</b>, besseres TTFT (wahrgenommene Latenz), vermeidet Timeouts bei langen Antworten.</p>
+
+<h3>Message Batches</h3>
+<p><b>−50 %</b> auf alles · ≤ <b>100.000</b> Requests / <b>256 MB</b> · meist &lt; 1 h, max <b>24 h</b> · Ergebnisse in <b>beliebiger Reihenfolge → per <code>custom_id</code> zuordnen</b> · 29 Tage abrufbar · Status <code>succeeded / errored / canceled / expired</code>. Ideal: Nacht-Jobs, Evals, Massenklassifikation – nicht für Echtzeit.</p>
+
+<h3>Thinking &amp; Effort</h3>
+<ul>
+<li>Aktuelle Modelle: <code>thinking: {"type":"adaptive"}</code> + <code>output_config.effort</code>: <code>low · medium · high · xhigh · max</code>.</li>
+<li>Legacy (ältere Modelle, z. B. Haiku 4.5): <code>{"type":"enabled","budget_tokens":N}</code>, N ≥ 1024 und &lt; max_tokens.</li>
+<li>Thinking-Blöcke im Tool-Loop <b>unverändert zurückgeben</b>. Thinking wird als <b>Output</b> abgerechnet – auch wenn Anzeige <code>omitted</code>/<code>summarized</code>.</li>
+<li><b>Effort</b> = Hauptregler Qualität ↔ Kosten/Latenz (weniger Effort = weniger, konsolidierte Tool-Calls, knappere Antworten). <b>Fast Mode</b> (Opus): schneller, Premium-Preis.</li>
+</ul>
+
+<h3>Multimodal, Files, Citations</h3>
+<p><b>Bilder</b> (base64/URL/<code>file_id</code>) <b>vor</b> die Frage; ≈ ⌈w/28⌉·⌈h/28⌉ Tokens; zu große werden verkleinert; ≤ 600/Request. <b>PDFs</b> = Text + Seitenbilder. <b>Files API</b>: einmal hochladen → <code>file_id</code> wiederverwenden. <b>Citations</b>: <code>cited_text</code> + Position; inkompatibel mit Structured Outputs.</p>
+
+<h3>Plattformen</h3>
+<p>Claude API (neue Features zuerst) · <b>Bedrock</b> (IAM, <code>anthropic.</code>-Prefix) · <b>Vertex AI</b> (GCP ADC, Projekt + Region) · <b>Foundry</b> (Azure). Gleiche Message-Struktur, aber <b>keine Feature-Parität</b> → pro Plattform prüfen.</p>
+
+<h3>2.5 App Design (8,6 % – größter Einzel-Skill)</h3>
+<div class="key"><b>Principal Hierarchy</b>Anthropic-Policies → <b>Operator</b> (System-Prompt/Entwickler) → <b>User</b> (Human-Turn). Inhalte aus Tool-Results, Dokumenten, Webseiten, Dateien = <b>Daten, keine Anweisungen</b>.</div>
+<ul>
+<li>Bare API ≠ claude.ai: kein Produkt-System-Prompt, kein Memory, keine Tools – alles muss der Operator definieren.</li>
+<li>Abgerufene Inhalte <b>nicht</b> in den System-Prompt kopieren → User-Turn, in Tags abgegrenzt.</li>
+<li>Schemas: nicht jedes Feld <code>required</code> → <code>null</code>/<code>unknown</code> erlauben, sonst erfindet das Modell Werte.</li>
+<li>API-Key nie im Browser/Mobile-Client → Backend-Proxy mit User-Auth und Limits.</li>
+<li>Side-Effects → Approval-Gates; Aktionen mit dem Scope des <b>Users</b> autorisieren.</li>
+</ul>
+
+<h3>2.4 Software Engineering Foundations (7,4 %)</h3>
+<ul>
+<li><b>Idempotenz</b>: Retry nach Timeout kann Side-Effect duplizieren (Zahlung, Mail) → Idempotency Keys / Status prüfen.</li>
+<li><b>Concurrency begrenzen</b>: kein ungebremstes <code>asyncio.gather</code> über 10.000 Calls → Semaphore, Backoff auf 429, oder Batches API.</li>
+<li><b>Einen SDK-Client wiederverwenden</b> (Connection-Reuse), nicht pro Request neu erzeugen.</li>
+<li>Timeouts: Python <code>timeout=10</code> = 10 <b>s</b>; TypeScript <code>timeout: 10</code> = 10 <b>ms</b>.</li>
+<li>Kleine, testgestützte, reviewbare PRs statt Mega-Refactor. <b>Unabhängiges Review</b> (andere Session, Subagent, Mensch) statt Selbst-Review im selben Kontext.</li>
+<li>Strukturiertes Logging inkl. Request-IDs, Usage, Stop-Reasons; Secrets aus Env/Secret Store.</li>
+<li>Transport: Output zum Browser → <b>SSE</b>; bidirektional/kontinuierlich (Voice, Co-Editing) → WebSockets; lange async Jobs → Polling mit Backoff oder <b>Webhook</b>.</li>
+</ul>
+
+<h3>2.1 Requirements (3,4 %)</h3>
+<div class="key"><b>Erfolgskriterien zuerst</b>Spezifisch, messbar, erreichbar, relevant – <b>vor</b> dem Prompt-Engineering definieren, dann Evals bauen. Mehrdimensional: Task-Fidelity, Konsistenz, Relevanz, Ton, Latenz, Kosten, Privacy.</div>
+<ul>
+<li>„Team tweakt Prompts, weiß nicht ob's besser wird" → Kriterien + Eval-Set, kein neuer Prompt-Trick.</li>
+<li><b>Latenz</b>: TTFT ↔ Streaming; lange statische Präfixe ↔ Caching; kürzerer Output ↔ schnellere Gesamtzeit; erst dann kleineres Modell.</li>
+<li><b>Durchsatz</b> gegen Rate Limits prüfen (RPM, ITPM, OTPM) → Batch, Queue + Backoff, Caching (Cache-Reads zählen meist nicht gegen ITPM), höherer Tier.</li>
+</ul>
+
+<h3>2.2 Systems Life Cycle (2,8 %)</h3>
+<p>LLM-Systeme sind empirisch → <b>iterativ/agil mit automatisierten Eval-Gates</b>, nicht Wasserfall.</p>
+<div class="ok"><b>Modell-Migration (Checkliste)</b>1. Release Notes/Migration Guide lesen · 2. neue Model-ID im Branch pinnen, Params anpassen · 3. <b>volle Eval-Suite</b> (Qualität, Latenz, Tokens, Kosten vs. Baseline) · 4. Prompts nachjustieren (neuere Modelle wörtlicher → Übertreibungen entfernen) · 5. Shadow/Canary, Stop-Reasons/Refusals/Fehler monitoren · 6. Feature-Flag-Umschaltung, Rollback bereit bis Retirement.</div>
+<p class="small">Nicht bis zum Retirement-Datum warten · Benchmark-Sieg ≠ besser für <i>deinen</i> Task.</p>
+
+<h3>2.6 Configuration Management (4,1 %)</h3>
+<div class="key"><b>Guidance vs. Enforcement</b>CLAUDE.md „nie <code>migrations/</code> editieren" = wahrscheinlich befolgt. <code>permissions.deny: ["Edit(./migrations/**)"]</code> = <b>erzwungen</b>.</div>
+<ul>
+<li>Permission-Listen werden über Scopes <b>gemergt</b>; <b>deny schlägt allow</b>, egal wo definiert.</li>
+<li>Persönliches → <code>.claude/settings.local.json</code> / <code>CLAUDE.local.md</code> (gitignored). Secrets → Env/Secret Store.</li>
+<li>Produktion: Model-ID <b>pinnen</b> (keine wandernden Aliasse), loggen, bewusst upgraden. Pro Umgebung eigene Keys/Workspaces.</li>
+</ul>
+
+<h3>Muster: Request mit Caching, Effort &amp; Fehlerbehandlung</h3>
+<pre>client = anthropic.Anthropic()  # 1x, reuse
+try:
+  r = client.messages.create(
+    model="claude-sonnet-…", max_tokens=1024,
+    system=[{"type": "text",
+             "text": STATISCHE_ANWEISUNG,
+             # Breakpoint ans Ende des
+             # gemeinsamen Präfixes:
+             "cache_control":
+               {"type": "ephemeral"}}],
+    # Daten in den User-Turn, mit Tags:
+    messages=[{"role": "user", "content":
+      f"&lt;doc&gt;{doc}&lt;/doc&gt;\n{frage}"}],
+    thinking={"type": "adaptive"},
+    output_config={"effort": "medium"})
+except anthropic.RateLimitError:
+  ...  # 429: Backoff, retry-after
+except anthropic.APIStatusError as e:
+  ...  # 4xx fixen, 5xx/529 retry
+if r.stop_reason == "max_tokens":
+  ...  # abgeschnitten!
+text = "".join(b.text for b in r.content
+               if b.type == "text")
+r.usage.cache_read_input_tokens  # Hit?</pre>
+<div class="trap"><b>Offizielle Beispielfrage – Muster</b>10.000 Dokumente über Nacht, nicht dringend, Kosten im Fokus → <b>Message Batches API</b> (nicht: parallele synchrone Calls, <code>max_tokens</code> senken, kleinstes Modell). Richtige Antwort = passender <b>Mechanismus</b> für die eigentliche Anforderung.</div>
+
+</div>
+<div class="foot"><span>CCDV-F Cheat Sheet</span><span>Seite 2/4 · D2 Applications &amp; Integration</span></div>
+</div>
+
+<!-- ============ SEITE 3 ============ -->
+<div class="page">
+<div class="cols">
+
+<h2 class="d8">D8 · Tools &amp; MCPs <span class="w">10,6 %</span></h2>
+<h3>8.1 Tool-Implementierung</h3>
+<ul>
+<li>Definition: <code>name</code>, <b><code>description</code></b> (Zweck, <i>wann</i> nutzen, Inputs, Outputs, Grenzen – wichtigster Hebel!), <code>input_schema</code> (JSON Schema), optional <code>strict: true</code> (+ <code>additionalProperties: false</code>), <code>input_examples</code>.</li>
+<li>Results: <b>eine</b> User-Message, jede <code>tool_use_id</code> beantwortet; Fehler als <code>is_error: true</code> mit <b>handlungsleitender</b> Meldung (nicht Exception aus dem Loop werfen).</li>
+<li>Wenige, aufgabenorientierte Tools statt 60 Endpoint-Wrapper. Große Kataloge → <b>Tool Search</b> (<code>defer_loading</code>); viele verkettete Calls → <b>Programmatic Tool Calling</b>.</li>
+<li>Schreibende/irreversible Aktionen → Bestätigung, egal wie gut das Modell ist.</li>
+</ul>
+<table>
+<tr><th style="width:53%"><code>tool_choice</code></th><th></th></tr>
+<tr><td><code>auto</code></td><td>Default, Modell entscheidet</td></tr>
+<tr><td><code>any</code> / <code>tool</code></td><td>erzwingen (auf neuesten Modellen abgelehnt → auto + Prompt / strict / Structured Outputs)</td></tr>
+<tr><td><code>none</code></td><td>keine Tools</td></tr>
+<tr><td><code>disable_parallel_tool_use</code></td><td>≤ 1 Call pro Turn</td></tr>
+</table>
+<p><b>Client Tools</b> (du führst aus): Custom, bash, text editor, memory, computer use. <b>Server Tools</b> (Anthropic führt aus): web search, web fetch, code execution, tool search, advisor.</p>
+
+<h3>8.2 MCP-Server</h3>
+<p>Host → Client (1 pro Server) → Server · <b>JSON-RPC 2.0</b>. Lifecycle: <code>initialize</code> → Capabilities → <code>notifications/initialized</code> → <code>tools/list</code>, <code>tools/call</code>, <code>resources/read</code>, <code>prompts/get</code>; <code>list_changed</code>-Notifications.</p>
+<table>
+<tr><th>Primitive</th><th>gesteuert von</th><th>Zweck</th></tr>
+<tr><td><b>Tools</b></td><td>Modell</td><td>Aktionen</td></tr>
+<tr><td><b>Resources</b></td><td>Anwendung</td><td>read-only Kontext (URIs, Templates) – z. B. Schemas, Docs</td></tr>
+<tr><td><b>Prompts</b></td><td>User</td><td>Templates / Slash-Commands</td></tr>
+</table>
+<ul>
+<li><b>Transports:</b> <b>stdio</b> = lokaler Subprozess (<b>stdout = Protokoll → Logs nach stderr</b>, kein <code>print()</code>!) · <b>Streamable HTTP</b> = remote, mehrere User, OAuth · HTTP+SSE = legacy.</li>
+<li>Client-Features: Elicitation, Roots (Sampling im neuesten Spec deprecated).</li>
+<li>SDKs: Python <code>MCPServer</code>/<code>FastMCP</code> + <code>@mcp.tool()</code>; TS <code>McpServer.registerTool</code>. Testen mit <b>MCP Inspector</b>.</li>
+<li>Claude Code: <code>claude mcp add --transport stdio|http</code>, Scopes local / project (<code>.mcp.json</code>) / user; Tool-Namen <code>mcp__server__tool</code>.</li>
+<li>API: <b>MCP Connector</b> (<code>mcp_servers</code> + <code>mcp_toolset</code>) – nur Remote-Server.</li>
+</ul>
+
+<h3>8.3 Agentic Customization – Entscheidungstabelle</h3>
+<div class="key"><b>Tools geben Fähigkeiten, Skills geben Know-how</b>Tool/MCP: „Was kann Claude tun/erreichen?" Skill: „Wie macht Claude diese Art Aufgabe gut?" Kann es → macht es aber inkonsistent → Skill.</div>
+<table>
+<tr><th>Bedarf</th><th>Lösung</th></tr>
+<tr><td>Generische Fähigkeit (Web, Code Exec, Dateien, Memory)</td><td><b>Built-in Tool</b></td></tr>
+<tr><td>App-spezifische Aktion/Daten in einer App</td><td><b>Custom Tool</b></td></tr>
+<tr><td>Wiederverwendbare Integration, unabhängig gewartet, mehrere Hosts</td><td><b>MCP-Server</b></td></tr>
+<tr><td>Prozedur / Expertise / Templates, bei Bedarf geladen</td><td><b>Skill</b></td></tr>
+<tr><td>Immer gültige Projektfakten</td><td><b>CLAUDE.md</b> / rules</td></tr>
+<tr><td>Isolation, Parallelität, Spezialist</td><td><b>Subagent</b></td></tr>
+<tr><td>Muss immer / darf nie</td><td><b>Hook</b> / Permission-Regel</td></tr>
+<tr><td>Bündel verteilen</td><td><b>Plugin</b></td></tr>
+</table>
+
+<h2 class="d3">D3 · Claude Code <span class="w">3,1 %</span></h2>
+<p><b>CLAUDE.md-Hierarchie:</b> managed → <code>~/.claude/CLAUDE.md</code> → <code>./CLAUDE.md</code> bzw. <code>./.claude/CLAUDE.md</code> → <code>./CLAUDE.local.md</code>. Vorfahren beim Start, Unterordner on demand, alles <b>konkateniert</b>. <code>@imports</code> (≤ 4 Ebenen). <code>.claude/rules/*.md</code> mit <code>paths:</code>. Ziel &lt; 200 Zeilen. = <b>Kontext, keine Durchsetzung</b>.</p>
+<p><b>settings.json-Priorität:</b> managed → CLI <code>--settings</code> → <code>.claude/settings.local.json</code> → <code>.claude/settings.json</code> → <code>~/.claude/settings.json</code>. Listen mergen. Auswertung <b>deny → ask → allow</b>.</p>
+<table>
+<tr><th style="width:43%">Permission Mode</th><th></th></tr>
+<tr><td><code>default</code></td><td>fragt bei erster Nutzung</td></tr>
+<tr><td><code>acceptEdits</code></td><td>Edits + übliche FS-Befehle automatisch</td></tr>
+<tr><td><code>plan</code></td><td>nur lesen/planen</td></tr>
+<tr><td><code>auto</code></td><td>Classifier prüft statt Prompts</td></tr>
+<tr><td><code>dontAsk</code></td><td>alles, was fragen würde, wird abgelehnt</td></tr>
+<tr><td><code>bypassPermissions</code></td><td>keine Prompts – <b>nur isolierte Sandbox/VM</b></td></tr>
+</table>
+<p><b>Regel-Syntax:</b> <code>Bash(npm run test *)</code> · <code>Read(./.env)</code> · <code>Edit(src/**)</code> · <code>WebFetch(domain:x.com)</code> · <code>mcp__github__*</code></p>
+<p><b>Bausteine:</b> <b>Skills</b> (<code>SKILL.md</code>, on demand; <code>disable-model-invocation</code>, <code>allowed-tools</code>, <code>context: fork</code>, <code>$ARGUMENTS</code>, <code>!`cmd`</code>) · Commands (<code>.claude/commands/*.md</code> = Skills) · <b>Subagents</b> (<code>.claude/agents/*.md</code>: name, description, tools, model; eigener Kontext) · Hooks · MCP (<code>.mcp.json</code>) · <b>Plugins</b> (<code>.claude-plugin/plugin.json</code>, <code>/plugin:skill</code>; vor Installation prüfen – Hooks/MCP laufen als du).</p>
+<p><b>Commands:</b> <code>/init /memory /clear /compact [focus] /context /rewind /resume /model /effort /config /permissions /hooks /agents /mcp /plugin /review /security-review /doctor</code></p>
+<p><b>Headless/CI:</b> <code>claude -p "…" --output-format text|json|stream-json --allowedTools … --permission-mode … --max-turns N --json-schema … --resume &lt;id&gt; --bare</code>. Ohne <code>--allowedTools</code>/passenden Mode werden prompt-pflichtige Aktionen in CI <b>abgelehnt</b>.</p>
+<p><b>Sessions:</b> <code>-c</code>/<code>--continue</code>, <code>-r</code>/<code>--resume</code>, <code>--fork-session</code>. Zwischen Aufgaben <code>/clear</code>; Exploration an Subagents delegieren; wiederkehrende Prozeduren → Skill statt CLAUDE.md.</p>
+
+<h2 class="d7">D7.3 · Hooks <span class="w">1,0 %</span></h2>
+<p><b>Events:</b> <code>PreToolUse</code> (blocken/ändern) · <code>PermissionRequest</code> · <code>PostToolUse</code> (formatieren/linten/auditieren – läuft <b>nach</b> Ausführung, kann nicht verhindern!) · <code>UserPromptSubmit</code> · <code>Stop</code>/<code>SubagentStop</code> (Beenden blocken) · <code>SessionStart</code> · <code>PreCompact</code> · <code>Notification</code> · <code>SessionEnd</code>.</p>
+<p><b>Config:</b> Event → <code>matcher</code> (Tool-Name/Regex) → Handler (<code>command</code>, <code>http</code>, <code>mcp_tool</code>, <code>prompt</code>, <code>agent</code>). Input als JSON auf <b>stdin</b>.</p>
+<table>
+<tr><td>Exit <b>0</b></td><td>ok (optional JSON auf stdout)</td></tr>
+<tr><td>Exit <b>2</b></td><td><b>blockieren</b> – stderr geht an Claude</td></tr>
+<tr><td>anderer (z. B. 1)</td><td>nicht-blockierender Fehler – Tool läuft trotzdem!</td></tr>
+</table>
+<p>JSON: <code>hookSpecificOutput.permissionDecision: allow|deny|ask</code> (+ Reason), <code>updatedInput</code>, <code>additionalContext</code>; <code>decision: "block"</code> (Stop); <code>continue: false</code> + <code>stopReason</code>.</p>
+<pre>{"hooks": {"PreToolUse": [{
+   "matcher": "Bash",
+   "hooks": [{"type": "command",
+              "command": "./guard.sh"}]
+}]}}</pre>
+
+<h3>Muster: <code>.claude/settings.json</code></h3>
+<pre>{"permissions": {
+   "allow": ["Bash(npm run test *)",
+             "Edit(src/**)"],
+   "ask":   ["Bash(git push *)"],
+   "deny":  ["Read(./.env)",
+             "Edit(./migrations/**)"]}}</pre>
+
+<h3>Muster: Skill <code>.claude/skills/release/SKILL.md</code></h3>
+<pre>---
+name: release
+description: Erstellt Release-Notes und
+  Tag. Nutzen, wenn ein Release
+  vorbereitet werden soll.
+allowed-tools: Bash(git *), Read
+disable-model-invocation: true  # nur /release
+---
+1. Änderungen seit letztem Tag sammeln …</pre>
+<p class="small">Nur <code>name</code> + <code>description</code> liegen dauerhaft im Kontext (Progressive Disclosure); der Body lädt erst bei Bedarf.</p>
+
+<h3>Muster: MCP-Server (Python, stdio)</h3>
+<pre>from mcp.server.fastmcp import FastMCP
+mcp = FastMCP("tickets")
+
+@mcp.tool()
+def get_ticket(ticket_id: str) -> dict:
+    """Lädt ein Ticket per ID. Nutzen bei
+    Fragen zu Status/Details."""
+    ...  # Logs → stderr, nie print()
+
+@mcp.resource("schema://tickets")
+def schema() -> str:
+    ...  # read-only Kontext
+
+if __name__ == "__main__":
+    mcp.run()  # Transport: stdio</pre>
+<div class="trap"><b>Offizielle Beispielfrage – Muster</b>Interner Inventar-REST-Service für mehrere Claude-Apps, unabhängig wartbar → <b>MCP-Server</b> (nicht: Logik in System-Prompts, Daten in jeden Request, Built-in Tool).</div>
+
+</div>
+<div class="foot"><span>CCDV-F Cheat Sheet</span><span>Seite 3/4 · D8 Tools &amp; MCP, D3 Claude Code, Hooks</span></div>
+</div>
+
+<!-- ============ SEITE 4 ============ -->
+<div class="page">
+<div class="cols">
+
+<h2 class="d5">D5 · Model Selection &amp; Optimization <span class="w">16,8 %</span></h2>
+<h3>5.1 LLM-Grundlagen</h3>
+<ul>
+<li>Token-basiert; Tokenizer unterscheiden sich je Modellgeneration → <code>count_tokens</code>-Endpoint / <code>usage</code> nutzen, keinen generischen Tokenizer.</li>
+<li><b>Kontextfenster</b> umfasst Input <b>und</b> Output (inkl. Thinking).</li>
+<li>Nicht-deterministisch: niedrige Temperature ≠ garantiert identisch (und neueste Modelle lehnen Sampling-Params ab) → Determinismus über Structured Outputs, Code, Caching.</li>
+<li>Thinking: besser bei Mathe, Code, mehrstufigem Tool-Use – kostet Output-Tokens und Latenz.</li>
+</ul>
+<h3>5.3 Modellwahl</h3>
+<table>
+<tr><td><b>Haiku</b></td><td>hohes Volumen, niedrige Latenz, Klassifikation, Routing, Sub-Agents</td></tr>
+<tr><td><b>Sonnet</b></td><td>ausgewogener Default für Produktion &amp; Coding</td></tr>
+<tr><td><b>Opus</b></td><td>komplexes Reasoning, lange Agenten-Läufe, Orchestrator</td></tr>
+<tr><td><b>Fable</b> (Top)</td><td>anspruchsvollste Arbeit, Qualität ≫ Kosten</td></tr>
+</table>
+<p>Kriterium: <b>Kosten pro erfolgreich erledigter Aufgabe</b> auf <b>deinen</b> Evals. Weder „immer das stärkste" (Verschwendung, Latenz) noch „immer das billigste" (mehr Turns/Retries). Thinking-Konfig variiert je Generation (adaptive ab 4.6, budget älter).</p>
+
+<h3>5.4 Kosten, Tokens &amp; Prompt Caching</h3>
+<table>
+<tr><th>Token-Typ</th><th>× Basis-Input</th></tr>
+<tr><td>Cache-Write 5 Min</td><td><b>1,25×</b></td></tr>
+<tr><td>Cache-Write 1 h</td><td><b>2×</b></td></tr>
+<tr><td>Cache-Read</td><td><b>~0,1×</b></td></tr>
+<tr><td>Batch</td><td><b>0,5×</b> auf alles (kombinierbar)</td></tr>
+<tr><td>Output</td><td>≈ <b>5×</b> Input-Preis</td></tr>
+</table>
+<ul>
+<li>Präfix-Reihenfolge <b>tools → system → messages</b>; jede Byte-Änderung invalidiert alles danach. Max. <b>4 Breakpoints</b>; modellabhängige Mindestlänge; TTL wird bei Hit erneuert; pro Workspace &amp; Modell.</li>
+<li>Break-even: 5-Min-TTL ab dem <b>2.</b> Request, 1-h-TTL ab dem <b>3.</b></li>
+<li><b>Cache-Killer:</b> Timestamp/IDs früh im System-Prompt, unsortiertes JSON, wechselnde Tools, Modellwechsel, Thinking/Effort-Toggles, History-Edits, Breakpoint hinter dem variablen Teil.</li>
+<li>Caching senkt nur <b>Input</b>-Kosten, nicht Output. <code>input_tokens</code> = nur ungecachter Rest → Gesamt = <code>input + cache_creation + cache_read</code>.</li>
+<li><b>Hebel-Reihenfolge:</b> Caching · Trimmen · Output-Hygiene · Batches → Effort · Modell-Tier · Routing.</li>
+</ul>
+
+<h3>5.2 Technische Grundlagen (6,1 %)</h3>
+<table>
+<tr><th>Status</th><th>Retry?</th></tr>
+<tr><td>400 invalid_request · 401 auth · 402 billing · 403 permission · 404 not_found · 413 too large</td><td><b>Nein</b> – fixen</td></tr>
+<tr><td>429 rate_limit (<code>retry-after</code> beachten) · 500 api_error · <b>529 overloaded</b> · Netzwerk</td><td><b>Ja</b> – exp. Backoff + Jitter</td></tr>
+</table>
+<p>SDKs retryen 408/409/429/5xx/Connection standardmäßig <b>2×</b>. Typisierte Exceptions spezifisch→allgemein fangen. Request-IDs loggen. Bei Overload Fallback-Modell oder Queue.</p>
+
+<h2 class="d6">D6 · Prompt &amp; Context Engineering <span class="w">11,0 %</span></h2>
+<h3>6.2 Prompting</h3>
+<ul>
+<li>Klar &amp; spezifisch (wer/was/warum/Format/Länge) · Kontext/Motivation statt CAPS · <b>Rolle im System</b>, <b>Daten im User-Turn</b> in XML-Tags.</li>
+<li>3–5 diverse Beispiele in <code>&lt;example&gt;</code> · lange Dokumente <b>oben</b>, Frage <b>unten</b> · erst relevante Zitate extrahieren lassen.</li>
+<li>Step-by-step bzw. adaptive Thinking · Prompt Chaining für komplexe Aufgaben.</li>
+<li>Neuere Modelle wörtlicher → „IMPORTANT/ALWAYS" weglassen (Over-Triggering). Eine Änderung pro Iteration + Evals.</li>
+<li>Inputs sanitizen: Länge, Steuer-/Zero-Width-Zeichen, Delimiter escapen. Per-Request-Daten nie in den System-Prompt (Caching, Trust).</li>
+</ul>
+<h3>6.1 Context Engineering</h3>
+<div class="key"><b>Leitprinzip</b>Kontext ist endlich, abnehmender Grenznutzen („context rot"). Ziel: <b>kleinste Menge hochrelevanter Tokens</b>.</div>
+<p>Techniken: <b>Just-in-time Retrieval</b> (Referenzen statt Volltext) · <b>Compaction</b> · <b>Tool-Output prunen</b> (Tool fixen statt compacten) · strukturierte Notizen/externe Memory · <b>Subagent-Isolation</b> mit fokussiertem Auftrag · bei serverseitiger Compaction komplettes <code>response.content</code> zurückgeben.</p>
+<h3>6.3 Output Handling</h3>
+<ul>
+<li>Parser-abhängig → <b>Structured Outputs</b> (<code>output_config.format</code>) oder <code>strict</code> Tool-Schema – nicht „bitte JSON".</li>
+<li>Structured Outputs garantieren <b>Form, nicht Wahrheit</b> → Business-Validierung, Grounding.</li>
+<li>Blöcke nach <code>type</code> auswählen (thinking, tool_use, mehrere text) – nicht <code>content[0]</code>.</li>
+<li>Selbstberichtete „confidence: 0.98" ist kein kalibrierter Wert. Output nie als rohes HTML rendern → encoden/sanitizen.</li>
+</ul>
+
+<h2 class="d7">D7 · Security &amp; Safety <span class="w">8,1 %</span></h2>
+<div class="key"><b>Lethal Trifecta</b>(1) Zugriff auf private Daten + (2) untrusted Content + (3) externe Kommunikation/folgenreiche Aktionen → <b>ein Bein entfernen</b>.</div>
+<ul>
+<li>Prompt Injection: direkt &amp; <b>indirekt</b> (über Docs/Web/Tool-/MCP-Output). Gegenmittel: Isolation/Delimiting, Least Privilege, Approvals, deterministische Gates, Output-Encoding – <b>Defense in Depth</b>, nie eine einzelne Maßnahme.</li>
+<li>Access Control in Code &amp; Datenzugriff der Tools; RAG-ACLs <b>beim Retrieval</b>. PII minimieren/redigieren.</li>
+<li><b>Fail closed</b> auf Hochrisiko-Pfaden (Classifier-Timeout ≠ allow).</li>
+<li>Keine Admin-Service-Accounts für Agents → <b>delegierte, user-scoped Credentials</b>; OAuth für Remote-MCP.</li>
+<li><b>Secrets</b> nie in Prompts, Clients oder Repos → Secret Manager; pro Umgebung eigene Keys/Workspaces mit Spend-Limits; Usage &amp; Audit-Logs monitoren.</li>
+<li>Key geleakt → <b>sofort widerrufen, dann rotieren</b> (nicht Git-History umschreiben).</li>
+</ul>
+
+<h2 class="d4">D4 · Eval, Testing &amp; Debugging <span class="w">2,6 %</span></h2>
+<div class="ok"><b>Isolations-Prozedur</b>1. Exakten Request + Raw-Response erfassen · 2. direkt replayen (curl/Console) → Antwort korrekt? → Bug <b>downstream</b> (Parsing, State, Rendering) · 3. Request prüfen (fehlende History, abgeschnittene Docs, falsche Prompt-Version, Tool-Results fehlen, falsche Model-ID) = immer noch Integrations-Bug · 4. Erst dann Modellverhalten → Prompt/Tools/Kontext/Effort/Modell + Fall ins Eval-Set · 5. mehrfach reproduzieren.</div>
+<p><b>Evals:</b> code-graded (exakt, schnell) &gt; LLM-as-Judge (klare Rubrik) &gt; Human (teuer, für Kalibrierung). Repräsentative + Edge-Cases, Regressionstests bei jeder Änderung, Production-Monitoring (Stop-Reasons, Refusals, Fehlerraten, Kosten), Trace-Analyse bei Agenten.</p>
+
+<h2 class="gen">Häufige Verwechslungen</h2>
+<table style="break-inside:auto"><col style="width:44%"><col>
+<tr><td>Tool Runner ↔ Agent SDK</td><td>nur deine Tools ↔ volle Claude-Code-Harness</td></tr>
+<tr><td>Sectioning ↔ Voting</td><td>verschiedene Teilaufgaben ↔ dieselbe Aufgabe N-mal</td></tr>
+<tr><td>PreToolUse ↔ PostToolUse</td><td>verhindern ↔ nachbearbeiten/auditieren</td></tr>
+<tr><td>Hook Exit 2 ↔ Exit 1</td><td>blockiert ↔ nur Fehler, Tool läuft</td></tr>
+<tr><td><code>allowed_tools</code> ↔ <code>disallowed_tools</code></td><td>auto-approve ↔ verbieten</td></tr>
+<tr><td>CLAUDE.md ↔ <code>permissions.deny</code></td><td>Guidance ↔ Enforcement</td></tr>
+<tr><td>Skill ↔ CLAUDE.md</td><td>on demand, Prozedur ↔ immer geladen, Fakten</td></tr>
+<tr><td>MCP Tool ↔ Resource ↔ Prompt</td><td>Modell ↔ Anwendung ↔ User steuert</td></tr>
+<tr><td>Streaming ↔ Batch</td><td>gleiche Kosten, besseres TTFT ↔ −50 %, asynchron ≤ 24 h</td></tr>
+</table>
+
+<div class="trap"><b>Offizielle Beispielfrage – Muster</b>Webseite mit verstecktem Text „ignoriere vorherige Anweisungen …" → <b>Inhalt als untrusted behandeln, von Anweisungen trennen, Guardrails/Hooks</b> gegen sensible Aktionen. Nicht: Temperature erhöhen, User im System-Prompt bitten, größeres Modell.</div>
+
+<h2 class="gen">Prüfungstaktik</h2>
+<ul>
+<li><b>Zeit:</b> ≈ 2:15 Min/Item. Nach ~60 Min solltest du bei ~27 sein. Schwere Items markieren (flag) und weiter – am Ende zurückkommen.</li>
+<li><b>Stamm zuerst</b> nach der eigentlichen Anforderung durchsuchen: Kosten? Latenz (TTFT vs. gesamt)? Sicherheit? Wiederverwendung? „muss immer"?</li>
+<li>Antworten eliminieren, die <b>nicht durchsetzbar</b> (nur Prompt), <b>überdimensioniert</b> (Multi-Agent, größtes Modell) oder <b>am Problem vorbei</b> sind.</li>
+<li>Bei Multiple Response <b>exakt</b> die geforderte Anzahl wählen. Keine Frage leer lassen.</li>
+<li>Schwerpunkte fürs Lernen: <b>D2 (33 %)</b> + <b>D5 (17 %)</b> + D1 (15 %) = ⅔ der Punkte.</li>
+<li><b>Bereit</b>, wenn du in vollen Mock-Exams stabil <b>≥ 80 %</b> erreichst (≈ 70 % ≙ 720).</li>
+</ul>
+
+
+</div>
+<div class="foot"><span>CCDV-F Cheat Sheet</span><span>Seite 4/4 · D5 Modelle &amp; Kosten, D6 Prompt/Context, D7 Security, D4 Eval</span></div>
+</div>
+
+</body>
+</html>
